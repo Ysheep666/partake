@@ -1,0 +1,23 @@
+# 系统信息
+setting:
+  title: 'Partake'
+  description: '发现你喜欢的开源项目'
+  api_vnd: 'partake.v0.1'
+  secret: 'gwb2vp6tk1inpspztkexdj2egxmegu'
+  static_url: ''
+
+# 数据库配置
+db:
+  redis:
+    host: '127.0.0.1'
+  mongodb:
+    url: 'mongodb://127.0.0.1/partake'
+
+# 又拍云
+upyun:
+  api: 'http://v0.api.upyun.com'
+  buckets:
+    - name: 'partake-images'
+      secret: 'Zetk/7ysh3W2Js7yMybtmNEzOyU='
+      url: 'http://partake-images.b0.upaiyun.com'
+

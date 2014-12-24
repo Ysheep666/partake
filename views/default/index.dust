@@ -1,0 +1,8 @@
+{>layout/}
+{! 标题 !}
+{<title}标题{/title}
+
+{! 内容 !}
+{<content}
+	内容
+{/content}

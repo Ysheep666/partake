@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+var app = require('../index');
+var port = process.env.APP_PORT || 3000;
+
+app.listen(port, function () {
+  console.log('Partake application listening on port ' + port);
+});
+
+process.on('uncaughtException', function (exc) {
+  if ('production' === process.env.NODE_ENV) {
+    console.error(exc);
+  }
+});
