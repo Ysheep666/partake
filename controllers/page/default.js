@@ -1,4 +1,4 @@
-// 默认页面
+// 默认
 var router = require('express').Router();
 
 // 首页

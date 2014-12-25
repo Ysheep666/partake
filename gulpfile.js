@@ -121,7 +121,7 @@ gulp.task('serve', function () {
   $.nodemon({
     script: 'bin/www',
     ignore: ['gulpfile.js', '.tmp/**', 'dist/**', 'node_modules/**', 'docs/**', 'public/**', 'test/**', 'commands/**']
-  }).on('change', ['lint']).on('restart', function () {
+  }).on('change', ['jshint']).on('restart', function () {
     console.log('restarted!');
   });
 });

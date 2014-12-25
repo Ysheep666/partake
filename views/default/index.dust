@@ -1,8 +1,20 @@
 {>layout/}
 {! 标题 !}
-{<title}标题{/title}
+{<title}{app.title} - {app.description}{/title}
+
+{! 脚本 !}
+{<sub_scripts}
+<!-- build:js /scripts/default/index.js -->
+<script src="/scripts/default/index.js"></script>
+<!-- endbuild -->
+{/sub_scripts}
+
 
 {! 内容 !}
 {<content}
-	内容
+  {#app.user}
+    {app.user.nickname}
+  {:else}
+    <a href="/auth/github">登陆</a>
+  {/app.user}
 {/content}

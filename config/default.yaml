@@ -21,3 +21,9 @@ upyun:
       secret: 'Zetk/7ysh3W2Js7yMybtmNEzOyU='
       url: 'http://partake-images.b0.upaiyun.com'
 
+#用户认证
+auth:
+  github:
+    client_id: '0010da5d410780f81630'
+    client_secret: '6d5d72cd04c40e45f3ecf4a264a5a4e2b9c087c7'
+    callback_url: 'http://localhost:3000/auth/github/callback'
