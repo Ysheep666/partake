@@ -131,6 +131,20 @@ gulp.task('develop', ['development-env', 'clean', 'jshint'], function() {
   return gulp.start('styles', 'scripts', 'watch', 'serve');
 });
 
+// 测试
+gulp.task('test', ['test-env'], function () {
+  return gulp.src('test/**/*.js')
+    .pipe($.mocha({
+      reporter: 'spec',
+      timeout: 3000,
+      globals: {
+        should: require('should')
+      }
+    }))
+    .once('end', function () {
+      process.exit()
+    });
+});
+
 // Default
 gulp.task('default', ['develop']);
-
