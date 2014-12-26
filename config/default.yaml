@@ -8,10 +8,8 @@ setting:
 
 # 数据库配置
 db:
-  redis:
-    host: '127.0.0.1'
-  mongodb:
-    url: 'mongodb://127.0.0.1/partake'
+  redis: 'redis://127.0.0.1'
+  mongodb: 'mongodb://127.0.0.1/partake'
 
 # 又拍云
 upyun:

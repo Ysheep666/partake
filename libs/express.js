@@ -51,7 +51,7 @@ module.exports = function (app, passport) {
       maxAge: 1000 * 60 * 60 * 24 * 30 * 12
     },
     store: new (require('connect-redis')(session))({
-      host: adou.config.db.redis.host,
+      url: adou.config.db.redis,
       prefix: 'session:'
     }),
     resave: true,

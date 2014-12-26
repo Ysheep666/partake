@@ -22,6 +22,15 @@ module.exports = function () {
 
   options.setting.root = root;
 
+  // 用于集成测试
+  if (process.env.WERCKER_REDIS_URL) {
+    options.db.redis = process.env.WERCKER_REDIS_URL;
+  }
+
+  if (process.env.WERCKER_MONGODB_URL) {
+    options.db.mongodb = process.env.WERCKER_MONGODB_URL + '/partake';
+  }
+
   global.adou = {};
   adou.config = options;
 };

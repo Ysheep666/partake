@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 module.exports = function () {
-  var url = adou.config.db.mongodb.url;
+  var url = adou.config.db.mongodb;
   mongoose.connect(url);
   var db = mongoose.connection;
   db.on('error', function () {
