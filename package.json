@@ -7,6 +7,7 @@
     "node": ">= 0.10"
   },
   "scripts": {
+    "start": "gulp",
     "test": "gulp test"
   },
   "browserify": {
@@ -30,7 +31,7 @@
     "dustjs-linkedin": "2.5.1",
     "express": "4.10.6",
     "express-session": "1.9.3",
-    "express-validator": "2.7.0",
+    "express-validator": "2.8.0",
     "js-yaml": "3.2.4",
     "lodash": "2.4.1",
     "method-override": "2.3.0",
@@ -55,7 +56,6 @@
     "gulp-plumber": "^0.6.6",
     "gulp-size": "^1.1.0",
     "gulp-util": "^3.0.1",
-    "gulp-watch": "^3.0.0",
     "jshint-stylish": "^1.0.0",
     "should": "^4.4.1",
     "supertest": "^0.15.0"

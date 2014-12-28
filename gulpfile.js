@@ -44,6 +44,14 @@ gulp.task('jshint', function () {
     .pipe($.jshint.reporter(require('jshint-stylish')));
 });
 
+// Font
+gulp.task('fonts', function () {
+  gulp.src('public/components/ionicons/fonts/*.{eot,svg,ttf,woff}')
+    .pipe(gulp.dest('.tmp/public/fonts'))
+    .pipe($.size());
+  return;
+});
+
 // Styles
 gulp.task('styles', function () {
   gulp.src(['public/styles/**/*.less', '!public/styles/components/**/*.less'])
@@ -106,14 +114,8 @@ gulp.task('scripts', ['create-setting'], function () {
 
 // Watch
 gulp.task('watch', function () {
-  $.watch('public/styles/**/*.less', function (files, ccallback) {
-    gulp.start('styles', ccallback);
-  });
-
-  $.watch('public/scripts/**/*.js', function (files, ccallback) {
-    gulp.start('scripts', ccallback);
-  });
-  return;
+  gulp.watch('public/styles/**/*.less', ['styles']);
+  gulp.watch('public/scripts/**/*.js', ['scripts']);
 });
 
 // Serve
@@ -128,7 +130,7 @@ gulp.task('serve', function () {
 
 // 开发
 gulp.task('develop', ['development-env', 'clean', 'jshint'], function() {
-  return gulp.start('styles', 'scripts', 'watch', 'serve');
+  return gulp.start('fonts', 'styles', 'scripts', 'watch', 'serve');
 });
 
 // 测试

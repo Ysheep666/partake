@@ -50,10 +50,24 @@ module.exports = function (app, passport) {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 30 * 12
     },
-    store: new (require('connect-redis')(session))({
-      url: adou.config.db.redis,
-      prefix: 'session:'
-    }),
+    store: new (require('connect-redis')(session))((function () {
+      var options = {};
+      var url = require('url').parse(adou.config.db.redis);
+      if (url.auth) {
+        var userparts = url.auth.split(':');
+        options.user = userparts[0];
+        if (userparts.length === 2) {
+          options.pass = userparts[1];
+        }
+      }
+      options.host = url.hostname;
+      options.port = url.port;
+      if (url.pathname) {
+        options.db   = url.pathname.replace('/', '', 1);
+      }
+      options.prefix = 'session:';
+      return options;
+    })()),
     resave: true,
     saveUninitialized: true
   }));

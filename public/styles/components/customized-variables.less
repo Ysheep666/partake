@@ -1,0 +1,33 @@
+@import '../../components/bootstrap/less/variables';
+@import '../../components/ionicons/less/_ionicons-variables';
+
+@font-family-base: STHeiti, '微软雅黑', 'Microsoft Yahei', Helmet, Freesans, sans-serif;
+@link-hover-decoration: none;
+
+// Navbar
+@navbar-height: 60px;
+
+// Inverted navbar
+// Reset inverted navbar basics
+@navbar-inverse-color: lighten(@gray-light, 15%);
+@navbar-inverse-bg: #fff;
+@navbar-inverse-border: darken(@navbar-inverse-bg, 10%);
+
+// Inverted navbar links
+@navbar-inverse-link-color: #999;
+@navbar-inverse-link-hover-color: darken(@navbar-inverse-link-color, 20%);
+@navbar-inverse-link-hover-bg: transparent;
+@navbar-inverse-link-active-color: @navbar-inverse-link-hover-color;
+@navbar-inverse-link-active-bg: transparent;
+@navbar-inverse-link-disabled-color: #ccc;
+@navbar-inverse-link-disabled-bg: transparent;
+
+// Inverted navbar brand label
+@navbar-inverse-brand-color: darken(@navbar-inverse-link-color, 20%);
+@navbar-inverse-brand-hover-color: darken(@navbar-inverse-brand-color, 20%);
+@navbar-inverse-brand-hover-bg: transparent;
+
+// Inverted navbar toggle
+@navbar-inverse-toggle-hover-bg: #eee;
+@navbar-inverse-toggle-icon-bar-bg: @navbar-inverse-link-hover-color;
+@navbar-inverse-toggle-border-color: @navbar-inverse-link-hover-color;

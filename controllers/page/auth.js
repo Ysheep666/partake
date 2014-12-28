@@ -6,7 +6,7 @@ var passport = require('passport');
 router.route('/github').get(passport.authenticate('github'));
 
 // github 认证回调
-router.route('/github/callback').get(passport.authenticate('github', { failureRedirect: '/auth/login' }), function (req, res) {
+router.route('/github/callback').get(passport.authenticate('github', {failureRedirect: '/auth/login'}), function (req, res) {
   res.redirect('/');
 });
 

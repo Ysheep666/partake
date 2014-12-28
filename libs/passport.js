@@ -10,7 +10,7 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    User.findById(id, 'name nickname email', done);
+    User.findById(id, 'name nickname email avatar', done);
   });
 
   passport.use(new (require('passport-github').Strategy)({

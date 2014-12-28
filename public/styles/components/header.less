@@ -1,0 +1,97 @@
+.partake-header {
+  .partake-nav {
+    margin: 0;
+
+   > li {
+      float: left;
+    }
+
+   > li > a {
+      display: inline-block;
+      margin: 15px;
+      margin-left: 0;
+      padding: 0 12px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 15px;
+
+      &.border {
+        border: 1px solid @navbar-inverse-link-color;
+
+        &:hover {
+          border-color: @navbar-inverse-link-hover-color;
+        }
+      }
+    }
+
+    [class^="ion-"] {
+      padding: 0;
+      width: 30px;
+      font-size: 16px;
+      border-radius: 50%;
+    }
+
+    .avatar {
+      padding: 0;
+
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #aaa;
+      }
+    }
+  }
+
+  .slogan {
+    margin-left: 10px;
+    border-radius: @border-radius-base;
+    font-size: 13px;
+    color: lighten(@navbar-inverse-link-color, 15%) !important;
+  }
+
+  .navbar-nav > li .profile-box {
+    left: auto;
+    right: 10px;
+    border: none;
+    border-radius: @border-radius-base;
+    box-shadow: 0 1px 1px rgba(0,0,0,.25),0 0 1px rgba(0,0,0,.35);
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -14px;
+      right: 10px;
+      padding: 0;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      transform: rotate(45deg) translate(6px, 6px);
+      box-shadow: -1px -1px 1px -1px rgba(0,0,0,.44);
+    }
+
+    .info {
+      padding: 10px 15px;
+
+      .name {
+        font-size: 14px;
+
+        span {
+          margin-left: 5px;
+          font-size: 12px;
+          color: lighten(@navbar-inverse-link-color, 15%);
+        }
+      }
+
+      .email {
+        margin-bottom: 0;
+        font-size: 13px;
+      }
+    }
+
+    .divider {
+      margin-top: 0;
+    }
+  }
+}

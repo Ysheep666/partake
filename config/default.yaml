@@ -1,7 +1,7 @@
 # 系统信息
 setting:
   title: 'Partake'
-  description: '发现你喜欢的开源项目'
+  description: '^_^ 发现您喜欢的开源项目！'
   api_vnd: 'partake.v0.1'
   secret: 'gwb2vp6tk1inpspztkexdj2egxmegu'
   static_url: ''
