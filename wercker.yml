@@ -7,9 +7,9 @@ script: |
 build:
   steps:
     - script:
-      name: install bower
-      code: |
-        sudo npm install -g bower
-        bower install
+        name: install bower
+        code: |
+          sudo npm install -g bower
+          bower install
     - npm-install
     - npm-test
