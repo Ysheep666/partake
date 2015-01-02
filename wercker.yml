@@ -4,9 +4,12 @@ services:
   - wercker/mongodb@1.0.1
 script: |
   sudo npm install gulp -g
-  sudo npm install bower -g
 build:
   steps:
-    - bower-install
+    - script:
+      name: install bower
+      code: |
+        sudo npm install -g bower
+        bower install
     - npm-install
     - npm-test
