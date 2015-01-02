@@ -37,7 +37,7 @@ gulp.task('env:production', function (callback) {
 // Clean
 gulp.task('clean', function (callback) {
   var del = require('del');
-  del(['.tmp', 'dist', 'coverage'], callback);
+  del(['.tmp', 'dist'], callback);
 });
 
 // Jshint
@@ -158,8 +158,8 @@ gulp.task('test:mocha', ['env:test'], function (callback) {
           }
         }))
         .pipe($.istanbul.writeReports({
-          dir: './coverage/mocha',
-          reporters: ['lcov', 'text', 'text-summary']
+          dir: '.',
+          reporters: ['text', 'text-summary']
         }))
         .on('end', callback);
     });
@@ -173,7 +173,7 @@ gulp.task('test:karma', ['scripts'], function (callback) {
   }, callback);
 });
 
-gulp.task('mocha', ['clean', 'test:mocha'], function () {
+gulp.task('mocha', ['test:mocha'], function () {
   process.exit();
 });
 
