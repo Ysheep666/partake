@@ -111,7 +111,7 @@ gulp.task('scripts:vendor', ['scripts:modernizr'], function () {
 
 // Scripts Browserify
 gulp.task('scripts:browserify', function () {
-  return gulp.src(['public/scripts/*.js'], {read: false})
+  return gulp.src(['public/scripts/*.js'])
     .pipe($.plumber({errorHandler: handler}))
     .pipe($.browserify({debug: true}))
     .pipe($.plumber.stop())
@@ -149,7 +149,7 @@ gulp.task('test:mocha', ['env:test'], function (callback) {
     .pipe($.istanbul())
     .pipe($.istanbul.hookRequire())
     .on('finish', function () {
-      gulp.src(['test/mocha/**/*.js'], {read: false})
+      gulp.src(['test/mocha/**/*.js'])
         .pipe($.mocha({
           reporter: 'spec',
           timeout: 3000,
@@ -165,16 +165,16 @@ gulp.task('test:mocha', ['env:test'], function (callback) {
     });
 });
 
+gulp.task('mocha', ['test:mocha'], function () {
+  process.exit();
+});
+
 // Test Karma
 gulp.task('test:karma', ['scripts'], function (callback) {
   karma.server.start({
     configFile: __dirname + '/test/karma.conf.js',
     singleRun: true
   }, callback);
-});
-
-gulp.task('mocha', ['test:mocha'], function () {
-  process.exit();
 });
 
 gulp.task('karma', ['clean', 'test:karma'], function () {
@@ -186,6 +186,75 @@ gulp.task('test', ['clean', 'test:mocha'], function () {
   gulp.start('test:karma', function () {
     process.exit();
   });
+});
+
+// Build Assets
+gulp.task('build:assets', function () {
+  return gulp.src(['public/*.{ico,png,txt,xml}', 'public/components/ionicons/{fonts}/*.{eot,svg,ttf,woff}'])
+    .pipe(gulp.dest('dist/public'))
+    .pipe($.size());
+});
+
+// Build Fonts
+gulp.task('build:fonts', function () {
+  return gulp.src(['public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
+    .pipe(gulp.dest('dist/public/fonts'))
+    .pipe($.size());
+});
+
+// Build Styles
+gulp.task('build:styles', function () {
+  return gulp.src(['public/styles/*.less'])
+    .pipe($.less())
+    .pipe($.autoprefixer('last 2 version', 'safari 5', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+    .pipe(gulp.dest('.tmp/public/styles'))
+    .pipe($.size());
+});
+
+// Build Scripts
+gulp.task('build:scripts', ['scripts:vendor'], function () {
+  return gulp.src(['public/scripts/*.js'])
+    .pipe($.browserify())
+    .pipe(gulp.dest('.tmp/public/scripts'))
+    .pipe($.size());
+});
+
+// Build Images
+gulp.task('build:images', function () {
+  return gulp.src(['public/images/**/*'])
+    .pipe($.imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest('dist/public/images'))
+    .pipe($.size());
+});
+
+// Build Html
+gulp.task('build:html', ['build:assets', 'build:fonts', 'build:styles', 'build:scripts', 'build:images'], function () {
+  var assets = $.useref.assets({
+    searchPath: '{.tmp/public,public}'
+  });
+
+  return gulp.src(['views/**/*.dust'])
+    .pipe(assets)
+    .pipe($['if']('*.css', $.csso()))
+    .pipe($['if']('*.js', $.uglify()))
+    .pipe($.rev())
+    .pipe(assets.restore())
+    .pipe($.useref())
+    .pipe($.revReplace())
+    // .pipe($['if']('*.dust', $.replace(/((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{app.static_url}$3')))
+    .pipe($['if']('*.css', gulp.dest('dist/public')))
+    .pipe($['if']('*.js', gulp.dest('dist/public')))
+    .pipe($['if']('*.dust', gulp.dest('dist/views')))
+    .pipe($.size());
+});
+
+// 编译
+gulp.task('build', ['env:production', 'clean', 'jshint'], function () {
+  gulp.start('build:html');
 });
 
 // Default
