@@ -1,3 +1,7 @@
+body {
+  margin-top: 61px;
+}
+
 .partake-header {
   .partake-nav {
     margin: 0;
@@ -51,8 +55,10 @@
   }
 
   .navbar-nav > li .profile-box {
+    position: absolute;
     left: auto;
     right: 10px;
+    padding: 0;
     border: none;
     border-radius: @border-radius-base;
     box-shadow: 0 1px 1px rgba(0,0,0,.25),0 0 1px rgba(0,0,0,.35);
@@ -72,7 +78,7 @@
     }
 
     .info {
-      padding: 10px 15px;
+      padding: 12px 15px;
 
       .name {
         font-size: 14px;
@@ -92,6 +98,15 @@
 
     .divider {
       margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    li a {
+      padding: 6px 20px;
+    }
+
+    li:last-child a {
+      border-radius: 0 0 @border-radius-base @border-radius-base;
     }
   }
 }

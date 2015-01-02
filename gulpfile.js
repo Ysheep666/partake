@@ -1,5 +1,8 @@
 var gulp = require('gulp');
+var karma = require('karma');
 var $ = require('gulp-load-plugins')();
+
+var pkg = require('./package.json');
 
 require('./libs/config')();
 
@@ -14,19 +17,19 @@ var handler = function (err) {
 };
 
 // Env development
-gulp.task('development-env', function (callback) {
+gulp.task('env:development', function (callback) {
   process.env.NODE_ENV = 'development';
   callback();
 });
 
 // Env test
-gulp.task('test-env', function (callback) {
+gulp.task('env:test', function (callback) {
   process.env.NODE_ENV = 'test';
   callback();
 });
 
 // Env production
-gulp.task('production-env', function (callback) {
+gulp.task('env:production', function (callback) {
   process.env.NODE_ENV = 'production';
   callback();
 });
@@ -34,7 +37,7 @@ gulp.task('production-env', function (callback) {
 // Clean
 gulp.task('clean', function (callback) {
   var del = require('del');
-  del(['.tmp', 'dist'], callback);
+  del(['.tmp', 'dist', 'coverage'], callback);
 });
 
 // Jshint
@@ -46,7 +49,7 @@ gulp.task('jshint', function () {
 
 // Font
 gulp.task('fonts', function () {
-  gulp.src('public/components/ionicons/fonts/*.{eot,svg,ttf,woff}')
+  gulp.src(['public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
     .pipe(gulp.dest('.tmp/public/fonts'))
     .pipe($.size());
   return;
@@ -54,7 +57,7 @@ gulp.task('fonts', function () {
 
 // Styles
 gulp.task('styles', function () {
-  gulp.src(['public/styles/**/*.less', '!public/styles/components/**/*.less'])
+  return gulp.src(['public/styles/*.less'])
     .pipe($.plumber({
       errorHandler: handler
     }))
@@ -65,11 +68,22 @@ gulp.task('styles', function () {
     .pipe($.plumber.stop())
     .pipe(gulp.dest('.tmp/public/styles'))
     .pipe($.size());
-  return;
 });
 
-//创建配置文件
-gulp.task('create-setting', function () {
+// Scripts Modernizr
+gulp.task('scripts:modernizr', function () {
+  return gulp.src(['public/components/modernizr/modernizr.js'])
+    .pipe($.modulizr([
+      'cssclasses',
+      'touch'
+    ]))
+    .pipe($.concat('modernizr.js'))
+    .pipe(gulp.dest('.tmp/public/scripts/'))
+    .pipe($.size());
+});
+
+// Scripts Vendor
+gulp.task('scripts:vendor', ['scripts:modernizr'], function () {
   var buckets = {};
   var setting = adou.config.setting, upyun = adou.config.upyun;
   for (var i = 0; i < upyun.buckets.length; i++) {
@@ -86,36 +100,32 @@ gulp.task('create-setting', function () {
     }
   });
 
-  var src = require('stream').Readable({
-    objectMode: true
-  });
-  src._read = function () {
-    this.push(new $.util.File({
-      cwd: '',
-      base: '',
-      path: 'setting.js',
-      contents: new Buffer('var adou = ' + script + ';')
-    }));
-    return this.push(null);
-  };
-  return src.pipe(gulp.dest('.tmp/public/scripts'));
+  return gulp.src(pkg.vendors)
+    .pipe($.sourcemaps.init())
+    .pipe($.concat('vendor.js'))
+    .pipe($.insert.append('var adou = ' + script + ';'))
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest('.tmp/public/scripts'))
+    .pipe($.size());
 });
 
-// Scripts
-gulp.task('scripts', ['create-setting'], function () {
-  gulp.src(['public/scripts/**/*.js', '!public/scripts/components/**/*.js'], {read: false})
+// Scripts Browserify
+gulp.task('scripts:browserify', function () {
+  return gulp.src(['public/scripts/*.js'], {read: false})
     .pipe($.plumber({errorHandler: handler}))
     .pipe($.browserify({debug: true}))
     .pipe($.plumber.stop())
     .pipe(gulp.dest('.tmp/public/scripts'))
     .pipe($.size());
-  return;
 });
+
+// Scripts
+gulp.task('scripts', ['scripts:vendor', 'scripts:browserify']);
 
 // Watch
 gulp.task('watch', function () {
   gulp.watch('public/styles/**/*.less', ['styles']);
-  gulp.watch('public/scripts/**/*.js', ['scripts']);
+  gulp.watch('public/scripts/**/*.js', ['scripts:browserify']);
 });
 
 // Serve
@@ -129,23 +139,53 @@ gulp.task('serve', function () {
 });
 
 // 开发
-gulp.task('develop', ['development-env', 'clean', 'jshint'], function() {
-  return gulp.start('fonts', 'styles', 'scripts', 'watch', 'serve');
+gulp.task('develop', ['env:development', 'clean', 'jshint'], function () {
+  gulp.start('fonts', 'styles', 'scripts', 'watch', 'serve');
+});
+
+// Test Mocha
+gulp.task('test:mocha', ['env:test'], function (callback) {
+  gulp.src(['controllers/**/*.js', 'models/**/*.js'])
+    .pipe($.istanbul())
+    .pipe($.istanbul.hookRequire())
+    .on('finish', function () {
+      gulp.src(['test/mocha/**/*.js'], {read: false})
+        .pipe($.mocha({
+          reporter: 'spec',
+          timeout: 3000,
+          globals: {
+            should: require('should')
+          }
+        }))
+        .pipe($.istanbul.writeReports({
+          dir: './coverage/mocha',
+          reporters: ['lcov', 'text', 'text-summary']
+        }))
+        .on('end', callback);
+    });
+});
+
+// Test Karma
+gulp.task('test:karma', ['scripts'], function (callback) {
+  karma.server.start({
+    configFile: __dirname + '/test/karma.conf.js',
+    singleRun: true
+  }, callback);
+});
+
+gulp.task('mocha', ['clean', 'test:mocha'], function () {
+  process.exit();
+});
+
+gulp.task('karma', ['clean', 'test:karma'], function () {
+  process.exit();
 });
 
 // 测试
-gulp.task('test', ['test-env'], function () {
-  return gulp.src('test/**/*.js')
-    .pipe($.mocha({
-      reporter: 'spec',
-      timeout: 3000,
-      globals: {
-        should: require('should')
-      }
-    }))
-    .once('end', function () {
-      process.exit()
-    });
+gulp.task('test', ['clean', 'test:mocha'], function () {
+  gulp.start('test:karma', function () {
+    process.exit();
+  });
 });
 
 // Default

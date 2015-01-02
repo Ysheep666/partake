@@ -28,10 +28,11 @@ nbproject
 
 # bower components
 public/components
-public/test/components
 
 
 # Test
+.coverrun
+.coverdata
 coverage.html
 
 # Grunt

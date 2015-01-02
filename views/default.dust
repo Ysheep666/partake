@@ -20,21 +20,28 @@
     </div>
     <div class="navbar-header pull-right">
       <ul class="nav navbar-nav partake-nav">
-        <li><a class="border hidden-xs" href="#">分享您喜欢的项目</a></li>
-        <li><a class="ion-ios-search-strong border" href="#"></a></li>
-        <li><a class="ion-ios-pulse-strong border" href="#"></a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}" alt="{app.user.nickname}" height="30" width="30"></a>
-          <ul class="dropdown-menu profile-box">
-            <li class="info">
-              <p class="name">{app.user.name}<span>{app.user.nickname}</span></p>
-              <p class="email">{app.user.email}</p>
-            </li>
-            <li class="divider"></li>
-            <li><a href="#">我的收集</a></li>
-            <li><a href="#">退出登录</a></li>
-          </ul>
-        </li>
+        {#app.user}
+          <li><a class="border hidden-xs" href="#">分享您喜欢的项目</a></li>
+          <li><a class="ion-ios-search-strong border" href="#"></a></li>
+          <li><a class="ion-ios-pulse-strong border" href="#"></a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}" alt="{app.user.nickname}" height="30" width="30"></a>
+            <ul class="dropdown-menu profile-box">
+              <li class="info">
+                <p class="name">{app.user.name}<span>{app.user.nickname}</span></p>
+                <p class="email">{app.user.email}</p>
+              </li>
+              <li class="divider"></li>
+              <li><a href="#">个人主页</a></li>
+              <li><a href="#">我的收集</a></li>
+              <li><a href ng-click="logout()">退出登录</a></li>
+            </ul>
+          </li>
+        {:else}
+          <li><a class="ion-ios-search-strong border" href="#"></a></li>
+          <li><a class="border hidden-xs" href="/auth/github">分享您喜欢的项目</a></li>
+          <li><a class="border" href="/auth/github">登录</a></li>
+        {/app.user}
       </ul>
     </div>
   </nav>

@@ -1,6 +1,6 @@
 # 页面和API
 
-### 前台
+## 前台
 
 #### 页面
 
@@ -14,7 +14,7 @@
 
 #### Api 接口
 
-- Post:/api/upyun_token -- 获取又拍云 Token 信息
-
+- Post: /api/uptoken -- 获取又拍云 Token 信息
+- Delete: /api/logout -- 退出登录
 
 ### 后台管理
