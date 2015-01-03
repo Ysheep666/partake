@@ -1,3 +1,4 @@
+var path = require('path');
 var gulp = require('gulp');
 var karma = require('karma');
 var $ = require('gulp-load-plugins')();
@@ -190,7 +191,7 @@ gulp.task('test', ['clean', 'test:mocha'], function () {
 
 // Build Assets
 gulp.task('build:assets', function () {
-  return gulp.src(['public/*.{ico,png,txt,xml}', 'public/components/ionicons/{fonts}/*.{eot,svg,ttf,woff}'])
+  return gulp.src(['public/*.{ico,png,txt,xml}'])
     .pipe(gulp.dest('dist/public'))
     .pipe($.size());
 });
@@ -198,7 +199,7 @@ gulp.task('build:assets', function () {
 // Build Fonts
 gulp.task('build:fonts', function () {
   return gulp.src(['public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
-    .pipe(gulp.dest('dist/public/fonts'))
+    .pipe(gulp.dest('.tmp/public/fonts'))
     .pipe($.size());
 });
 
@@ -242,22 +243,43 @@ gulp.task('build:dust', ['build:assets', 'build:fonts', 'build:styles', 'build:s
     .pipe(assets)
     .pipe($['if']('*.css', $.csso()))
     .pipe($['if']('*.js', $.uglify()))
-    .pipe($.rev())
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.revReplace({
-      replaceInExtensions: ['.css', '.js', '.dust']
-    }))
-    .pipe($['if']('*.dust', $.replace(/((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{app.static_url}$3')))
-    .pipe($['if']('*.css', gulp.dest('dist/public')))
-    .pipe($['if']('*.js', gulp.dest('dist/public')))
+    .pipe($['if']('*.css', gulp.dest('.tmp/public')))
+    .pipe($['if']('*.js', gulp.dest('.tmp/public')))
     .pipe($['if']('*.dust', gulp.dest('dist/views')))
     .pipe($.size());
 });
 
+// Build Rev
+gulp.task('build:rev', ['build:dust'], function () {
+  return gulp.src(['.tmp/public/{fonts,images,styles,scripts}/**'])
+    .pipe($.revAll({
+      transformFilename: function (file, hash) {
+        var ext = path.extname(file.path);
+        return hash.substr(0, 8) + '.'  + path.basename(file.path, ext) + ext;
+      }
+    }))
+    .pipe(gulp.dest('dist/public'))
+    .pipe($.revAll.manifest({fileName: 'manifest.json'}))
+    .pipe(gulp.dest('.tmp'));
+});
+
+// Build Rev Replace
+gulp.task('build:rev:replace', ['build:rev'], function () {
+  var manifest = require('./.tmp/manifest.json');
+  return gulp.src(['dist/**/*', '!dist/public/*', '!dist/public/{fonts,images,scripts}/**/*'])
+    .pipe($.fingerprint(manifest))
+    .pipe(gulp.dest('dist'));
+});
+
 // 编译
 gulp.task('build', ['env:production', 'clean', 'jshint'], function () {
-  gulp.start('build:dust');
+  gulp.start('build:rev:replace', function () {
+    return gulp.src(['dist/views/**/*.dust'])
+      .pipe($.replace(/((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{app.static_url}$3'))
+      .pipe(gulp.dest('dist/views'));
+  });
 });
 
 // Default
