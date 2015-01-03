@@ -214,6 +214,7 @@ gulp.task('build:styles', function () {
 // Build Scripts
 gulp.task('build:scripts', ['scripts:vendor'], function () {
   return gulp.src(['public/scripts/*.js'])
+    .pipe($.ngAnnotate())
     .pipe($.browserify())
     .pipe(gulp.dest('.tmp/public/scripts'))
     .pipe($.size());
@@ -227,14 +228,14 @@ gulp.task('build:images', function () {
       progressive: true,
       interlaced: true
     }))
-    .pipe(gulp.dest('dist/public/images'))
+    .pipe(gulp.dest('.tmp/public/images'))
     .pipe($.size());
 });
 
-// Build Html
-gulp.task('build:html', ['build:assets', 'build:fonts', 'build:styles', 'build:scripts', 'build:images'], function () {
+// Build Dust
+gulp.task('build:dust', ['build:assets', 'build:fonts', 'build:styles', 'build:scripts', 'build:images'], function () {
   var assets = $.useref.assets({
-    searchPath: '{.tmp/public,public}'
+    searchPath: ['.tmp/public', 'public']
   });
 
   return gulp.src(['views/**/*.dust'])
@@ -244,8 +245,10 @@ gulp.task('build:html', ['build:assets', 'build:fonts', 'build:styles', 'build:s
     .pipe($.rev())
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.revReplace())
-    // .pipe($['if']('*.dust', $.replace(/((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{app.static_url}$3')))
+    .pipe($.revReplace({
+      replaceInExtensions: ['.css', '.js', '.dust']
+    }))
+    .pipe($['if']('*.dust', $.replace(/((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{app.static_url}$3')))
     .pipe($['if']('*.css', gulp.dest('dist/public')))
     .pipe($['if']('*.js', gulp.dest('dist/public')))
     .pipe($['if']('*.dust', gulp.dest('dist/views')))
@@ -254,7 +257,7 @@ gulp.task('build:html', ['build:assets', 'build:fonts', 'build:styles', 'build:s
 
 // 编译
 gulp.task('build', ['env:production', 'clean', 'jshint'], function () {
-  gulp.start('build:html');
+  gulp.start('build:dust');
 });
 
 // Default
