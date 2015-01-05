@@ -7,6 +7,7 @@ angular.module('defaultApp.service', []);
 
 require('./controllers/default');
 require('./filters/default');
+require('./services/ui/notification');
 require('./services/default');
 
 angular.module('defaultApp', [
@@ -24,13 +25,15 @@ angular.module('defaultApp', [
     controller: 'DefaultCtrl'
   });
   $urlRouterProvider.otherwise('/404');
-}).run(function ($http, $cookies, $rootScope, Default) {
+}).run(function ($http, $cookies, $rootScope, $window, Notification, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
 
   // 退出登录
   $rootScope.logout = function () {
-    Default.logout().success(function () {
-      window.location.href = '/';
+    Default.logout().then(function () {
+      $window.location.href = '/';
+    }, function (err) {
+      Notification.error({message: '退出登录失败', delay: 1000});
     });
   };
 });
@@ -38,4 +41,3 @@ angular.module('defaultApp', [
 $(document).ready(function () {
   angular.bootstrap(document, ['defaultApp']);
 });
-
