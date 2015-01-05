@@ -1,31 +1,35 @@
 var $ = require('jquery');
 var angular = require('angular');
 
-angular.module('controllers', []);
+angular.module('defaultApp.controller', []);
+angular.module('defaultApp.filter', []);
+angular.module('defaultApp.service', []);
 
 require('./controllers/default');
+require('./filters/default');
+require('./services/default');
 
 angular.module('defaultApp', [
   'ngCookies',
   'ui.router',
-  'controllers'
+  'defaultApp.controller',
+  'defaultApp.filter',
+  'defaultApp.service'
 ]).config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/404');
   $locationProvider.html5Mode(true);
 
   $stateProvider.state('default', {
     url: '/',
-    template: 'template',
+    template: '<p>这个只是一个演示</h1>',
     controller: 'DefaultCtrl'
   });
-}).run(function ($http, $cookies, $rootScope) {
+  $urlRouterProvider.otherwise('/404');
+}).run(function ($http, $cookies, $rootScope, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
 
   // 退出登录
   $rootScope.logout = function () {
-    $rootScope.loginStatus = 'loading';
-    $http.delete('/api/logout').success(function (data) {
-      $rootScope.loginStatus = 'success';
+    Default.logout().success(function () {
       window.location.href = '/';
     });
   };

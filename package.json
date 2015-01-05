@@ -19,6 +19,7 @@
     "public/components/bootstrap/js/tooltip.js",
     "public/components/bootstrap/js/popover.js",
     "public/components/angular/angular.js",
+    "public/components/angular-animate/angular-animate.js",
     "public/components/angular-cookies/angular-cookies.js",
     "public/components/angular-ui-router/release/angular-ui-router.js"
   ],
@@ -72,7 +73,6 @@
     "gulp-insert": "^0.4.0",
     "gulp-istanbul": "^0.5.0",
     "gulp-jshint": "^1.9.0",
-    "gulp-karma": "0.0.4",
     "gulp-less": "^2.0.1",
     "gulp-load-plugins": "^0.8.0",
     "gulp-mocha": "^2.0.0",

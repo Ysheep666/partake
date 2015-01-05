@@ -58,7 +58,7 @@ gulp.task('fonts', function () {
 
 // Styles
 gulp.task('styles', function () {
-  return gulp.src(['public/styles/*.less'])
+  gulp.src(['public/styles/*.less'])
     .pipe($.plumber({
       errorHandler: handler
     }))
@@ -112,7 +112,7 @@ gulp.task('scripts:vendor', ['scripts:modernizr'], function () {
 
 // Scripts Browserify
 gulp.task('scripts:browserify', function () {
-  return gulp.src(['public/scripts/*.js'])
+  gulp.src(['public/scripts/*.js'])
     .pipe($.plumber({errorHandler: handler}))
     .pipe($.browserify({debug: true}))
     .pipe($.plumber.stop())
@@ -178,8 +178,10 @@ gulp.task('test:karma', ['scripts'], function (callback) {
   }, callback);
 });
 
-gulp.task('karma', ['clean', 'test:karma'], function () {
-  process.exit();
+gulp.task('karma', ['clean'], function () {
+  gulp.start('test:karma', function () {
+    process.exit();
+  });
 });
 
 // 测试

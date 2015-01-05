@@ -2,6 +2,11 @@
 {! 标题 !}
 {<title}{app.title} - {app.description}{/title}
 
+{! 头部 !}
+{+heads}
+<base href="/">
+{/heads}
+
 {! 脚本 !}
 {<sub_scripts}
 <!-- build:js /scripts/default.js -->
@@ -22,7 +27,7 @@
       <ul class="nav navbar-nav partake-nav">
         {#app.user}
           <li><a class="border hidden-xs" href="#">分享您喜欢的项目</a></li>
-          <li><a class="ion-ios-search-strong border" href="#"></a></li>
+          <li><a class="ion-ios-search-strong border" href="/search"></a></li>
           <li><a class="ion-ios-pulse-strong border" href="#"></a></li>
           <li class="dropdown">
             <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}" alt="{app.user.nickname}" height="30" width="30"></a>
@@ -38,16 +43,12 @@
             </ul>
           </li>
         {:else}
-          <li><a class="ion-ios-search-strong border" href="#"></a></li>
-          <li><a class="border hidden-xs" href="/auth/github">分享您喜欢的项目</a></li>
-          <li><a class="border" href="/auth/github">登录</a></li>
+          <li><a class="ion-ios-search-strong border" href="/search"></a></li>
+          <li><a class="border hidden-xs" href="/auth/github" target="_self">分享您喜欢的项目</a></li>
+          <li><a class="border" href="/auth/github" target="_self">登录</a></li>
         {/app.user}
       </ul>
     </div>
   </nav>
-  {#app.user}
-    {app.user.nickname}
-  {:else}
-    <a href="/auth/github">登陆</a>
-  {/app.user}
+  <div class="content" ui-view></div>
 {/content}

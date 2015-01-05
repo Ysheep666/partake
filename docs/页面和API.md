@@ -16,5 +16,8 @@
 
 - Post: /api/uptoken -- 获取又拍云 Token 信息
 - Delete: /api/logout -- 退出登录
+- Get: /api/posts --  项目列表
+- Post: /api/posts --  分享项目
+- Get: /api/posts/:id --  项目详情
 
 ### 后台管理
