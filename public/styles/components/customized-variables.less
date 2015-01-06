@@ -7,6 +7,60 @@
 // Navbar
 @navbar-height: 60px;
 
+@color-success: #47b5ab;
+@color-complete: #69b6f3;
+@color-primary: #9c78c5;
+@color-warning: #f9dc6b;
+@color-danger: #eb7374;
+@color-info: #4d6286;
+
+@color-white: #fff;
+@color-black: #000;
+
+//Mixing Color varriable for creating both light and dark colors
+@mix-percentage-dark: 81%;
+@mix-percentage-darker: 60%;
+@mix-percentage-light: 80%;
+@mix-percentage-lighter: 20%;
+
+//Lighter colors
+@color-success-light: mix(@color-success, @color-white, @mix-percentage-light);
+@color-success-lighter: mix(@color-success, @color-white, @mix-percentage-lighter);
+
+@color-complete-light: mix(@color-complete, @color-white, @mix-percentage-light);
+@color-complete-lighter: mix(@color-complete, @color-white, @mix-percentage-lighter);
+
+@color-primary-light: mix(@color-primary, @color-white, @mix-percentage-light);
+@color-primary-lighter: mix(@color-primary, @color-white, @mix-percentage-lighter);
+
+@color-warning-light: mix(@color-warning, @color-white, @mix-percentage-light);
+@color-warning-lighter: mix(@color-warning, @color-white, @mix-percentage-lighter);
+
+@color-danger-light: mix(@color-danger, @color-white, @mix-percentage-light);
+@color-danger-lighter: mix(@color-danger, @color-white, @mix-percentage-lighter);
+
+@color-info-light: mix(@color-info, @color-white, @mix-percentage-light);
+@color-info-lighter: mix(@color-info, @color-white, @mix-percentage-lighter);
+
+//Darker colors
+@color-success-dark: mix(@color-success, @color-black, @mix-percentage-dark);
+@color-success-darker: mix(@color-success, @color-black, @mix-percentage-darker);
+
+@color-complete-dark: mix(@color-complete, @color-black, @mix-percentage-dark);
+@color-complete-darker: mix(@color-complete, @color-black, @mix-percentage-darker);
+
+@color-primary-dark: mix(@color-primary, @color-black, @mix-percentage-dark);
+@color-primary-darker: mix(@color-primary, @color-black, @mix-percentage-darker);
+
+@color-warning-dark: mix(@color-warning, @color-black, @mix-percentage-dark);
+@color-warning-darker: mix(@color-warning, @color-black, @mix-percentage-darker);
+
+@color-danger-dark: mix(@color-danger, @color-black, @mix-percentage-dark);
+@color-danger-darker: mix(@color-danger, @color-black, @mix-percentage-darker);
+
+@color-info-dark: mix(@color-info, @color-black, @mix-percentage-dark);
+@color-info-darker: mix(@color-info, @color-black, @mix-percentage-darker);
+
 // Inverted navbar
 // Reset inverted navbar basics
 @navbar-inverse-color: lighten(@gray-light, 15%);

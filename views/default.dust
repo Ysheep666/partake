@@ -3,7 +3,7 @@
 {<title}{app.title} - {app.description}{/title}
 
 {! 头部 !}
-{+heads}
+{<heads}
 <base href="/">
 {/heads}
 

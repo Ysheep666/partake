@@ -6,7 +6,7 @@ router.route('/').get(function (req, res) {
 });
 
 // 退出登录
-router.route('/logo2ut').delete(function (req, res) {
+router.route('/logout').delete(function (req, res) {
   req.logout();
   return res.status(202).json({
     message: '退出登录成功'

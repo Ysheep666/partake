@@ -33,7 +33,7 @@ angular.module('defaultApp', [
     Default.logout().then(function () {
       $window.location.href = '/';
     }, function (err) {
-      Notification.error({message: '退出登录失败', delay: 1000});
+      Notification.show('退出登录失败', 'danger');
     });
   };
 });

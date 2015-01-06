@@ -37,13 +37,6 @@ describe('Notification --> notification ui service', function () {
     expect(notificationEl.find('.alert').length).to.equals(2);
   });
 
-  it('过期隐藏', function () {
-    Notification.show('过期隐藏', 'success');
-    expect($document.find('div.notification-wrapper').length).to.equals(1);
-    $timeout.flush(4000);
-    expect($document.find('div.notification-wrapper').length).to.equals(0);
-  });
-
   it('提示默认位置', function () {
     Notification.show('提示默认位置', 'success');
     var notificationEl = $document.find('div.notification-wrapper');

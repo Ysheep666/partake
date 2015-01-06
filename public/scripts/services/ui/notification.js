@@ -6,30 +6,45 @@ angular.module('defaultApp.service').factory('Notification', function ($document
     defaultOptions: {
       position: 'top-right', // top-left, top-right, bottom-right, bottom-left
       showClose: true,
-      timeout: 4000,
+      timeout: 2000,
       onShown: function() {},
       onClosed: function() {}
     },
     show: function (message, type, options) {
-      this.options = $.extend(true, {}, this.defaultOptions, options);
+      var that = this;
+      that.options = $.extend(true, {}, that.defaultOptions, options);
 
-      var $wrapper = $document.find('div.notification-wrapper[data-position="' + this.options.position + '"]');
+      var $wrapper = $document.find('div.notification-wrapper[data-position="' + that.options.position + '"]');
       if (!$wrapper.length) {
-        $wrapper = angular.element('<div class="notification-wrapper" data-position="' + this.options.position + '"></div>');
+        $wrapper = angular.element('<div class="notification-wrapper" data-position="' + that.options.position + '"></div>');
         $document.find('body').append($wrapper);
       }
 
       var $content = angular.element('<div class="alert alert-' + type + '"></div>');
-      if (this.options.showClose) {
+      if (that.options.showClose) {
         $content.append('<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
       }
-      $content.append('<span>' + this.options.message + '</span>');
+      $content.append('<span>' + message + '</span>');
       $wrapper.append($content);
 
-      $timeout(function () {
-        $content.remove();
-        $wrapper.remove();
-      }, this.options.timeout)
+      that.options.onShown();
+      var _close = function () {
+        $content.fadeOut('slow', function () {
+          $content.remove();
+          that.options.onClosed();
+          if ('' == $wrapper.html()) {
+            $wrapper.remove();
+          }
+        });
+      };
+
+      $timeout(_close, that.options.timeout);
+      if ($content.find('.close').length) {
+        $content.find('.close').on('click', function (event) {
+          event.preventDefault();
+          _close();
+        });
+      }
     }
   };
 });
