@@ -7,6 +7,7 @@ module.exports = function (karma) {
     files: [
       '.tmp/public/scripts/modernizr.js',
       '.tmp/public/scripts/vendor.js',
+      '.tmp/public/scripts/template.js',
       'public/components/angular-mocks/angular-mocks.js',
       'public/scripts/default.js',
       'test/karma/**/*.js'
