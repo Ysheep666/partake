@@ -83,8 +83,20 @@ gulp.task('scripts:modernizr', function () {
     .pipe($.size());
 });
 
+// Scripts Ui Bootstrap Template
+gulp.task('scripts:ui:template', function () {
+  return gulp.src(pkg.angularUiTpls)
+    .pipe($.html2js({
+      outputModuleName: 'ui.bootstrap.tpls',
+      base: 'public/components/angular-ui-bootstrap/'
+    }))
+    .pipe($.concat('template.js'))
+    .pipe(gulp.dest('.tmp/public/scripts/'))
+    .pipe($.size());
+});
+
 // Scripts Vendor
-gulp.task('scripts:vendor', ['scripts:modernizr'], function () {
+gulp.task('scripts:vendor', ['scripts:modernizr', 'scripts:ui:template'], function () {
   var buckets = {};
   var setting = adou.config.setting, upyun = adou.config.upyun;
   for (var i = 0; i < upyun.buckets.length; i++) {

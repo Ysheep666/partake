@@ -7,13 +7,15 @@ require('./components/filters/capitalize');
 require('./components/services/progress');
 require('./components/services/notification');
 
+angular.module('ui.modal', ['ui.bootstrap.modal', 'ui.bootstrap.tpls']);
+
 angular.module('defaultApp.controller', []);
 angular.module('defaultApp.directive', []);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
-angular.module('defaultApp.service', ['ui.progress', 'ui.notification']);
+angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal']);
 
 require('./default/controllers/default');
-require('./default/directives/post-list');
+require('./default/directives/project-item');
 require('./default/services/default');
 require('./default/services/project');
 
@@ -27,6 +29,20 @@ angular.module('defaultApp', [
 ]).config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);
 
+  $stateProvider.state('modal', {
+    abstract: true,
+    parent: 'default',
+    onEnter: function ($modal, $state) {
+      $modal.open({
+        template: '<div ui-view="modal"></div>',
+        backdrop: false,
+        windowClass: 'slide-right'
+      }).result.finally(function () {
+        $state.go('default');
+      });
+    }
+  });
+
   $stateProvider.state('default', {
     url: '/',
     template: fs.readFileSync(__dirname + '/../templates/default/default.html', 'utf8'),
@@ -36,10 +52,19 @@ angular.module('defaultApp', [
         return Project.query();
       }
     }
-  }).state('abc', {
-    url: '/abc',
-    template: '<div>abc</div><a href="/">index</a>',
-    controller: function () {}
+  });
+
+  $stateProvider.state('detail', {
+    parent: 'modal',
+    url: 'projects/{id:[0-9a-fA-F]{24}}',
+    views: {
+      'modal@': {
+        template: '<h1>Hello World!<a href="#" ng-click="$close()">Close</a></h1>',
+        controller: function ($scope) {
+        },
+        resolve: {}
+      }
+    }
   });
 
   $urlRouterProvider.otherwise('/');

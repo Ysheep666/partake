@@ -20,6 +20,7 @@
   {+scripts}
     <!-- build:js /scripts/vendor.js -->
     <script src="/scripts/vendor.js"></script>
+    <script src="/scripts/template.js"></script>
     <!-- endbuild -->
     {+sub_scripts}{/sub_scripts}
   {/scripts}

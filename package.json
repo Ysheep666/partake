@@ -20,7 +20,13 @@
     "public/components/angular/angular.js",
     "public/components/angular-animate/angular-animate.js",
     "public/components/angular-cookies/angular-cookies.js",
-    "public/components/angular-ui-router/release/angular-ui-router.js"
+    "public/components/angular-ui-router/release/angular-ui-router.js",
+    "public/components/angular-ui-bootstrap/src/transition/transition.js",
+    "public/components/angular-ui-bootstrap/src/modal/modal.js"
+  ],
+  "angularUiTpls": [
+    "public/components/angular-ui-bootstrap/template/modal/backdrop.html",
+    "public/components/angular-ui-bootstrap/template/modal/window.html"
   ],
   "browserify": {
     "transform": [
@@ -69,6 +75,7 @@
     "gulp-coverage": "^0.3.32",
     "gulp-csso": "^0.2.9",
     "gulp-fingerprint": "^0.3.2",
+    "gulp-html2js": "^0.2.0",
     "gulp-if": "^1.2.5",
     "gulp-imagemin": "^2.1.0",
     "gulp-insert": "^0.4.0",

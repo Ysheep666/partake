@@ -4,10 +4,9 @@
 
 #### 页面
 
-- Get: / -- 首页（项目详情列表）
-- Get: /search -- 搜索
-- Get: /projects -- 项目详情列表
+- Get: /[projects] -- 首页（项目详情列表）
 - Get: /projects/:id -- 项目详情
+- Get: /search -- 搜索
 - Get: /collections -- 产品集合搜索
 - Get: /collections/:id -- 产品集合内容
 - Get: /@:name -- 个人主页
