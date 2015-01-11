@@ -1,7 +1,7 @@
 describe('Filter --> default filter', function () {
   var $filter;
 
-  beforeEach(module('defaultApp.filter'));
+  beforeEach(module('filter.default'));
   beforeEach(inject(function ($injector) {
     $filter = $injector.get('$filter');
   }));

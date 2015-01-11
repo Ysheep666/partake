@@ -13,7 +13,6 @@
   "vendors": [
     "public/components/jquery/dist/jquery.js",
     "public/components/bootstrap/js/transition.js",
-    "public/components/bootstrap/js/collapse.js",
     "public/components/bootstrap/js/dropdown.js",
     "public/components/bootstrap/js/button.js",
     "public/components/bootstrap/js/tooltip.js",
@@ -25,7 +24,8 @@
   ],
   "browserify": {
     "transform": [
-      "browserify-shim"
+      "browserify-shim",
+      "brfs"
     ]
   },
   "browser": {},
@@ -56,6 +56,7 @@
     "serve-favicon": "2.2.0"
   },
   "devDependencies": {
+    "brfs": "^1.2.0",
     "browserify": "~7.1.0",
     "browserify-istanbul": "^0.1.2",
     "browserify-shim": "^3.8.1",

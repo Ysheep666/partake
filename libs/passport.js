@@ -25,13 +25,14 @@ module.exports = function (passport) {
       if (!user) {
         user = new User({
           github: u.id,
+          name: u.login,
+          nickname: u.name,
+          email: u.email,
+          avatar: u.avatar_url
         });
       }
 
-      user.name = u.login;
-      user.nickname = u.name;
-      user.email = u.email;
-      user.avatar = u.avatar_url;
+      user.login_count++;
 
       user.save(fn);
     }], function (err, user) {

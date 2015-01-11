@@ -1,0 +1,129 @@
+@import '../../components/bootstrap/less/mixins';
+
+@post-item-border-radius: 3px;
+@post-item-hover-color: @color-white;
+@post-default-color: #534540;
+@post-upvote-border-radius: 3px;
+
+.posts {
+  .day {
+    padding-top: 30px;
+  }
+}
+
+.posts-date {
+  color: #bbb;
+  margin: 0 10px;
+
+  h4 {
+    color: @post-default-color;
+    display: inline;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 8px 0 0;
+  }
+}
+
+.posts-list {
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.posts-item {
+  position: relative;
+  padding: 15px 10px;
+  height: 75px;
+  line-height: 18px;
+  list-style: none;
+  border-radius: @post-item-border-radius;
+  cursor: pointer;
+  transition: background .4s ease;
+  .clearfix();
+
+  &:hover {
+    background-color: @post-item-hover-color;
+  }
+
+  .upvote {
+    display: inline-block;
+    float: left;
+    margin-right: 15px;
+    padding: 0 1px;
+    width: 32px;
+    height: 42px;
+    border: 1px solid darken(@body-bg, 15%);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+    border-radius: @post-upvote-border-radius;
+    text-align: center;
+    cursor: pointer;
+    transition: background .1s ease;
+
+    .arrow {
+      font-size: 25px;
+      transition: color .4s ease;
+    }
+
+    .count {
+      display: block;
+      position: relative;
+      bottom: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: @post-default-color;
+      transition: color .4s ease;
+    }
+
+    &:hover, &.upvoted {
+      border-color: @color-default;
+
+      .arrow {
+        color: @color-default;
+      }
+    }
+
+    &.upvoted .count {
+      color: @color-default;
+    }
+  }
+
+  .submitter-avatar {
+    float: right;
+    height: 45px;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    img {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+
+  .detail {
+    .title {
+      margin: 6px 2px 0 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: @post-default-color;
+      text-decoration: none;
+
+      &:hover {
+        border-bottom: 1px solid @post-default-color;
+      }
+    }
+
+    .description {
+      display: block;
+      margin: 5px 0 0 0;
+      line-height: 20px;
+      color: #999;
+    }
+  }
+}

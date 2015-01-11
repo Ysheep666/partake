@@ -1,0 +1,26 @@
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: @index-99;
+  width: 100%;
+  height: 2px;
+  transition: all 0.5s;
+
+  .range {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: @color-default;
+    transition: width 0.3s;
+  }
+
+  &.ng-enter, &.ng-leave.ng-leave-active {
+    .opacity(0);
+  }
+
+  &.ng-enter.ng-enter-active, &.ng-leave {
+    .opacity(1);
+  }
+}

@@ -10,6 +10,7 @@ module.exports = function (app) {
   });
 
   app.use('/api/', require('../controllers/api/default'));
+  app.use('/api/projects', require('../controllers/api/project'));
 
   if ('production' === app.get('env')) {
     // 500
@@ -41,4 +42,3 @@ module.exports = function (app) {
     });
   }
 };
-

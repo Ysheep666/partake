@@ -1,7 +1,7 @@
-describe('Notification --> notification ui service', function () {
+describe('Notification --> notification services service', function () {
   var $document, $timeout, Notification;
 
-  beforeEach(module('defaultApp.service'));
+  beforeEach(module('ui.notification'));
   beforeEach(inject(function ($injector) {
     $document = $injector.get('$document');
     $timeout = $injector.get('$timeout');
@@ -40,10 +40,8 @@ describe('Notification --> notification ui service', function () {
   it('过期隐藏', function () {
     Notification.show('过期隐藏', 'success');
     expect($document.find('div.notification-wrapper').length).to.equals(1);
-    $timeout.flush(3000);
-    window.setTimeout(function () {
-      expect($document.find('div.notification-wrapper').length).to.equals(0);
-    }, 500);
+    $timeout.flush(2000);
+    expect($document.find('div.notification-wrapper').find('.alert').hasClass('hide')).to.equals(true);
   });
 
   it('提示默认位置', function () {

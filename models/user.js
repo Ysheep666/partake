@@ -23,4 +23,7 @@ UserSchema.set('toJSON', {
   }
 });
 
+// Timestamp
+UserSchema.plugin(require('../libs/mongoose/timestamp'));
+
 module.exports = mongoose.model('User', UserSchema);

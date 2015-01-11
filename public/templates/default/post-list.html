@@ -1,0 +1,15 @@
+<ul class="posts-list">
+  <li class="posts-item" ng-repeat="project in projects">
+    <div class="upvote">
+      <span class="ion-ios-arrow-up arrow"></span>
+      <span class="count">{{project.vote_count}}</span>
+    </div>
+    <div class="submitter-avatar">
+      <img ng-src="{{project.submitter.avatar}}">
+    </div>
+    <div class="detail">
+      <a class="title" target="_blank" href="/posts/{{project.id}}/link">{{project.name | capitalize}}</a>
+      <span class="description">{{project.description}}</span>
+    </div>
+  </li>
+</ul>

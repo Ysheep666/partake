@@ -7,6 +7,13 @@
 <base href="/">
 {/heads}
 
+{! 样式 !}
+{<sub_styles}
+<!-- build:js /styles/default.css -->
+<link rel="stylesheet" href="/styles/default.css">
+<!-- endbuild -->
+{/sub_styles}
+
 {! 脚本 !}
 {<sub_scripts}
 <!-- build:js /scripts/default.js -->
@@ -50,5 +57,5 @@
       </ul>
     </div>
   </nav>
-  <div class="content" ui-view></div>
+  <div class="wrapper" ui-view></div>
 {/content}

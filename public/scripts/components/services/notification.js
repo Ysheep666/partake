@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var angular = require('angular');
 
-angular.module('defaultApp.service').factory('Notification', function ($document, $timeout) {
+angular.module('ui.notification', []).factory('Notification', function ($document, $timeout) {
   return {
     defaultOptions: {
       position: 'top-right', // top-left, top-right, bottom-right, bottom-left
@@ -25,11 +25,11 @@ angular.module('defaultApp.service').factory('Notification', function ($document
         $content.append('<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
       }
       $content.append('<span>' + message + '</span>');
-      $wrapper.append($content);
+      $wrapper.prepend($content);
 
       that.options.onShown();
       var _close = function () {
-        $content.fadeOut('slow', function () {
+        $content.addClass('hide').fadeOut('slow', function () {
           $content.remove();
           that.options.onClosed();
           if ('' == $wrapper.html()) {

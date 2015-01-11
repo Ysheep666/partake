@@ -1,19 +1,27 @@
+var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 
-angular.module('defaultApp.controller', []);
-angular.module('defaultApp.filter', []);
-angular.module('defaultApp.service', []);
+require('./components/filters/default');
+require('./components/filters/capitalize');
+require('./components/services/progress');
+require('./components/services/notification');
 
-require('./controllers/default');
-require('./filters/default');
-require('./services/ui/notification');
-require('./services/default');
+angular.module('defaultApp.controller', []);
+angular.module('defaultApp.directive', []);
+angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
+angular.module('defaultApp.service', ['ui.progress', 'ui.notification']);
+
+require('./default/controllers/default');
+require('./default/directives/post-list');
+require('./default/services/default');
+require('./default/services/project');
 
 angular.module('defaultApp', [
   'ngCookies',
   'ui.router',
   'defaultApp.controller',
+  'defaultApp.directive',
   'defaultApp.filter',
   'defaultApp.service'
 ]).config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
@@ -21,12 +29,30 @@ angular.module('defaultApp', [
 
   $stateProvider.state('default', {
     url: '/',
-    template: '<p>这个只是一个演示</h1>',
-    controller: 'DefaultCtrl'
+    template: fs.readFileSync(__dirname + '/../templates/default/default.html', 'utf8'),
+    controller: 'DefaultCtrl',
+    resolve: {
+      projects: function (Project) {
+        return Project.query();
+      }
+    }
+  }).state('abc', {
+    url: '/abc',
+    template: '<div>abc</div><a href="/">index</a>',
+    controller: function () {}
   });
-  $urlRouterProvider.otherwise('/404');
-}).run(function ($http, $cookies, $rootScope, $window, Notification, Default) {
+
+  $urlRouterProvider.otherwise('/');
+}).run(function ($http, $cookies, $rootScope, $window, Progress, Notification, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
+
+  $rootScope.$on('$stateChangeStart', function () {
+    Progress.start();
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function () {
+    Progress.complete();
+  });
 
   // 退出登录
   $rootScope.logout = function () {

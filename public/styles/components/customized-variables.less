@@ -1,14 +1,28 @@
 @import '../../components/bootstrap/less/variables';
 @import '../../components/ionicons/less/_ionicons-variables';
 
-@body-bg: #fafafa;
+@open-sans-path: '../fonts';
+@ionicons-font-path: @open-sans-path;
 
-@font-family-base: STHeiti, '微软雅黑', 'Microsoft Yahei', Helmet, Freesans, sans-serif;
+@body-bg: #fafafa;
+@color-default: #40d47e;
+
+@font-family-base: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;
 @link-hover-decoration: none;
 
-// Navbar
-@navbar-height: 60px;
+// Index
+@index-1: 100;
+@index-2: 200;
+@index-3: 300;
+@index-4: 400;
+@index-5: 500;
+@index-6: 600;
+@index-7: 700;
+@index-8: 800;
+@index-9: 900;
+@index-99: 9900;
 
+// Color
 @color-success: #47b5ab;
 @color-complete: #69b6f3;
 @color-primary: #9c78c5;
@@ -18,6 +32,9 @@
 
 @color-white: #fff;
 @color-black: #000;
+
+// Navbar
+@navbar-height: 60px;
 
 //Mixing Color varriable for creating both light and dark colors
 @mix-percentage-dark: 81%;
@@ -79,8 +96,8 @@
 @navbar-inverse-link-disabled-bg: transparent;
 
 // Inverted navbar brand label
-@navbar-inverse-brand-color: darken(@navbar-inverse-link-color, 20%);
-@navbar-inverse-brand-hover-color: darken(@navbar-inverse-brand-color, 20%);
+@navbar-inverse-brand-color: @color-default;
+@navbar-inverse-brand-hover-color: darken(@navbar-inverse-brand-color, 10%);
 @navbar-inverse-brand-hover-bg: transparent;
 
 // Inverted navbar toggle
