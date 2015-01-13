@@ -2,7 +2,10 @@
 var router = require('express').Router();
 
 // 首页
-router.route('/').get(function (req, res) {
+router.route([
+  '/',
+  '/projects/:id'
+]).get(function (req, res) {
   res.render('default');
 });
 

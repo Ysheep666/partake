@@ -15,6 +15,7 @@ angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
 angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal']);
 
 require('./default/controllers/default');
+require('./default/controllers/details');
 require('./default/directives/project-item');
 require('./default/services/default');
 require('./default/services/project');
@@ -35,7 +36,7 @@ angular.module('defaultApp', [
     onEnter: function ($modal, $state) {
       $modal.open({
         template: '<div ui-view="modal"></div>',
-        backdrop: false,
+        backdrop: true,
         windowClass: 'slide-right'
       }).result.finally(function () {
         $state.go('default');
@@ -54,15 +55,18 @@ angular.module('defaultApp', [
     }
   });
 
-  $stateProvider.state('detail', {
+  $stateProvider.state('details', {
     parent: 'modal',
     url: 'projects/{id:[0-9a-fA-F]{24}}',
     views: {
       'modal@': {
-        template: '<h1>Hello World!<a href="#" ng-click="$close()">Close</a></h1>',
-        controller: function ($scope) {
-        },
-        resolve: {}
+        template: fs.readFileSync(__dirname + '/../templates/default/details.html', 'utf8'),
+        controller: 'DetailsCtrl',
+        resolve: {
+          project: function ($stateParams, Project) {
+            return Project.get($stateParams.id);
+          }
+        }
       }
     }
   });

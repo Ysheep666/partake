@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
 });
 
 // 集合名称
-UserSchema.set('collection', 'users');
+UserSchema.set('collection', 'user');
 
 // 序列化结果
 UserSchema.set('toJSON', {

@@ -1,9 +1,9 @@
 @import '../../components/bootstrap/less/mixins';
 
-@post-item-border-radius: 3px;
-@post-item-hover-color: @color-white;
-@post-default-color: #534540;
-@post-upvote-border-radius: 3px;
+@project-item-border-radius: 3px;
+@project-item-hover-color: @color-white;
+@project-default-color: #534540;
+@project-upvote-border-radius: 3px;
 
 .posts {
   .day {
@@ -16,7 +16,7 @@
   margin: 0 10px;
 
   h4 {
-    color: @post-default-color;
+    color: @project-default-color;
     display: inline;
     font-size: 24px;
     font-weight: 600;
@@ -24,7 +24,7 @@
   }
 }
 
-.posts-list {
+.project-list {
   margin: 10px 0 0;
   padding: 0;
 
@@ -33,18 +33,18 @@
   }
 }
 
-.posts-item {
+.project-item {
   position: relative;
   padding: 15px 10px;
   height: 75px;
   line-height: 18px;
-  border-radius: @post-item-border-radius;
+  border-radius: @project-item-border-radius;
   cursor: pointer;
   transition: background .4s ease;
   .clearfix();
 
   &:hover {
-    background-color: @post-item-hover-color;
+    background-color: @project-item-hover-color;
   }
 
   .upvote {
@@ -56,14 +56,14 @@
     height: 42px;
     border: 1px solid darken(@body-bg, 15%);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
-    border-radius: @post-upvote-border-radius;
+    border-radius: @project-upvote-border-radius;
     text-align: center;
     cursor: pointer;
     transition: background .1s ease;
 
     .arrow {
       font-size: 25px;
-      transition: color .4s ease;
+      transition: color .2s ease;
     }
 
     .count {
@@ -72,8 +72,8 @@
       bottom: 4px;
       font-size: 12px;
       font-weight: 600;
-      color: @post-default-color;
-      transition: color .4s ease;
+      color: @project-default-color;
+      transition: color .2s ease;
     }
 
     &:hover, &.upvoted {
@@ -89,7 +89,7 @@
     }
   }
 
-  .submitter-avatar {
+  .user-avatar {
     float: right;
     height: 45px;
 
@@ -109,16 +109,16 @@
     }
   }
 
-  .detail {
+  .info {
     .title {
       margin: 6px 2px 0 0;
       font-size: 20px;
       font-weight: 600;
-      color: @post-default-color;
+      color: @project-default-color;
       text-decoration: none;
 
       &:hover {
-        border-bottom: 1px solid @post-default-color;
+        border-bottom: 1px solid @project-default-color;
       }
     }
 

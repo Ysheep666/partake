@@ -7,6 +7,11 @@ angular.module('defaultApp.service').factory('Project', function ($http) {
       return $http.get('/api/projects' + (query ? '?' + $.param(query) : '')).then(function (response) {
         return response.data;
       });
+    },
+    get: function (id) {
+      return $http.get('/api/projects/' + id).then(function (response) {
+        return response.data;
+      });
     }
   };
 });
