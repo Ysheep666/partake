@@ -17,16 +17,19 @@
     "public/components/bootstrap/js/button.js",
     "public/components/bootstrap/js/tooltip.js",
     "public/components/bootstrap/js/popover.js",
+    "public/components/nanoscroller/bin/javascripts/jquery.nanoscroller.js",
     "public/components/angular/angular.js",
     "public/components/angular-animate/angular-animate.js",
     "public/components/angular-cookies/angular-cookies.js",
-    "public/components/angular-ui-router/release/angular-ui-router.js",
-    "public/components/angular-ui-bootstrap/src/transition/transition.js",
-    "public/components/angular-ui-bootstrap/src/modal/modal.js"
+    "public/components/ui-router/release/angular-ui-router.js",
+    "public/components/ui-router-extras/release/ct-ui-router-extras.js",
+    "public/components/ui-bootstrap/src/transition/transition.js",
+    "public/components/ui-bootstrap/src/modal/modal.js",
+    "public/components/angular-nanoscroller/scrollable.js"
   ],
   "angularUiTpls": [
-    "public/components/angular-ui-bootstrap/template/modal/backdrop.html",
-    "public/components/angular-ui-bootstrap/template/modal/window.html"
+    "public/components/ui-bootstrap/template/modal/backdrop.html",
+    "public/components/ui-bootstrap/template/modal/window.html"
   ],
   "browserify": {
     "transform": [

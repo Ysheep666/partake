@@ -20,3 +20,4 @@
 - Get: /api/projects/:id --  项目详情
 
 ### 后台管理
+- Get: /manage -- 审核管理页面

@@ -1,0 +1,38 @@
+{>layout/}
+{! 标题 !}
+{<title}{app.title} - {app.description}{/title}
+
+{! 头部 !}
+{<heads}
+<base href="/manage/">
+{/heads}
+
+{! 内容 !}
+{<content}
+<nav class="navbar navbar-fixed-top navbar-inverse partake-header">
+  <div class="navbar-header pull-left">
+    <a class="navbar-brand" href="/">
+      {app.title}
+      <span class="slogan hidden-xs">{aphorism}</span>
+    </a>
+  </div>
+  <div class="navbar-header pull-right">
+    <ul class="nav navbar-nav partake-nav">
+      <li class="dropdown">
+        <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}" alt="{app.user.nickname}" height="30" width="30"></a>
+        <ul class="dropdown-menu profile-box">
+          <li class="info">
+            <p class="name">{app.user.name}<span>{app.user.nickname}</span></p>
+            <p class="email">{app.user.email}</p>
+          </li>
+          <li class="divider"></li>
+          <li><a href="#">个人主页</a></li>
+          <li><a href="#">我的收集</a></li>
+          <li><a href ng-click="logout()">退出登录</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="manage"></div>
+{/content}

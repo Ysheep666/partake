@@ -1,8 +1,6 @@
 @import '../../components/bootstrap/less/mixins';
 
 @project-item-border-radius: 3px;
-@project-item-hover-color: @color-white;
-@project-default-color: #534540;
 @project-upvote-border-radius: 3px;
 
 .posts {
@@ -16,7 +14,7 @@
   margin: 0 10px;
 
   h4 {
-    color: @project-default-color;
+    color: @color-default;
     display: inline;
     font-size: 24px;
     font-weight: 600;
@@ -44,7 +42,7 @@
   .clearfix();
 
   &:hover {
-    background-color: @project-item-hover-color;
+    background-color: @color-white;
   }
 
   .upvote {
@@ -72,7 +70,7 @@
       bottom: 4px;
       font-size: 12px;
       font-weight: 600;
-      color: @project-default-color;
+      color: @color-black-default;
       transition: color .2s ease;
     }
 
@@ -114,11 +112,11 @@
       margin: 6px 2px 0 0;
       font-size: 20px;
       font-weight: 600;
-      color: @project-default-color;
+      color: @color-black-default;
       text-decoration: none;
 
       &:hover {
-        border-bottom: 1px solid @project-default-color;
+        border-bottom: 1px solid @color-black-default;
       }
     }
 

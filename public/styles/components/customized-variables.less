@@ -7,6 +7,8 @@
 @body-bg: #fafafa;
 @color-default: #40d47e;
 
+@color-black-default: #3b4752;
+
 @font-family-base: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;
 @link-hover-decoration: none;
 
@@ -87,7 +89,7 @@
 @navbar-inverse-border: darken(@navbar-inverse-bg, 10%);
 
 // Inverted navbar links
-@navbar-inverse-link-color: #999;
+@navbar-inverse-link-color: lighten(@color-black-default, 20%);
 @navbar-inverse-link-hover-color: darken(@navbar-inverse-link-color, 20%);
 @navbar-inverse-link-hover-bg: transparent;
 @navbar-inverse-link-active-color: @navbar-inverse-link-hover-color;

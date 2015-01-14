@@ -88,7 +88,7 @@ gulp.task('scripts:ui:template', function () {
   return gulp.src(pkg.angularUiTpls)
     .pipe($.html2js({
       outputModuleName: 'ui.bootstrap.tpls',
-      base: 'public/components/angular-ui-bootstrap/'
+      base: 'public/components/ui-bootstrap/'
     }))
     .pipe($.concat('template.js'))
     .pipe(gulp.dest('.tmp/public/scripts/'))
@@ -229,8 +229,8 @@ gulp.task('build:styles', function () {
 // Build Scripts
 gulp.task('build:scripts', ['scripts:vendor'], function () {
   return gulp.src(['public/scripts/*.js'])
-    .pipe($.ngAnnotate())
     .pipe($.browserify())
+    .pipe($.ngAnnotate())
     .pipe(gulp.dest('.tmp/public/scripts'))
     .pipe($.size());
 });
@@ -267,7 +267,7 @@ gulp.task('build:dust', ['build:assets', 'build:fonts', 'build:styles', 'build:s
 
 // Build Rev
 gulp.task('build:rev', ['build:dust'], function () {
-  return gulp.src(['.tmp/public/{fonts,images,styles,scripts}/**'])
+  return gulp.src(['.tmp/public/{fonts,images,styles,scripts}/**', '!.tmp/public/scripts/template.js'])
     .pipe($.revAll({
       transformFilename: function (file, hash) {
         var ext = path.extname(file.path);

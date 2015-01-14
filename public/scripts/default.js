@@ -14,15 +14,17 @@ angular.module('defaultApp.directive', []);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
 angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal']);
 
-require('./default/controllers/default');
-require('./default/controllers/details');
-require('./default/directives/project-item');
+require('./default/controllers/project');
+require('./default/directives/project_item');
 require('./default/services/default');
 require('./default/services/project');
 
 angular.module('defaultApp', [
+  'ngAnimate',
   'ngCookies',
   'ui.router',
+  'ct.ui.router.extras',
+  'sun.scrollable',
   'defaultApp.controller',
   'defaultApp.directive',
   'defaultApp.filter',
@@ -32,36 +34,56 @@ angular.module('defaultApp', [
 
   $stateProvider.state('modal', {
     abstract: true,
-    parent: 'default',
-    onEnter: function ($modal, $state) {
+    onEnter: function ($modal, $previousState, $state) {
+      $previousState.memo('modalInvoker');
       $modal.open({
-        template: '<div ui-view="modal"></div>',
+        template: '<scrollable class="modal-view"><div ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
         backdrop: true,
         windowClass: 'slide-right'
       }).result.finally(function () {
-        $state.go('default');
+        if (!$previousState.get('modalInvoker').state.name) {
+          $state.go('project.list');
+        } else {
+          $previousState.go('modalInvoker');
+        }
       });
     }
   });
 
-  $stateProvider.state('default', {
+  $stateProvider.state('search', {
+    url: '/search',
+    views: {
+      'wrapper@': {
+        template: '1234'
+      }
+    },
+    sticky: true
+  });
+
+  $stateProvider.state('project', {sticky: true});
+
+  $stateProvider.state('project.list', {
     url: '/',
-    template: fs.readFileSync(__dirname + '/../templates/default/default.html', 'utf8'),
-    controller: 'DefaultCtrl',
-    resolve: {
-      projects: function (Project) {
-        return Project.query();
+    views: {
+      'wrapper@': {
+        template: fs.readFileSync(__dirname + '/../templates/default/project_list.html', 'utf8'),
+        controller: 'ProjectListCtrl',
+        resolve: {
+          projects: function (Project) {
+            return Project.query();
+          }
+        }
       }
     }
   });
 
-  $stateProvider.state('details', {
+  $stateProvider.state('project.details', {
     parent: 'modal',
-    url: 'projects/{id:[0-9a-fA-F]{24}}',
+    url: '/projects/{id:[0-9a-fA-F]{24}}',
     views: {
       'modal@': {
-        template: fs.readFileSync(__dirname + '/../templates/default/details.html', 'utf8'),
-        controller: 'DetailsCtrl',
+        template: fs.readFileSync(__dirname + '/../templates/default/project_details.html', 'utf8'),
+        controller: 'ProjectDetailsCtrl',
         resolve: {
           project: function ($stateParams, Project) {
             return Project.get($stateParams.id);
@@ -71,9 +93,21 @@ angular.module('defaultApp', [
     }
   });
 
+  $stateProvider.state('project.create', {
+    parent: 'modal',
+    url: '/projects/create',
+    views: {
+      'modal@': {
+        template: fs.readFileSync(__dirname + '/../templates/default/project_create.html', 'utf8'),
+        controller: 'ProjectCreateCtrl'
+      }
+    }
+  });
+
   $urlRouterProvider.otherwise('/');
-}).run(function ($http, $cookies, $rootScope, $window, Progress, Notification, Default) {
+}).run(function ($http, $cookies, $rootScope, $window, $state, Progress, Notification, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
+  $rootScope.$state = $state;
 
   $rootScope.$on('$stateChangeStart', function () {
     Progress.start();

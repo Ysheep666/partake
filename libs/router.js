@@ -3,6 +3,7 @@
 module.exports = function (app) {
   app.use(require('../controllers/page/default'));
   app.use('/auth', require('../controllers/page/auth'));
+  app.use('/manage', require('../controllers/page/manage'));
 
   app.use('/api/*', function (req, res, done) {
     res.contentType('application/vnd.' + adou.config.setting.api_vnd + '+json');

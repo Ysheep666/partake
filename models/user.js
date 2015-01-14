@@ -4,10 +4,17 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
   github: {type: String, required: true}, // github id
   name: {type: String, default: ''}, // 账号
-  nickname: {type: String, default: ''}, // 名称
+  nickname: {type: String, default: ''}, // 昵称
   email: {type: String, default: ''}, // 电子邮件
+  description: {type: String, default: ''}, // 一句话描述
   avatar: {type: String, default: ''}, // 头像
-  login_count: {type: Number, default: 0} // 登陆统计
+  administrate: {type: Boolean, default: false}, // 是否是管理员
+  login_count: {type: Number, default: 0}, // 登陆统计
+  vote_count: {type: Number, default: 0}, // 投票统计
+  submit_count: {type: Number, default: 0}, // 提交统计
+  collection_count: {type: Number, default: 0}, // 集合统计
+  followers_count: {type: Number, default: 0}, // 粉丝统计
+  following_count: {type: Number, default: 0} // 关注统计
 });
 
 // 集合名称

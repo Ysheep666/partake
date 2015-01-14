@@ -1,0 +1,54 @@
+.nano {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  > .nano-content {
+    position: absolute;
+    overflow: scroll;
+    overflow-x: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    outline: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  > .nano-pane {
+    background: rgba(0,0,0,.25);
+    position: absolute;
+    width: 6px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: .2s;
+    .opacity(0);
+
+    &:active, &:hover, &:focus {
+      width: 12px;
+    }
+
+    > .nano-slider {
+      background: #444;
+      background: rgba(0,0,0,.5);
+      position: relative;
+      margin : 0 1px;
+      border-radius: 3px;
+    }
+  }
+}
+
+.nano:hover > .nano-pane,
+.nano-pane.active,
+.nano-pane.flashed {
+  .opacity(1);
+}
+
+.has-scrollbar > .nano-content::-webkit-scrollbar {
+  display: block;
+}
