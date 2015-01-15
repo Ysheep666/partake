@@ -1,0 +1,127 @@
+label,
+input,
+button,
+select,
+textarea {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  margin-top: 1px 0 0;
+  line-height: normal;
+  cursor: pointer;
+}
+
+select[multiple],
+select[size] {
+  height: auto !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+input[type='file']:focus,
+input[type='radio']:focus,
+input[type='checkbox']:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+form legend {
+  margin: 15px 0px 10px 0px;
+}
+
+.form-control {
+  background-color: @color-white;
+  background-image: none;
+  -webkit-appearance: none;
+  outline: 0;
+  height: 35px;
+  padding: 9px 12px;
+  line-height: normal;
+  font-size: 14px;
+  font-weight: normal;
+  vertical-align: middle;
+  min-height: 35px;
+  box-shadow: none;
+  border-radius: 2px;
+  color: lighten(@color-black, 20%);
+  transition: all 0.12s ease;
+  transition: background 0.2s linear 0s;
+  .placeholder(lighten(@color-black, 80%));
+
+  &:focus{
+    border-color: lighten(@color-black, 10%);
+    outline: 0 !important;
+    box-shadow: none;
+    .placeholder(lighten(@color-black, 60%));
+  }
+}
+
+
+
+input, input:focus {
+  -webkit-transition: none !important;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px @color-white inset !important;
+}
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px @color-white inset !important;
+}
+input.error:-webkit-autofill,
+input.error:-webkit-autofill:focus,
+.has-error input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px @color-danger inset !important;
+}
+
+
+.form-group-default {
+  background-color: @color-white;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 2px;
+  padding-top: 7px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 4px;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+
+  label {
+    margin: 0;
+    display: block;
+    transition: opacity 0.2s ease;
+
+    &.fade {
+      .opacity(.5);
+    }
+
+    &:not(.error) {
+      font-size: 11px;
+      font-weight: 600;
+    }
+  }
+
+  .form-control{
+    border:none;
+    height: 25px;
+    min-height: 25px;
+    padding: 0;
+    margin-top: -4px;
+    box-shadow: none;
+    background: none;
+    outline: none;
+
+    &.error {
+      color: @color-danger;
+    }
+
+    &:focus {
+      background: none;
+    }
+  }
+}
