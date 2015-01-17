@@ -1,3 +1,24 @@
 .project-create {
   padding: 50px;
+
+  h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 300px;
+    color: @color-default;
+  }
+
+  .btn-default {
+    min-width: 120px;
+    margin-top: 15px;
+    color: @color-white;
+    background-color: @color-default;
+    border-color: @color-default;
+    outline: none !important;
+
+    &:hover{
+      background-color: lighten(@color-default, 10%);
+      border-color: lighten(@color-default, 10%);
+    }
+  }
 }

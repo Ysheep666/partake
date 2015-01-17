@@ -13,8 +13,8 @@ var UserSchema = new mongoose.Schema({
   vote_count: {type: Number, default: 0}, // 投票统计
   submit_count: {type: Number, default: 0}, // 提交统计
   collection_count: {type: Number, default: 0}, // 集合统计
-  followers_count: {type: Number, default: 0}, // 粉丝统计
-  following_count: {type: Number, default: 0} // 关注统计
+  fans_count: {type: Number, default: 0}, // 粉丝统计
+  follower_count: {type: Number, default: 0} // 关注统计
 });
 
 // 集合名称

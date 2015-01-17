@@ -1,31 +1,52 @@
-label,
-input,
-button,
-select,
-textarea {
+.form-control-validation(@text-color, @border-color, @background-color) {
+  .help-block,
+  .control-label,
+  .radio,
+  .checkbox,
+  .radio-inline,
+  .checkbox-inline  {
+    color: @text-color;
+  }
+
+  .form-control {
+    border-color: @border-color;
+    .box-shadow(none);
+
+    &:focus {
+      border-color: darken(@border-color, 10%);
+      .box-shadow(none);
+    }
+  }
+
+  .input-group-addon {
+    background: @color-white;
+    border: 1px solid @border-color;
+    color: lighten(@color-black, 50%);
+  }
+
+  .form-control-feedback {
+    color: @text-color;
+  }
+}
+
+label, input, button, select, textarea {
   font-size: 14px;
   font-weight: normal;
   line-height: 20px;
 }
 
-input[type='radio'],
-input[type='checkbox'] {
+input[type='radio'], input[type='checkbox'] {
   margin-top: 1px 0 0;
   line-height: normal;
   cursor: pointer;
 }
 
-select[multiple],
-select[size] {
+select[multiple], select[size] {
   height: auto !important;
 }
 
-input:focus,
-select:focus,
-textarea:focus,
-input[type='file']:focus,
-input[type='radio']:focus,
-input[type='checkbox']:focus {
+input:focus, select:focus, textarea:focus,
+input[type='file']:focus, input[type='radio']:focus, input[type='checkbox']:focus {
   outline: none;
   box-shadow: none;
 }
@@ -48,7 +69,7 @@ form legend {
   min-height: 35px;
   box-shadow: none;
   border-radius: 2px;
-  color: lighten(@color-black, 20%);
+  color: lighten(@color-black, 30%);
   transition: all 0.12s ease;
   transition: background 0.2s linear 0s;
   .placeholder(lighten(@color-black, 80%));
@@ -60,7 +81,6 @@ form legend {
     .placeholder(lighten(@color-black, 60%));
   }
 }
-
 
 
 input, input:focus {
@@ -82,22 +102,25 @@ input.error:-webkit-autofill:focus,
 .form-group-default {
   background-color: @color-white;
   position: relative;
+  padding: 7px 12px 4px;
+  margin: 15px 0 0;
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 2px;
-  padding-top: 7px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-bottom: 4px;
   overflow: hidden;
   transition: background-color 0.2s ease;
+
+  &:first-child {
+    margin-top: 0;
+  }
 
   label {
     margin: 0;
     display: block;
+    color: lighten(@color-black, 30%);
     transition: opacity 0.2s ease;
 
     &.fade {
-      .opacity(.5);
+      .opacity(.6);
     }
 
     &:not(.error) {
@@ -106,12 +129,16 @@ input.error:-webkit-autofill:focus,
     }
   }
 
-  .form-control{
+  textarea {
+    resize: none;
+  }
+
+  .form-control {
     border:none;
-    height: 25px;
+    height: auto;
     min-height: 25px;
     padding: 0;
-    margin-top: -4px;
+    margin-top: 0;
     box-shadow: none;
     background: none;
     outline: none;
@@ -123,5 +150,59 @@ input.error:-webkit-autofill:focus,
     &:focus {
       background: none;
     }
+  }
+
+  &.disabled {
+    background: lighten(@color-black, 90%);
+
+    label {
+      .opacity(.2);
+    }
+  }
+
+  &.focused {
+    label {
+      .opacity(.4);
+    }
+  }
+
+  &.has-error {
+    background-color: lighten(@color-danger, 24%);
+  }
+
+  &.has-success, &.has-error{
+    .form-control-feedback{
+      display: none !important;
+    }
+  }
+
+  &.has-success .form-control,
+  &.has-success .form-control:focus,
+  &.has-error .form-control,
+  &.has-error .form-control:focus{
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.has-success {
+  .form-control-validation(@color-success-dark; @color-success-dark; @color-success);
+}
+.has-warning {
+  .form-control-validation(@color-warning-dark; @color-warning-dark; @color-warning);
+}
+.has-error {
+  .form-control-validation(@color-danger; @color-danger; @color-danger);
+}
+
+.error-help-block {
+  font-size: 12px;
+  color: @color-danger;
+  display: block;
+  transition: all 0.2s ease;
+
+  p {
+    margin: 0;
+    line-height: 24px;
   }
 }

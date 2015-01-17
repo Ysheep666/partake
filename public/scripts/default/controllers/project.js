@@ -9,4 +9,9 @@ angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', functio
 });
 
 angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function ($scope) {
+  $scope.submit = function () {
+    if (!$scope.form.$valid) {
+      return false;
+    }
+  };
 });

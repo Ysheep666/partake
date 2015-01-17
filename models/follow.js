@@ -3,8 +3,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 
 // 结构
 var FollowSchema = new mongoose.Schema({
-  followers: {type: ObjectId, ref: 'User'}, // 粉丝
-  following: {type: ObjectId, ref: 'User'} // 关注
+  fans: {type: ObjectId, ref: 'User'}, // 粉丝
+  follower: {type: ObjectId, ref: 'User'} // 关注
 });
 
 // 集合名称

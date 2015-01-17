@@ -15,7 +15,8 @@ angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
 angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal']);
 
 require('./default/controllers/project');
-require('./default/directives/project_item');
+require('./default/directives/form-group-default');
+require('./default/directives/project-item');
 require('./default/services/default');
 require('./default/services/project');
 
@@ -32,20 +33,35 @@ angular.module('defaultApp', [
 ]).config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);
 
-  $stateProvider.state('modal', {
+  var slideModalOpenOptions = {
+    template: '<scrollable class="modal-view"><div ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
+    backdrop: true,
+    windowClass: 'slide-right'
+  };
+  var slideModalOpen = function (modal, previousState, state, options) {
+    options = $.extend(true, {}, slideModalOpenOptions, options);
+    previousState.memo('modalInvoker');
+    modal.open(options).result.finally(function () {
+      if (!previousState.get('modalInvoker').state.name) {
+        state.go('project.list');
+      } else {
+        previousState.go('modalInvoker');
+      }
+    });
+  };
+
+  $stateProvider.state('slideModal', {
     abstract: true,
     onEnter: function ($modal, $previousState, $state) {
-      $previousState.memo('modalInvoker');
-      $modal.open({
-        template: '<scrollable class="modal-view"><div ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
-        backdrop: true,
-        windowClass: 'slide-right'
-      }).result.finally(function () {
-        if (!$previousState.get('modalInvoker').state.name) {
-          $state.go('project.list');
-        } else {
-          $previousState.go('modalInvoker');
-        }
+      slideModalOpen($modal, $previousState, $state);
+    }
+  });
+
+  $stateProvider.state('slideModalSm', {
+    abstract: true,
+    onEnter: function ($modal, $previousState, $state) {
+      slideModalOpen($modal, $previousState, $state, {
+        size: 'sm'
       });
     }
   });
@@ -66,7 +82,7 @@ angular.module('defaultApp', [
     url: '/',
     views: {
       'wrapper@': {
-        template: fs.readFileSync(__dirname + '/../templates/default/project_list.html', 'utf8'),
+        template: fs.readFileSync(__dirname + '/../templates/default/project-list.html', 'utf8'),
         controller: 'ProjectListCtrl',
         resolve: {
           projects: function (Project) {
@@ -78,11 +94,11 @@ angular.module('defaultApp', [
   });
 
   $stateProvider.state('project.details', {
-    parent: 'modal',
+    parent: 'slideModal',
     url: '/projects/{id:[0-9a-fA-F]{24}}',
     views: {
       'modal@': {
-        template: fs.readFileSync(__dirname + '/../templates/default/project_details.html', 'utf8'),
+        template: fs.readFileSync(__dirname + '/../templates/default/project-details.html', 'utf8'),
         controller: 'ProjectDetailsCtrl',
         resolve: {
           project: function ($stateParams, Project) {
@@ -94,11 +110,11 @@ angular.module('defaultApp', [
   });
 
   $stateProvider.state('project.create', {
-    parent: 'modal',
+    parent: 'slideModalSm',
     url: '/projects/create',
     views: {
       'modal@': {
-        template: fs.readFileSync(__dirname + '/../templates/default/project_create.html', 'utf8'),
+        template: fs.readFileSync(__dirname + '/../templates/default/project-create.html', 'utf8'),
         controller: 'ProjectCreateCtrl'
       }
     }
@@ -117,7 +133,6 @@ angular.module('defaultApp', [
     Progress.complete();
   });
 
-  // 退出登录
   $rootScope.logout = function () {
     Default.logout().then(function () {
       $window.location.href = '/';
