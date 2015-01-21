@@ -40,14 +40,14 @@ describe('Notification --> notification services service', function () {
   it('过期隐藏', function () {
     Notification.show('过期隐藏', 'success');
     expect($document.find('div.notification-wrapper').length).to.equals(1);
-    $timeout.flush(2000);
+    $timeout.flush(3000);
     expect($document.find('div.notification-wrapper').find('.alert').hasClass('hide')).to.equals(true);
   });
 
   it('提示默认位置', function () {
       Notification.show('提示默认位置', 'success');
     var notificationEl = $document.find('div.notification-wrapper');
-    expect(notificationEl.data('position')).to.equals('top-right');
+    expect(notificationEl.data('position')).to.equals('bottom-left');
   });
 
   it('自定义提示位置', function () {

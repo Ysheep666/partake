@@ -28,9 +28,9 @@ router.route('/logout').delete(function (req, res) {
  * @apiGroup Default
  * @apiVersion 0.0.1
  *
- * @apiParam {String} [bucket] UPYUN 空间名
- * @apiParam {String} [expiration] 过期时间
- * @apiParam {String} [save-key] 保存路径
+ * @apiParam {String} bucket UPYUN 空间名
+ * @apiParam {String} expiration 过期时间
+ * @apiParam {String} save-key 保存路径
  *
  * @apiSuccess {String} policy 上传 Policy
  * @apiSuccess {String} signature 上传 Signature

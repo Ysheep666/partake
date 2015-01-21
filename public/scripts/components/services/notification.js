@@ -4,9 +4,9 @@ var angular = require('angular');
 angular.module('ui.notification', []).factory('Notification', function ($document, $timeout) {
   return {
     defaultOptions: {
-      position: 'top-right', // top-left, top-right, bottom-right, bottom-left
+      position: 'bottom-left', // top-left, top-right, bottom-right, bottom-left
       showClose: true,
-      timeout: 2000,
+      timeout: 3000,
       onShown: function() {},
       onClosed: function() {}
     },

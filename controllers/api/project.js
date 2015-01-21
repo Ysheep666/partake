@@ -1,5 +1,8 @@
 // 项目 Api
 var router = require('express').Router();
+var auth = require('../../libs/express/auth');
+
+var Project = require('../../models/project');
 
 /**
  * @api {get} /api/projects 获取项目列表
@@ -163,12 +166,34 @@ router.route('/:id').get(function (req, res) {
  *     }
  */
 // TODO: 接口实现
-router.route('/:id').post(function (req, res) {
-  setTimeout(function () {
-    res.json({
-      id: '5482f01e7961fec060a4b045',
+router.route('/').post(auth.checkUser).post(function (req, res, done) {
+  req.assert('name', '名称不能为空').notEmpty();
+  req.assert('url', '链接地址不能为空').notEmpty();
+  req.assert('url', '链接地址格式不正确').isURL();
+  req.assert('description', '描述不能为空').notEmpty();
+
+  var errs = req.validationErrors();
+
+  if (errs) {
+    return done({
+      isValidation: true,
+      errors: errs
     });
-  }, 1000);
+  }
+
+  var project = new Project({
+    name: req.body.name,
+    url: req.body.url,
+    description: req.body.description
+  });
+
+  project.save(function (err, project) {
+    if (err) {
+      return done(err);
+    }
+
+    res.status(201).json({id: project.id});
+  });
 });
 
 

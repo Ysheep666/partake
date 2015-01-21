@@ -12,6 +12,11 @@ angular.module('defaultApp.service').factory('Project', function ($http) {
       return $http.get('/api/projects/' + id).then(function (response) {
         return response.data;
       });
+    },
+    create: function (project) {
+      return $http.post('/api/projects', project).then(function (response) {
+        return response.data;
+      });
     }
   };
 });

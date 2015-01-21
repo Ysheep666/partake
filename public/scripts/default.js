@@ -12,11 +12,12 @@ angular.module('ui.modal', ['ui.bootstrap.modal', 'ui.bootstrap.tpls']);
 angular.module('defaultApp.controller', []);
 angular.module('defaultApp.directive', []);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
-angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal']);
+angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal', 'ui.error-tip']);
 
 require('./default/controllers/project');
 require('./default/directives/form-group-default');
 require('./default/directives/project-item');
+require('./default/services/ui/error-tip');
 require('./default/services/default');
 require('./default/services/project');
 
@@ -30,7 +31,8 @@ angular.module('defaultApp', [
   'defaultApp.directive',
   'defaultApp.filter',
   'defaultApp.service'
-]).config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
+]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   $locationProvider.html5Mode(true);
 
   var slideModalOpenOptions = {

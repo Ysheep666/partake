@@ -1,33 +1,31 @@
-@keyframes flipInX {
+@keyframes animGenie {
   0% {
-    transform: perspective(400px) rotate3d(1,0,0,-90deg);
-    transition-timing-function: ease-in;
+    .opacity(0);
+    transform: translate3d(0,calc(200% + 30px),0) scale3d(0,1,1);
+    animation-timing-function: ease-in;
   }
 
   40% {
-    transform: perspective(400px) rotate3d(1,0,0,20deg);
-    transition-timing-function: ease-out;
+    .opacity(0.5);
+    transform: translate3d(0,0,0) scale3d(0.02,1.1,1);
+    animation-timing-function: ease-out;
   }
 
-  60% {
-    transform: perspective(400px) rotate3d(1,0,0,-10deg);
-    transition-timing-function: ease-in;
-    opacity: 1;
-  }
-
-  80% {
-    transform: perspective(400px) rotate3d(1,0,0,5deg);
-    transition-timing-function: ease-out;
+  70% {
+    .opacity(0.6);
+    transform: translate3d(0,-40px,0) scale3d(0.8,1.1,1);
   }
 
   100% {
-    transform: perspective(400px);
+    .opacity(1);
+    transform: translate3d(0,0,0) scale3d(1,1,1);
   }
 }
 
+
 .notification-wrapper {
   position: fixed;
-  z-index: 1000;
+  z-index: 9999;
 
   &[data-position$='-left'] {
     left: 30px;
@@ -59,18 +57,18 @@
 
   .alert {
     border: none;
-    transform-origin: 50% 0%;
-    animation-duration: 0.8s;
-    border-radius: 0;
     padding: 18px 30px;
     max-width: 500px;
     max-height: 250px;
     overflow: hidden;
     box-shadow: 0 6px 4px -3px rgba(0,0,0,.2);
-    animation-name: flipInX;
+    border-radius: 100px;
+    transform-origin: 50% 0%;
+    animation-name: animGenie;
+    animation-duration: 0.4s;
   }
 
   .close {
-    margin-left: 10px;
+    margin-left: 6px;
   }
 }

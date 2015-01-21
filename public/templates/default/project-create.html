@@ -4,25 +4,26 @@
     <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.name.$touched) && form.name.$error.required}">
       <label>名称</label>
       <div class="controls">
-        <input type="text" class="form-control" name="name" ng-model="name" placeholder="如：Angular" autocomplete="off" required>
+        <input type="text" class="form-control" name="name" ng-model="project.name" placeholder="如：Angular" autocomplete="off" required>
       </div>
     </div>
     <div class="error-help-block" ng-show="form.$submitted || form.name.$touched">
       <p ng-show="form.name.$error.required">名称不能为空。</p>
     </div>
-    <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.url.$touched) && form.url.$error.required}">
+    <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.url.$touched) && (form.url.$error.required || form.url.$error.url)}">
       <label>链接地址</label>
       <div class="controls">
-        <input type="text" class="form-control" name="url" ng-model="url" placeholder="以 http:// 开头的有效网址" autocomplete="off" required>
+        <input type="url" class="form-control" name="url" ng-model="project.url" placeholder="以 http:// 开头的有效网址" autocomplete="off" required>
       </div>
     </div>
     <div class="error-help-block" ng-show="form.$submitted || form.url.$touched">
       <p ng-show="form.url.$error.required">链接地址不能为空。</p>
+      <p ng-show="form.url.$error.url">链接地址格式错误。</p>
     </div>
     <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.description.$touched) && form.description.$error.required}">
       <label>一句话简介</label>
       <div class="controls">
-        <textarea class="form-control" name="description" ng-model="description" placeholder="请精简描述, 36字以内" rows="3" autocomplete="off" required></textarea>
+        <textarea class="form-control" name="description" ng-model="project.description" placeholder="请精简描述, 36字以内" rows="3" autocomplete="off" required></textarea>
       </div>
     </div>
     <div class="error-help-block" ng-show="form.$submitted || form.description.$touched">
