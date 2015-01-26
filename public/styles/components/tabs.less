@@ -1,0 +1,216 @@
+/* Tabs
+------------------------------------
+*/
+.nav-tabs {
+  & > li {
+    padding-left: 0;
+    padding-right: 0;
+
+    &.active {
+      & > a,
+      & > a:hover,
+      & > a:focus {
+        color: @color-black-default;
+      }
+    }
+
+    & > a {
+      border-radius: 0;
+      padding: 15px 20px;
+      margin-right: 0;
+      font-weight: 400;
+      color: fade(@color-black-default, 70%);
+      font-size: 14px;
+      min-width: 70px;
+      text-transform: uppercase;
+      border-color: transparent;
+      &:hover,
+      &:focus {
+        background: transparent;
+        border-color: transparent;
+        color: @color-black-default;
+      }
+      .tab-icon {
+        margin-right: 6px;
+      }
+    }
+  }
+
+  & ~ .tab-content {
+    overflow: hidden;
+
+    & > .tab-pane {
+      &.slide-left,
+      &.slide-right {
+        transition: all .3s ease !important;
+        &.sliding {
+          opacity: 0 !important;
+        }
+        &.active {
+          transform: translate3d(0, 0, 0);
+          opacity: 1;
+        }
+      }
+      &.slide-left.sliding {
+        transform: translate3d(10%, 0, 0) !important;
+      }
+      &.slide-right.sliding {
+        transform: translate3d(-10%, 0, 0) !important;
+      }
+    }
+  }
+
+  &.nav-tabs-left, &.nav-tabs-right {
+    &:after {
+      border-bottom: 0px;
+    }
+    & > li {
+      float: none;
+    }
+  }
+  &.nav-tabs-left {
+    float: left;
+    & ~ .tab-content {
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+  &.nav-tabs-right {
+    float: right;
+    & ~ .tab-content {
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+
+/* Tabs : Line Triangles
+------------------------------------
+*/
+.nav-tabs-linetriangle {
+  border-bottom: 0;
+
+  &:after {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: relative;
+    bottom: 0;
+  }
+
+  & > li {
+    &.active {
+      & > a {
+        background: transparent;
+        box-shadow: none;
+        border-color: transparent;
+        &:hover,
+        &:focus,
+        &:active {
+          border-color: transparent;
+          background-color: transparent;
+        }
+        &:after,
+        &:before {
+          border: medium solid transparent;
+          content: "";
+          height: 0;
+          left: 50%;
+          pointer-events: none;
+          position: absolute;
+          width: 0;
+          z-index: 1;
+          top: 100%;
+        }
+        &:after {
+          border-top-color: @body-bg;
+          border-width: 10px;
+          margin-left: -10px;
+        }
+        &:before {
+          border-top-color: rgba(0, 0, 0, 0.1);
+          border-width: 11px;
+          margin-left: -11px;
+        }
+      }
+    }
+
+    & > a {
+      span {
+        font-size: 1em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    & > a,
+    & > a:hover,
+    & > a:focus {
+      overflow: visible;
+      .transition( color 0.2s ease 0s);
+    }
+  }
+
+  &.nav-tabs-left {
+    &.nav-tabs {
+      &:after {
+        border-bottom: none;
+      }
+
+      & > li.active {
+        & > a:before {
+          border-top: 11px solid transparent;
+          border-bottom: 11px solid transparent;
+          border-left: 11px solid rgba(0, 0, 0, 0.2);
+        }
+        & > a:after {
+          border-top: 10px solid transparent;
+          border-bottom: 10px solid transparent;
+          border-left: 10px solid @body-bg;
+          margin-top: 1px;
+          margin-right: 2px;
+        }
+        & > a:after,
+        & > a:before {
+          top: auto;
+          right: -23px;
+          left: auto;
+        }
+      }
+    }
+  }
+
+  &.nav-tabs-right {
+    &.nav-tabs {
+      &:after {
+        border-bottom: none;
+      }
+      & > li.active {
+        & > a:before {
+          border-top: 11px solid transparent;
+          border-bottom: 11px solid transparent;
+          border-right: 11px solid rgba(0, 0, 0, 0.2);
+        }
+        & > a:after {
+          border-top: 10px solid transparent;
+          border-bottom: 10px solid transparent;
+          border-right: 10px solid @body-bg;
+          margin-top: 1px;
+          margin-left: -9px;
+        }
+        & > a:after,
+        & > a:before {
+          top: auto;
+          left: -12px;
+          right: auto;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width:58em) {
+  .nav-tabs-linetriangle {
+    font-size: 0.6em;
+  }
+}
+
