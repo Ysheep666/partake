@@ -4,7 +4,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 // 结构
 var NotificationSchema = new mongoose.Schema({
   user: {type: ObjectId, ref: 'User'}, // 用户
-  content: {type: String, default: ''} // 内容
+  content: {type: String, default: ''}, // 内容
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称

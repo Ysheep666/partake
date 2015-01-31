@@ -13,7 +13,8 @@ var ProjectSchema = new mongoose.Schema({
   verify: {type: Boolean, default: false}, // 是否通过审核
   online_at: {type: Date}, // 上线时间
   vote_count: {type: Number, default: 0}, // 投票统计
-  comment_count: {type: Number, default: 0} // 评论统计
+  comment_count: {type: Number, default: 0}, // 评论统计
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称

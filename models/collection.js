@@ -10,7 +10,8 @@ var CollectionSchema = new mongoose.Schema({
   cover: {type: String, default: ''}, // 封面
   user: {type: ObjectId, ref: 'User'}, // 拥有者
   vote_count: {type: Number, default: 0}, // 投票统计
-  fans_count: {type: Number, default: 0} // 粉丝统计
+  fans_count: {type: Number, default: 0}, // 粉丝统计
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称

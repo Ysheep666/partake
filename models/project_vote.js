@@ -4,7 +4,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 // 结构
 var ProjectVoteSchema = new mongoose.Schema({
   user: {type: ObjectId, ref: 'User'}, // 用户
-  project: {type: ObjectId, ref: 'Project'} // 项目
+  project: {type: ObjectId, ref: 'Project'}, // 项目
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称

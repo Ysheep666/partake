@@ -7,7 +7,8 @@ var CommentSchema = new mongoose.Schema({
   project: {type: ObjectId, ref: 'Project'}, // 项目
   comment: {type: ObjectId, ref: 'Comment'}, // 评论
   content: {type: String, default: ''}, // 评论内容
-  vote_count: {type: Number, default: 0} // 投票统计
+  vote_count: {type: Number, default: 0}, // 投票统计
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称

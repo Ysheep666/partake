@@ -4,7 +4,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 // 结构
 var CollectionFansSchema = new mongoose.Schema({
   user: {type: ObjectId, ref: 'User'}, // 用户
-  collection: {type: ObjectId, ref: 'Collection'} // 集合
+  collection: {type: ObjectId, ref: 'Collection'}, // 集合
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称

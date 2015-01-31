@@ -4,7 +4,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 // 结构
 var FollowSchema = new mongoose.Schema({
   fans: {type: ObjectId, ref: 'User'}, // 粉丝
-  follower: {type: ObjectId, ref: 'User'} // 关注
+  follower: {type: ObjectId, ref: 'User'}, // 关注
+  is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称
