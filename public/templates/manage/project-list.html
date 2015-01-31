@@ -1,18 +1,22 @@
-<div class="panel panel-default" ng-repeat="project in projects">
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-4">
-        <p class="bold sm-p-t-20">{{project.name}}</p>
-        <p>For highlighting a run of text due to its relevance in another context</p>
-      </div>
-      <div class="col-md-2 p-t-20">
-        <code>&lt;mark&gt;</code>
-      </div>
-      <div class="col-md-6 p-t-20">
-        it is more then
-        <mark>ONE nation/nationality</mark> as its fall name is The United Kingdom of Great Britain and North Ireland..
+<div class="container">
+  <div class="panel panel-transparent">
+    <div class="panel-heading">
+      <div class="panel-title">项目审核</div>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-simple nav-tabs-left bg-white">
+      <li class="active">
+        <a href="#">全部</a>
+      </li>
+      <li>
+        <a href="#">已审核</a>
+      </li>
+      <li>
+        <a href="#">未审核</a>
+      </li>
+    </ul>
+    <div class="tab-content bg-white">
+      <div class="tab-pane posts active">
       </div>
     </div>
   </div>
 </div>
-<pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>

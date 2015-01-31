@@ -8,7 +8,7 @@ require('./components/services/progress');
 require('./components/services/notification');
 require('./components/services/error-tip');
 
-angular.module('ui.modal', ['ui.bootstrap.modal', 'ui.bootstrap.tpls', 'ui.bootstrap.pagination']);
+angular.module('ui.modal', ['ui.bootstrap.modal', 'ui.bootstrap.tpls']);
 
 angular.module('manageApp.controller', []);
 angular.module('manageApp.directive', []);

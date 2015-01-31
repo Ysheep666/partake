@@ -3,9 +3,7 @@
     <span class="ion-ios-arrow-up arrow"></span>
     <span class="count">{{project.vote_count}}</span>
   </div>
-  <div class="user-avatar">
-    <img ng-src="{{project.user.avatar}}">
-  </div>
+  <div user-avatar user="project.user"></div>
   <div class="info">
     <a class="title" target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>
     <span class="description">{{project.description}}</span>

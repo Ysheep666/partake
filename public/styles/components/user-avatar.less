@@ -1,0 +1,33 @@
+.user-avatar {
+  float: right;
+  height: 45px;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  img {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+}
+
+.user-avatar-card {
+  margin: 0 10px;
+  width: 210px;
+  font-size: 12px;
+  text-align: center;
+  
+  .avatar-image {
+    display: block;
+    margin: 10px auto 20px auto;
+    width: 80px;
+    height: 80px;
+  }
+}

@@ -6,13 +6,14 @@ require('./components/filters/default');
 require('./components/filters/capitalize');
 require('./components/services/progress');
 require('./components/services/notification');
+require('./components/directives/user-avatar');
 
-angular.module('ui.modal', ['ui.bootstrap.modal', 'ui.bootstrap.tpls']);
+angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'ui.bootstrap.popover', 'ui.bootstrap.tpls']);
 
 angular.module('defaultApp.controller', []);
-angular.module('defaultApp.directive', []);
+angular.module('defaultApp.directive', ['ui.user-avatar']);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
-angular.module('defaultApp.service', ['ui.progress', 'ui.notification', 'ui.modal', 'ui.error-tip']);
+angular.module('defaultApp.service', ['ui.bootstrap', 'ui.progress', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
 require('./default/directives/form-group-default');

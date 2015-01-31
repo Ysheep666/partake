@@ -2,7 +2,7 @@ var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 
-angular.module('defaultApp.directive').directive('formGroupDefault', function($state) {
+angular.module('defaultApp.directive').directive('formGroupDefault', function() {
  return {
     restrict: 'C',
     link: function (scope, element, attrs) {

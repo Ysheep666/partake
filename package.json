@@ -24,12 +24,19 @@
     "public/components/ui-router/release/angular-ui-router.js",
     "public/components/ui-router-extras/release/ct-ui-router-extras.js",
     "public/components/ui-bootstrap/src/transition/transition.js",
+    "public/components/ui-bootstrap/src/position/position.js",
+    "public/components/ui-bootstrap/src/bindHtml/bindHtml.js",
+    "public/components/ui-bootstrap/src/tooltip/tooltip.js",
+    "public/components/ui-bootstrap/src/popover/popover.js",
     "public/components/ui-bootstrap/src/modal/modal.js",
     "public/components/angular-nanoscroller/scrollable.js"
   ],
   "angularUiTpls": [
     "public/components/ui-bootstrap/template/modal/backdrop.html",
-    "public/components/ui-bootstrap/template/modal/window.html"
+    "public/components/ui-bootstrap/template/modal/window.html",
+    "public/components/ui-bootstrap/template/popover/popover.html",
+    "public/components/ui-bootstrap/template/tooltip/tooltip-html-unsafe-popup.html",
+    "public/components/ui-bootstrap/template/tooltip/tooltip-popup.html"
   ],
   "browserify": {
     "transform": [

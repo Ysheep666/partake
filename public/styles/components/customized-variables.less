@@ -38,6 +38,28 @@
 // Navbar
 @navbar-height: 60px;
 
+//Base Grey Color
+@color-master: #626262;
+
+// Lighter Grey colors
+@color-master-light:mix(@color-master, #fff, 16%);
+@color-master-lighter:mix(@color-master, #fff, 9.5%);
+@color-master-lightest:mix(@color-master, #fff, 3%);
+
+// Darker Grey colors
+@color-master-dark:mix(@color-master, #000, 45%);
+@color-master-darker:mix(@color-master, #000, 27%);
+@color-master-darkest:mix(@color-master, #000, 18%);
+
+// Panels
+@panel-border-color: rgba(0, 0, 0, 0.07);
+@panel-padding: 20px;
+@panel-heading-padding: @panel-padding @panel-padding 7px @panel-padding;
+@panel-heading-min-height: 48px;
+@panel-condensed-heading-padding: 13px 13px 0 13px;
+@panel-condensed-body-padding: 13px;
+@panel-condensed-heading-min-height: 48px;
+
 //Mixing Color varriable for creating both light and dark colors
 @mix-percentage-dark: 81%;
 @mix-percentage-darker: 60%;

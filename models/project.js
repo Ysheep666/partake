@@ -6,7 +6,7 @@ var ProjectSchema = new mongoose.Schema({
   name: {type: String, index: true}, // 名称
   url: {type: String, default: ''}, // 链接地址
   description: {type: String, default: ''}, // 一句话描述
-  agreement: {type: String, default: '未知'}, // 授权协议
+  agreement: {type: String, default: ''}, // 授权协议
   languages: [{type: String}], // 开发语言
   systems: [{type: String}], // 操作系统
   user: {type: ObjectId, ref: 'User'}, // 提交人

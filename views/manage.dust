@@ -4,8 +4,22 @@
 
 {! 头部 !}
 {<heads}
-<base href="/manage/">
+<base href="/manage">
 {/heads}
+
+{! 样式 !}
+{<sub_styles}
+<!-- build:css /styles/manage.css -->
+<link rel="stylesheet" href="/styles/manage.css">
+<!-- endbuild -->
+{/sub_styles}
+
+{! 脚本 !}
+{<sub_scripts}
+<!-- build:js /scripts/manage.js -->
+<script src="/scripts/manage.js"></script>
+<!-- endbuild -->
+{/sub_scripts}
 
 {! 内容 !}
 {<content}
@@ -34,5 +48,5 @@
     </ul>
   </div>
 </nav>
-<div class="manage"></div>
+<div class="wrapper" ui-view="content"></div>
 {/content}

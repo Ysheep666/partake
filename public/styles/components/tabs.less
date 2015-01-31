@@ -1,6 +1,10 @@
 /* Tabs
 ------------------------------------
 */
+.bg-white {
+  background-color: @color-white;
+}
+
 .nav-tabs {
   & > li {
     padding-left: 0;
@@ -73,14 +77,133 @@
     & ~ .tab-content {
       border-left: 1px solid rgba(0, 0, 0, 0.1);
     }
+
+    > li > a {
+      padding: 10px 20px;
+      text-align: center;
+    }
   }
+
   &.nav-tabs-right {
     float: right;
     & ~ .tab-content {
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
+
+    > li > a {
+      padding: 10px 20px;
+      text-align: center;
+    }
   }
 }
+
+.nav-tabs ~ .tab-content {
+  overflow: hidden;
+  padding: 15px;
+}
+
+
+/* Tabs : Simple
+------------------------------------
+*/
+
+.nav-tabs-simple {
+  border-bottom: 0px;
+
+  &:after {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: relative;
+    bottom: 3px;
+    z-index: 120;
+  }
+
+  & > li {
+    margin-bottom: 0;
+    &:after {
+      .transition(all 0.1s linear 0s);
+      -webkit-backface-visibility: hidden;
+      width: 100%;
+      display: block;
+      background-color: @color-danger;
+      height: 0px;
+      content: '';
+      z-index: 125;
+
+      .nav-tabs-primary& {
+        background-color: @color-primary;
+      }
+
+      .nav-tabs-success& {
+        background-color: @color-success;
+      }
+
+      .nav-tabs-complete& {
+        background-color: @color-complete;
+      }
+
+      .nav-tabs-danger& {
+        background-color: @color-danger;
+      }
+
+      .nav-tabs-warning& {
+        background-color: @color-warning;
+      }
+
+      .nav-tabs-info& {
+        background-color: @color-info;
+      }
+    }
+
+    &.active a {
+      &, &:hover, &:focus {
+        background-color: transparent;
+        border-color: transparent;
+      }
+    }
+
+    &.active, &:hover {
+      &:after {
+        height: 3px;
+      }
+    }
+  }
+  // POSITIONG OPTIONS
+  &.nav-tabs-left,
+  &.nav-tabs-right {
+    &:after {
+      border-bottom: 0px;
+    }
+    & > li {
+      &:after {
+        width: 0px;
+        height: 100%;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+      }
+      &.active,
+      &:hover {
+        &:after {
+          width: 3px;
+        }
+      }
+    }
+    & ~ .tab-content {
+    }
+  }
+  &.nav-tabs-left {
+    & > li:after {
+      right: 0;
+    }
+  }
+  &.nav-tabs-right {
+    & > li:after {
+      left: 0;
+    }
+  }
+}
+
 
 
 /* Tabs : Line Triangles
