@@ -7,7 +7,7 @@ angular.module('defaultApp.directive').directive('projectItem', function($state)
     replace: true,
     scope : {project: '=project'},
     template: fs.readFileSync(__dirname + '/../../../templates/default/partials/project-item.html', 'utf8'),
-    link: function (scope, element, attrs) {
+    link: function (scope, element) {
       element.on('click', function () {
         $state.go('project.details', {id: scope.project.id});
       });

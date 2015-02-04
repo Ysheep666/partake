@@ -47,6 +47,7 @@
   "browser": {},
   "browserify-shim": {
     "adou": "global:adou",
+    "modernizr": "global:Modernizr",
     "jquery": "global:$",
     "angular": "global:angular"
   },

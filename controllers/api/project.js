@@ -1,6 +1,6 @@
 // 项目 Api
 var router = require('express').Router();
-var auth = require('../../libs/express/auth');
+var auth = require('../../libs/middlewares/auth');
 
 var Project = require('../../models/project');
 

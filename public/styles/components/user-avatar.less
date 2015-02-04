@@ -18,16 +18,98 @@
   }
 }
 
+.popover.user-avatar-popover {
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0px 0px 5px rgba(98,98,98,.2);
+
+  & > .arrow {
+    display: block;
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #e6e6e6;
+    border-bottom: 0;
+    border-right: 0;
+    background: #fff;
+    transform: translate(6px, 6px);
+    box-shadow: -1px -1px 1px -1px rgba(98,98,98,.2);
+
+    &:after {
+      content: none;
+    }
+  }
+
+
+  &.top > .arrow {
+    bottom: -7px;
+    margin-left: -6px;
+    transform: rotate(225deg);
+  }
+
+  &.right > .arrow {
+    left: -7px;
+    margin-top: -6px;
+    transform: rotate(315deg);
+  }
+
+  &.bottom > .arrow {
+    top: -7px;
+    margin-left: -6px;
+    transform: rotate(45deg);
+  }
+
+  &.left > .arrow {
+    right: -7px;
+    margin-top: -6px;
+    transform: rotate(135deg);
+  }
+
+  .popover-content {
+    padding: 0;
+    width: 210px;
+    overflow: hidden;
+  }
+}
+
 .user-avatar-card {
   margin: 0 10px;
   width: 210px;
   font-size: 12px;
   text-align: center;
-  
+
   .avatar-image {
     display: block;
-    margin: 10px auto 20px auto;
+    margin: 20px auto;
     width: 80px;
     height: 80px;
+    border-radius: 50%;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+  }
+
+  h4.user-name a {
+    font-size: 15px;
+    color: @color-default;
+  }
+
+  .btn {
+    margin: 15px 0 20px;
+  }
+
+  .btn-default {
+    color: @color-white;
+    background-color: @color-default;
+    border-color: @color-default;
+    border-radius: 50px;
+    outline: none !important;
+
+    &:hover{
+      background-color: lighten(@color-default, 10%);
+      border-color: lighten(@color-default, 10%);
+    }
   }
 }

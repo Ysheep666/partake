@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.ObjectId;
 
 // 结构
-var CollectionSchema = new mongoose.Schema({
+var FavoriteSchema = new mongoose.Schema({
   name: {type: String, default: ''}, // 名称
   mark: {type: String, index: true}, // 标示
   description: {type: String, default: ''}, // 一句话描述
@@ -15,10 +15,10 @@ var CollectionSchema = new mongoose.Schema({
 });
 
 // 集合名称
-CollectionSchema.set('collection', 'collection');
+FavoriteSchema.set('collection', 'favorite');
 
 // 序列化结果
-CollectionSchema.set('toJSON', {
+FavoriteSchema.set('toJSON', {
   virtuals: true,
   transform: function (doc, ret) {
     delete ret._id;
@@ -28,6 +28,6 @@ CollectionSchema.set('toJSON', {
 });
 
 // Timestamp
-CollectionSchema.plugin(require('../libs/mongoose/timestamp'));
+FavoriteSchema.plugin(require('../libs/mongoose/timestamp'));
 
-module.exports = mongoose.model('Collection', CollectionSchema);
+module.exports = mongoose.model('Favorite', FavoriteSchema);

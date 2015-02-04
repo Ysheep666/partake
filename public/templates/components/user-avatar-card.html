@@ -1,4 +1,8 @@
 <div class="user-avatar-card">
   <a href="#"><img class="avatar-image" ng-src="{{user.avatar}}"></a>
-  <h3>Peter Frank</h3>
+  <h3>{{user.nickname}}</h3>
+  <h4 class="user-name">
+    <a ng-href="/@{{user.name}}">@{{user.name}}</a>
+  </h4>
+  <a class="btn btn-default" href="#">关注</a>
 </div>

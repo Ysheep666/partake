@@ -2,17 +2,17 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.ObjectId;
 
 // 结构
-var CollectionFansSchema = new mongoose.Schema({
+var FavoriteFansSchema = new mongoose.Schema({
   user: {type: ObjectId, ref: 'User'}, // 用户
-  collection: {type: ObjectId, ref: 'Collection'}, // 集合
+  favorite: {type: ObjectId, ref: 'Favorite'}, // 集合
   is_delete: {type: Boolean, default: false} // 是否已删除
 });
 
 // 集合名称
-CollectionFansSchema.set('collection', 'collection_fans');
+FavoriteFansSchema.set('collection', 'favorite_fans');
 
 // 序列化结果
-CollectionFansSchema.set('toJSON', {
+FavoriteFansSchema.set('toJSON', {
   virtuals: true,
   transform: function (doc, ret) {
     delete ret._id;
@@ -22,6 +22,6 @@ CollectionFansSchema.set('toJSON', {
 });
 
 // Timestamp
-CollectionFansSchema.plugin(require('../libs/mongoose/timestamp'));
+FavoriteFansSchema.plugin(require('../libs/mongoose/timestamp'));
 
-module.exports = mongoose.model('CollectionFollowers', CollectionFansSchema);
+module.exports = mongoose.model('FavoriteFans', FavoriteFansSchema);
