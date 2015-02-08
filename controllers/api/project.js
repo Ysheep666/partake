@@ -1,8 +1,24 @@
 // 项目 Api
 var router = require('express').Router();
+var async = require('async');
+var moment = require('moment');
+var mongoose = require('mongoose');
 var auth = require('../../libs/middlewares/auth');
 
-var Project = require('../../models/project');
+/**
+ * 生成时间的 ObjectId
+ * @param  {number} timestamp 时间戳
+ * @return {string}           ObjectId 编码
+ */
+var _objectIdWithTimestamp = function (timestamp) {
+  if (typeof timestamp === 'string') {
+    timestamp = new Date(timestamp);
+  }
+
+  var hexSeconds = Math.floor(timestamp/1000).toString(16);
+  var constructedObjectId = mongoose.Types.ObjectId(hexSeconds + '0000000000000000');
+  return constructedObjectId;
+};
 
 /**
  * @api {get} /api/projects 获取项目列表
@@ -17,62 +33,68 @@ var Project = require('../../models/project');
  * @apiSuccessExample {json} Success-Response:
  *    HTTP/1.1 200 OK
  *    [{
- *      id: '5482f01e7961fec060a4b045',
- *      name: 'angular',
- *      description: '一款优秀的前端JS框架，MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入',
- *      agreement: 'MIT',
- *      languages: 'JavaScript',
- *      systems: '跨平台',
- *      user: {
- *        id: '5482f01e7961fec060a4babc',
- *        name: 'sadne',
- *        nickname: '不会飞的羊',
- *        description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
- *        avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
- *      },
- *      vote_count: 68,
- *      comment_count: 5,
- *      create_at: new Date()
+ *      date: new Date(),
+ *      projects: [{
+ *        id: '5482f01e7961fec060a4b045',
+ *        name: 'angular',
+ *        description: '一款优秀的前端JS框架，MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入',
+ *        agreement: 'MIT',
+ *        languages: 'JavaScript',
+ *        systems: '跨平台',
+ *        user: {
+ *          id: '5482f01e7961fec060a4babc',
+ *          name: 'sadne',
+ *          nickname: '不会飞的羊',
+ *          description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
+ *          avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
+ *        },
+ *        vote_count: 68,
+ *        comment_count: 5,
+ *        create_at: new Date()
+ *      }]
  *    }]
  */
-router.route('/').get(function (req, res) {
-  setTimeout(function () {
-    res.json([{
-      id: '5482f01e7961fec060a4b045',
-      name: 'angular',
-      description: '一款优秀的前端JS框架，MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入',
-      agreement: 'MIT',
-      languages: 'JavaScript',
-      systems: '跨平台',
-      user: {
-        id: '5482f01e7961fec060a4babc',
-        name: 'sadne',
-        nickname: '不会飞的羊',
-        description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
-        avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
-      },
-      vote_count: 68,
-      comment_count: 5,
-      create_at: new Date()
-    }, {
-      id: '54844f59af514ae108eeeaaa',
-      name: 'jquery',
-      description: '一个优秀的轻量级Javascript库，它兼容CSS3，还兼容各种浏览器',
-      agreement: 'MIT',
-      languages: 'JavaScript',
-      systems: '跨平台',
-      user: {
-        id: '5482f01e7961fec060a4babc',
-        name: 'sadne',
-        nickname: '不会飞的羊',
-        description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
-        avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
-      },
-      vote_count: 897,
-      comment_count: 5,
-      create_at: new Date()
-    }]);
-  }, 1000);
+router.route('/').get(function (req, res, done) {
+  var index = req.query.index ? parseInt(req.query.index, 10) : 1;
+  var count = req.query.count ? parseInt(req.query.count, 10) : 3;
+
+  var startTimestamp = moment().add(1 - index - count, 'days').format('YYYY/MM/DD');
+  var endTimestamp = moment().add(1 - index, 'days').format('YYYY/MM/DD');
+
+  mongoose.model('Project')
+    .find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}})
+    .select('name description vote_count comment_count user')
+    .sort('-vote_count')
+    .populate({path: 'user', select: 'name nickname description avatar'})
+    .exec(function (err, projects) {
+      if (err) {
+        return done(err);
+      }
+
+      var results = [];
+      if (projects.length) {
+        for (var i = count; i > 0; i--) {
+          results.push({
+            date: new Date(moment().add(i - index - count, 'days').format('YYYY/MM/DD')),
+            projects: []
+          });
+        }
+
+        for (var j = 0; j < projects.length; j++) {
+          var project = projects[j];
+          var dayDate = new Date(moment(project.created_at).format('YYYY/MM/DD'));
+          for (var x = 0; x < results.length; x++) {
+            var result = results[x];
+            if (result.date.getTime() === dayDate.getTime()) {
+              result.projects.push(project);
+              break;
+            }
+          }
+        }
+      }
+
+      res.status(200).json(results);
+    });
 });
 
 /**
@@ -149,7 +171,7 @@ router.route('/:id').get(function (req, res) {
 /**
  * @api {post} /api/projects 提交项目
  * @apiName project create
- * @apiPermission user
+ * @apiPermission provider
  * @apiGroup Project
  * @apiVersion 0.0.1
  *
@@ -165,8 +187,8 @@ router.route('/:id').get(function (req, res) {
  *       id: '5482f01e7961fec060a4b045'
  *     }
  */
-// TODO: 接口实现
-router.route('/').post(auth.checkUser).post(function (req, res, done) {
+// TODO: 名称链接不可以重复
+router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (req, res, done) {
   req.assert('name', '名称不能为空').notEmpty();
   req.assert('url', '链接地址不能为空').notEmpty();
   req.assert('url', '链接地址格式不正确').isURL();
@@ -181,13 +203,35 @@ router.route('/').post(auth.checkUser).post(function (req, res, done) {
     });
   }
 
-  var project = new Project({
-    name: req.body.name,
-    url: req.body.url,
-    description: req.body.description
-  });
+  var Project = mongoose.model('Project');
 
-  project.save(function (err, project) {
+  async.waterfall([function (fn) {
+    var project = new Project({
+      name: req.body.name.toLowerCase(),
+      url: req.body.url,
+      description: req.body.description,
+      user: req.user.id
+    });
+    fn(null, project);
+  }, function (project, fn) {
+    Project.count({name: project.name}, function (err, count) {
+      if (0 < count) {
+        fn({ isValidation: true, errors: [
+          {
+            param: 'name',
+            msg: '该项目已经存在',
+            value: project.name
+          }
+        ]});
+      } else {
+        fn(null, project);
+      }
+    });
+  }, function (project, fn) {
+    project.save(function (err, project) {
+      fn(err, project);
+    });
+  }], function (err, project) {
     if (err) {
       return done(err);
     }

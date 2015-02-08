@@ -4,7 +4,6 @@ var angular = require('angular');
 
 require('./components/filters/default');
 require('./components/filters/capitalize');
-require('./components/services/progress');
 require('./components/services/notification');
 require('./components/services/error-tip');
 
@@ -25,13 +24,15 @@ angular.module('manageApp', [
   'ui.router',
   'ct.ui.router.extras',
   'sun.scrollable',
+  'angular-loading-bar',
   'manageApp.controller',
   'manageApp.directive',
   'manageApp.filter',
   'manageApp.service'
-]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   $locationProvider.html5Mode(true);
+  cfpLoadingBarProvider.includeSpinner = false;
 
   $stateProvider.state('manage', {
     url: '/manage',

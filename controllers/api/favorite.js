@@ -2,14 +2,14 @@
 var router = require('express').Router();
 
 /**
- * @api {get} /api/collections 获取集合列表
- * @apiName collection list
- * @apiGroup Collection
+ * @api {get} /api/favorites 获取集合列表
+ * @apiName favorite list
+ * @apiGroup Favorite
  * @apiVersion 0.0.1
  *
  * @apiParam {Number} [page=1] 分页
  *
- * @apiSuccess {Object[]} collections 集合列表
+ * @apiSuccess {Object[]} favorites 集合列表
  *
  * @apiSuccessExample {json} Success-Response:
  *    HTTP/1.1 200 OK
@@ -36,12 +36,12 @@ var router = require('express').Router();
 // TODO: 接口实现
 
 /**
- * @api {get} /api/collections/:id 获取集合详情
- * @apiName collection detail
- * @apiGroup Collection
+ * @api {get} /api/favorites/:id 获取集合详情
+ * @apiName favorite detail
+ * @apiGroup Favorite
  * @apiVersion 0.0.1
  *
- * @apiSuccess {Object} collection 集合详情
+ * @apiSuccess {Object} favorite 集合详情
  *
  * @apiSuccessExample {json} Success-Response:
  *    HTTP/1.1 200 OK

@@ -31,7 +31,7 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
           } else {
             var $window = $(window);
             var popover = $el.data('bs.popover');
-            if ($window.scrollTop() + $window.height() - $el.offset().top < 250) {
+            if ($window.scrollTop() + $window.height() - $el.offset().top < 300) {
               popover.options.placement = 'top';
             } else {
               popover.options.placement = 'bottom';

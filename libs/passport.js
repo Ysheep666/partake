@@ -1,8 +1,9 @@
 // 用户认证
 var async = require('async');
-var User = require('../models/user');
+var mongoose = require('mongoose');
 
 module.exports = function (passport) {
+  var User = mongoose.model('User');
   var auth = adou.config.auth;
 
   passport.serializeUser(function (user, done) {
@@ -10,7 +11,7 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    User.findById(id, 'name nickname email avatar', done);
+    User.findById(id, 'name nickname email avatar provider', done);
   });
 
   passport.use(new (require('passport-github').Strategy)({
@@ -33,7 +34,6 @@ module.exports = function (passport) {
       }
 
       user.login_count++;
-
       user.save(fn);
     }], function (err, user) {
       if (err) {
