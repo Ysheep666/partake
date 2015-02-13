@@ -5,7 +5,20 @@
 
 .posts {
   position: relative;
-  z-index: 1;
+
+  > .loading {
+    display: block;
+    padding: 100px 0 50px;
+    text-align: center;
+
+    span {
+      line-height: 65px;
+      font-size: 48px;
+      text-align: center;
+      color: #999;
+      animation: loading-revolve 1.2s linear infinite;
+    }
+  }
 
   .day {
     padding-top: 30px;

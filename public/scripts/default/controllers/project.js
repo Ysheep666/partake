@@ -1,22 +1,10 @@
 var moment = require('moment');
 var angular = require('angular');
 
-angular.module('defaultApp.controller').filter('dayTime', function () {
-  return function (input, value) {
-    if (moment(input).startOf('day').isSame(moment().startOf('day'))) {
-      return '今天';
-    } else if (moment(input).add(1, 'days').startOf('day').isSame(moment().startOf('day'))) {
-      return '昨天'
-    } else if (moment(input).add(2, 'days').startOf('day').isSame(moment().startOf('day'))) {
-      return '前天'
-    } else {
-      return moment(input).format('dddd');
-    }
-  };
-}).controller('ProjectListCtrl', function ($scope, Project) {
+angular.module('defaultApp.controller').controller('ProjectListCtrl', function ($rootScope, $scope, Project) {
   $scope.count = 3;
   $scope.results = [];
-  $scope.status = {more: true};
+  $scope.status = {more: true, loading: false};
 
   $scope.more = function () {
     if (!$scope.status.loading) {
@@ -36,21 +24,29 @@ angular.module('defaultApp.controller').filter('dayTime', function () {
       });
     }
   };
+
+  $rootScope.$on('refreshProjectList', function () {
+    $scope.results = [];
+    $scope.status = {more: true, loading: false};
+    $scope.more();
+  });
 });
 
 angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', function ($scope, project) {
   $scope.project = project;
 });
 
-angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function ($scope, Notification, ErrorTip, Project) {
+angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function ($rootScope, $scope, Notification, ErrorTip, Project) {
   $scope.submit = function () {
     if (!$scope.form.$valid) {
       return false;
     }
 
     Project.create($scope.project).then(function (project) {
-      $scope.$close();
       Notification.show('提交项目成功', 'success');
+
+      $scope.$close();
+      $rootScope.$broadcast('refreshProjectList');
     }, function (err) {
       ErrorTip.show(err.data);
     });

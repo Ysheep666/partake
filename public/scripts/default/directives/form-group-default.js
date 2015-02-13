@@ -5,7 +5,7 @@ var angular = require('angular');
 angular.module('defaultApp.directive').directive('formGroupDefault', function() {
  return {
     restrict: 'C',
-    link: function (scope, element, attrs) {
+    link: function (scope, element) {
       element.on('click', function () {
         $(this).find(':input').focus();
       });

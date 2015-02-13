@@ -1,5 +1,6 @@
 // 项目 Api
 var router = require('express').Router();
+var _ = require('lodash');
 var async = require('async');
 var moment = require('moment');
 var mongoose = require('mongoose');
@@ -48,6 +49,7 @@ var _objectIdWithTimestamp = function (timestamp) {
  *          description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
  *          avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
  *        },
+ *        vote: false,
  *        vote_count: 68,
  *        comment_count: 5,
  *        create_at: new Date()
@@ -61,40 +63,70 @@ router.route('/').get(function (req, res, done) {
   var startTimestamp = moment().add(1 - index - count, 'days').format('YYYY/MM/DD');
   var endTimestamp = moment().add(1 - index, 'days').format('YYYY/MM/DD');
 
-  mongoose.model('Project')
-    .find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}})
-    .select('name description vote_count comment_count user')
-    .sort('-vote_count')
-    .populate({path: 'user', select: 'name nickname description avatar'})
-    .exec(function (err, projects) {
+  var Project = mongoose.model('Project');
+  var ProjectVote = mongoose.model('ProjectVote');
+
+  async.waterfall([function (fn) {
+    Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}})
+      .select('name description vote_count comment_count user')
+      .sort('-vote_count')
+      .populate({path: 'user', select: 'name nickname description avatar'})
+      .exec(function (err, projects) {
+        fn(err, projects);
+      });
+  }, function (projects, fn) {
+    var ids = _.map(projects, function (project) {
+      return project.id;
+    });
+
+    ProjectVote.find({project: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
       if (err) {
-        return done(err);
+        fn(err);
       }
 
       var results = [];
-      if (projects.length) {
-        for (var i = count; i > 0; i--) {
-          results.push({
-            date: new Date(moment().add(i - index - count, 'days').format('YYYY/MM/DD')),
-            projects: []
-          });
+      for (var i = 0; i < projects.length; i++) {
+        var project = projects[i].toJSON();
+        project.vote = false;
+        for (var j = 0; j < votes.length; j++) {
+          if (votes[j].project.equals(project.id)) {
+            project.vote = true;
+            break;
+          }
         }
+        results.push(project);
+      }
+      fn(null, results);
+    });
+  }], function (err, projects) {
+    if (err) {
+      return done(err);
+    }
 
-        for (var j = 0; j < projects.length; j++) {
-          var project = projects[j];
-          var dayDate = new Date(moment(project.created_at).format('YYYY/MM/DD'));
-          for (var x = 0; x < results.length; x++) {
-            var result = results[x];
-            if (result.date.getTime() === dayDate.getTime()) {
-              result.projects.push(project);
-              break;
-            }
+    var results = [];
+    if (projects.length) {
+      for (var i = count; i > 0; i--) {
+        results.push({
+          date: new Date(moment().add(i - index - count, 'days').format('YYYY/MM/DD')),
+          projects: []
+        });
+      }
+
+      for (var j = 0; j < projects.length; j++) {
+        var project = projects[j];
+        var dayDate = new Date(moment(project.created_at).format('YYYY/MM/DD'));
+        for (var x = 0; x < results.length; x++) {
+          var result = results[x];
+          if (result.date.getTime() === dayDate.getTime()) {
+            result.projects.push(project);
+            break;
           }
         }
       }
+    }
 
-      res.status(200).json(results);
-    });
+    res.status(200).json(results);
+  });
 });
 
 /**
@@ -145,27 +177,38 @@ router.route('/').get(function (req, res, done) {
  *      }]
  *    }
  */
-router.route('/:id').get(function (req, res) {
-  setTimeout(function () {
-    res.json({
-      id: '5482f01e7961fec060a4b045',
-      name: 'angular',
-      description: '一款优秀的前端JS框架，MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入',
-      agreement: 'MIT',
-      languages: 'JavaScript',
-      systems: '跨平台',
-      user: {
-        id: '5482f01e7961fec060a4babc',
-        name: 'sadne',
-        nickname: '不会飞的羊',
-        description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
-        avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
-      },
-      vote_count: 68,
-      comment_count: 5,
-      create_at: new Date()
+// TODO: 未完成
+router.route('/:id').get(function (req, res, done) {
+  var Project = mongoose.model('Project');
+  var ProjectVote = mongoose.model('ProjectVote');
+
+  async.waterfall([function (fn) {
+    Project.findById(req.params.id).select('name description agreement languages systems vote_count comment_count user')
+      .populate({path: 'user', select: 'name nickname description avatar'})
+      .exec(function (err, project) {
+        fn(err, project);
+      });
+  }, function (project, fn) {
+    ProjectVote.findOne({project: project.id, user: req.user.id, is_delete: false}).exec(function (err, vote) {
+      if (err) {
+        fn(err);
+      }
+
+      project = project.toJSON();
+      if (vote && vote.project.equals(project.id)) {
+        project.vote = true;
+      } else {
+        project.vote = false;
+      }
+
+      fn(null, project);
     });
-  }, 1000);
+  }], function (err, project) {
+    if (err) {
+      return done(err);
+    }
+    res.status(200).json(project);
+  });
 });
 
 /**
@@ -187,7 +230,6 @@ router.route('/:id').get(function (req, res) {
  *       id: '5482f01e7961fec060a4b045'
  *     }
  */
-// TODO: 名称链接不可以重复
 router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (req, res, done) {
   req.assert('name', '名称不能为空').notEmpty();
   req.assert('url', '链接地址不能为空').notEmpty();
@@ -215,14 +257,15 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
     fn(null, project);
   }, function (project, fn) {
     Project.count({name: project.name}, function (err, count) {
+      if (err) {
+        return fn(err);
+      }
       if (0 < count) {
-        fn({ isValidation: true, errors: [
-          {
-            param: 'name',
-            msg: '该项目已经存在',
-            value: project.name
-          }
-        ]});
+        fn({isValidation: true, errors: [{
+          param: 'name',
+          msg: '该项目已经存在',
+          value: project.name
+        }]});
       } else {
         fn(null, project);
       }
@@ -317,16 +360,75 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
  * @apiVersion 0.0.1
  *
  * @apiSuccess {String} project 项目ID
- * @apiSuccess {Boolean} agree 是否赞成
+ * @apiSuccess {Boolean} vote 是否赞成
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
  *     {
  *       id: '5482f01e7961fec060a4b045',
- *       agree: true
+ *       vote: true,
+ *       vote_count: 68
  *     }
  */
-// TODO: 接口实现
+router.route('/:id/votes').post(function (req, res, done) {
+  var Project = mongoose.model('Project');
+  var ProjectVote = mongoose.model('ProjectVote');
+
+  async.waterfall([function (fn) {
+    var vote = new ProjectVote({
+      project: req.params.id,
+      user: req.user.id
+    });
+    fn(null, vote);
+  }, function (vote, fn) {
+    Project.findById(vote.project, 'name', function (err, project) {
+      if (project) {
+        fn(null, vote);
+      } else {
+        fn({isValidation: true, errors: [{
+          param: 'project',
+          msg: '该项目不存在',
+          value: vote.project
+        }]});
+      }
+    });
+  }, function (vote, fn) {
+    ProjectVote.findOne({project: vote.project, user: vote.user}).exec(function (err, _vote) {
+      if (err) {
+        return fn(err);
+      }
+      var inc = 1;
+      if (_vote) {
+        if (!_vote.is_delete) {
+          inc = -1;
+        }
+        vote = _vote;
+        vote.is_delete = !_vote.is_delete;
+      }
+
+      fn(null, vote, inc);
+    });
+  }, function (vote, inc, fn) {
+    vote.save(function (err, vote) {
+      fn(err, vote, inc);
+    });
+  }, function (vote, inc, fn) {
+    Project.findByIdAndUpdate(vote.project, {$inc: {'vote_count': inc}}, function (err, project) {
+      fn(err, vote, project);
+    });
+  }], function (err, vote, project) {
+    if (err) {
+      return done(err);
+    }
+
+    res.status(201).json({
+      id: project.id,
+      vote: !vote.is_delete,
+      vote_count: project.vote_count
+    });
+  });
+});
+
 
 /**
  * @api {get} /api/projects/:id/comments 获取项目评论

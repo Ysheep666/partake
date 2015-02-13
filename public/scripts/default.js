@@ -4,6 +4,7 @@ var angular = require('angular');
 
 require('./components/filters/default');
 require('./components/filters/capitalize');
+require('./components/filters/day-time');
 require('./components/services/notification');
 require('./components/directives/user-avatar');
 
@@ -11,12 +12,13 @@ angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'u
 
 angular.module('defaultApp.controller', []);
 angular.module('defaultApp.directive', ['ui.user-avatar']);
-angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
+angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
 require('./default/directives/form-group-default');
 require('./default/directives/project-item');
+require('./default/directives/project-upvote');
 require('./default/services/ui/error-tip');
 require('./default/services/default');
 require('./default/services/project');
@@ -122,17 +124,28 @@ angular.module('defaultApp', [
   });
 
   $urlRouterProvider.otherwise('/');
-}).run(function ($http, $cookies, $rootScope, $window, $state, Notification, Default) {
+}).run(function ($http, $cookies, $rootScope, $state, $window, Notification, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
   $rootScope.$state = $state;
 
   $rootScope.logout = function () {
     Default.logout().then(function () {
       $window.location.href = '/';
-    }, function (err) {
+    }, function () {
       Notification.show('退出登录失败', 'danger');
     });
   };
+
+  // $rootScope.$on('$stateChangeSuccess', function () {
+  //   $timeout(function () {
+  //     if ($rootScope.$state.isCreateProject && '/' === $window.location.pathname + $window.location.hash) {
+  //       $timeout(function () {
+  //         $window.location.reload();
+  //       }, 1000);
+  //     }
+  //     $rootScope.$state.isCreateProject = false;
+  //   });
+  // });
 });
 
 $(document).ready(function () {

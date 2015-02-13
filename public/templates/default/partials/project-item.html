@@ -1,9 +1,6 @@
 <div class="project-item">
-  <div class="upvote">
-    <span class="ion-ios-arrow-up arrow"></span>
-    <span class="count">{{project.vote_count}}</span>
-  </div>
-  <div user-avatar user="project.user"></div>
+  <project-upvote project="project"></project-upvote>
+  <user-avatar user="project.user"></user-avatar>
   <div class="info">
     <a class="title" target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>
     <span class="description">{{project.description}}</span>
