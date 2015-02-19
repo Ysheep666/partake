@@ -8,10 +8,14 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
     replace: true,
     scope : {user: '=user'},
     template: fs.readFileSync(__dirname + '/../../../templates/components/user-avatar.html', 'utf8'),
-    link: function (scope, element) {
+    link: function (scope, element, attrs) {
+      scope.s =  attrs.s ? '&s=' + attrs.s : '';
+
       if (modernizr.touch) {
         return;
       }
+
+      element.addClass(attrs.class);
 
       element.on('click', function (e) {
         e.stopPropagation();
@@ -19,7 +23,7 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
 
       var $el = element.find('a.u');
       $el.popover({
-        container: element,
+        container: 'body',
         html: true,
         placement: 'bottom',
         trigger: 'manual',

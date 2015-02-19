@@ -7,12 +7,12 @@ require('./components/filters/capitalize');
 require('./components/services/notification');
 require('./components/services/error-tip');
 
-angular.module('ui.modal', ['ui.bootstrap.modal', 'ui.bootstrap.tpls']);
+angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'ui.bootstrap.popover', 'ui.bootstrap.tpls']);
 
 angular.module('manageApp.controller', []);
 angular.module('manageApp.directive', []);
 angular.module('manageApp.filter', ['filter.default', 'filter.capitalize']);
-angular.module('manageApp.service', ['ui.progress', 'ui.notification', 'ui.modal', 'ui.error-tip']);
+angular.module('manageApp.service', ['ui.notification', 'ui.bootstrap', 'ui.error-tip']);
 
 require('./manage/controllers/project');
 require('./manage/services/default');
@@ -34,34 +34,30 @@ angular.module('manageApp', [
   $locationProvider.html5Mode(true);
   cfpLoadingBarProvider.includeSpinner = false;
 
-  $stateProvider.state('manage', {
+  $stateProvider.state('project', {
     url: '/manage',
     views: {
       'content@': {
         template: fs.readFileSync(__dirname + '/../templates/manage/project-list.html', 'utf8'),
-        controller: 'ProjectListCtrl',
-        resolve: {
-          projects: function (Project) {
-            return Project.query({admin: true});
-          }
-        }
+        controller: 'ProjectListCtrl'
       }
     },
     sticky: true
   });
 
+  $stateProvider.state('user', {
+    url: '/manage/users',
+    views: {
+      'content@': {
+        template: '12345'
+      }
+    }
+  });
+
   $urlRouterProvider.otherwise('/manage');
-}).run(function ($http, $cookies, $rootScope, $window, $state, Progress, Notification, Default) {
+}).run(function ($http, $cookies, $rootScope, $window, $state, Notification, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
   $rootScope.$state = $state;
-
-  $rootScope.$on('$stateChangeStart', function () {
-    Progress.start();
-  });
-
-  $rootScope.$on('$stateChangeSuccess', function () {
-    Progress.complete();
-  });
 
   $rootScope.logout = function () {
     Default.logout().then(function () {

@@ -67,7 +67,7 @@ router.route('/').get(function (req, res, done) {
   var ProjectVote = mongoose.model('ProjectVote');
 
   async.waterfall([function (fn) {
-    Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}})
+    Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}, is_delete: false})
       .select('name description vote_count comment_count user')
       .sort('-vote_count')
       .populate({path: 'user', select: 'name nickname description avatar'})
@@ -75,29 +75,40 @@ router.route('/').get(function (req, res, done) {
         fn(err, projects);
       });
   }, function (projects, fn) {
-    var ids = _.map(projects, function (project) {
-      return project.id;
-    });
+    var results = [];
+    if (req.user) {
+      var ids = _.map(projects, function (project) {
+        return project.id;
+      });
 
-    ProjectVote.find({project: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
-      if (err) {
-        fn(err);
-      }
+      ProjectVote.find({project: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
+        if (err) {
+          fn(err);
+        }
 
-      var results = [];
+        for (var i = 0; i < projects.length; i++) {
+          var project = projects[i].toJSON();
+          project.vote = false;
+          for (var j = 0; j < votes.length; j++) {
+            if (votes[j].project.equals(project.id)) {
+              project.vote = true;
+              break;
+            }
+          }
+          results.push(project);
+        }
+
+        fn(null, results);
+      });
+    } else {
       for (var i = 0; i < projects.length; i++) {
         var project = projects[i].toJSON();
         project.vote = false;
-        for (var j = 0; j < votes.length; j++) {
-          if (votes[j].project.equals(project.id)) {
-            project.vote = true;
-            break;
-          }
-        }
         results.push(project);
       }
+
       fn(null, results);
-    });
+    }
   }], function (err, projects) {
     if (err) {
       return done(err);
@@ -183,26 +194,46 @@ router.route('/:id').get(function (req, res, done) {
   var ProjectVote = mongoose.model('ProjectVote');
 
   async.waterfall([function (fn) {
-    Project.findById(req.params.id).select('name description agreement languages systems vote_count comment_count user')
+    Project.findOne({_id: req.params.id, is_delete: false}).select('name description agreement languages systems vote_count comment_count user')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .exec(function (err, project) {
         fn(err, project);
       });
   }, function (project, fn) {
-    ProjectVote.findOne({project: project.id, user: req.user.id, is_delete: false}).exec(function (err, vote) {
-      if (err) {
-        fn(err);
-      }
+    if (req.user) {
+      ProjectVote.findOne({project: project.id, user: req.user.id, is_delete: false}).exec(function (err, vote) {
+        if (err) {
+          fn(err);
+        }
 
+        project = project.toJSON();
+        if (vote && vote.project.equals(project.id)) {
+          project.vote = true;
+        } else {
+          project.vote = false;
+        }
+
+        fn(null, project);
+      });
+    } else {
       project = project.toJSON();
-      if (vote && vote.project.equals(project.id)) {
-        project.vote = true;
-      } else {
-        project.vote = false;
-      }
-
+      project.vote = false;
       fn(null, project);
-    });
+    }
+  }, function (project, fn) {
+    ProjectVote.find({project: project.id, is_delete: false})
+      .populate({path: 'user', select: 'name nickname description avatar'})
+      .limit(38)
+      .exec(function (err, votes) {
+        if (err) {
+          fn(err);
+        }
+        project.votes = [];
+        for (var i = 0; i < votes.length; i++) {
+          project.votes.push(votes[i].user);
+        }
+        fn(null, project);
+      });
   }], function (err, project) {
     if (err) {
       return done(err);
@@ -256,7 +287,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
     });
     fn(null, project);
   }, function (project, fn) {
-    Project.count({name: project.name}, function (err, count) {
+    Project.count({name: project.name, is_delete: false}, function (err, count) {
       if (err) {
         return fn(err);
       }
@@ -370,7 +401,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
  *       vote_count: 68
  *     }
  */
-router.route('/:id/votes').post(function (req, res, done) {
+router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
   var Project = mongoose.model('Project');
   var ProjectVote = mongoose.model('ProjectVote');
 
@@ -381,7 +412,7 @@ router.route('/:id/votes').post(function (req, res, done) {
     });
     fn(null, vote);
   }, function (vote, fn) {
-    Project.findById(vote.project, 'name', function (err, project) {
+    Project.findOne({_id: vote.project, is_delete: false}, 'name', function (err, project) {
       if (project) {
         fn(null, vote);
       } else {

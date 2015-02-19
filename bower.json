@@ -2,7 +2,6 @@
   "name": "Partake",
   "version": "0.0.1",
   "dependencies": {
-    "open-sans-fontface": "1.2.0",
     "ionicons": "2.0.0",
     "moment": "2.9.0",
     "modernizr": "2.8.3",

@@ -135,17 +135,6 @@ angular.module('defaultApp', [
       Notification.show('退出登录失败', 'danger');
     });
   };
-
-  // $rootScope.$on('$stateChangeSuccess', function () {
-  //   $timeout(function () {
-  //     if ($rootScope.$state.isCreateProject && '/' === $window.location.pathname + $window.location.hash) {
-  //       $timeout(function () {
-  //         $window.location.reload();
-  //       }, 1000);
-  //     }
-  //     $rootScope.$state.isCreateProject = false;
-  //   });
-  // });
 });
 
 $(document).ready(function () {
