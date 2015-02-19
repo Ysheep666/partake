@@ -1,26 +1,7 @@
-.user-avatar {
-  float: right;
-  height: 45px;
-
-  &:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-
-  img {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    vertical-align: middle;
-  }
-}
-
 .popover.user-avatar-popover {
   border: none;
   border-radius: 3px;
+  cursor: default;
   box-shadow: 0px 0px 5px rgba(98,98,98,.2);
 
   & > .arrow {
@@ -39,7 +20,6 @@
       content: none;
     }
   }
-
 
   &.top > .arrow {
     bottom: -7px;
@@ -84,6 +64,12 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   h3 {

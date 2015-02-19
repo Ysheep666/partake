@@ -23,7 +23,7 @@
     <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.description.$touched) && form.description.$error.required}">
       <label>一句话简介</label>
       <div class="controls">
-        <textarea class="form-control" name="description" ng-model="project.description" placeholder="请精简描述, 36字以内" rows="3" autocomplete="off" required></textarea>
+        <textarea class="form-control" name="description" ng-model="project.description" placeholder="请精简描述, 50字以内" rows="3" autocomplete="off" required></textarea>
       </div>
     </div>
     <div class="error-help-block" ng-show="form.$submitted || form.description.$touched">

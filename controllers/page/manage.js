@@ -1,24 +1,10 @@
 // 管理
 var router = require('express').Router();
 
-var User = require('../../models/user');
+var auth = require('../../libs/middlewares/auth');
 
 // 权限过滤
-router.route('*').get(function(req, res, done) {
-  if (!req.user) {
-    return res.redirect('/');
-  }
-
-  User.findById(req.user.id, 'administrate', function (err, user) {
-    if (err) {
-      return done(err);
-    }
-    if (!user.administrate) {
-      return res.redirect('/');
-    }
-    return done();
-  });
-});
+router.route('*').all(auth.checkUser).all(auth.checkAdministrate);
 
 // 审核管理
 router.route('/').get(function (req, res) {

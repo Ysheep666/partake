@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
   <title>{+title}{+sub_title}{/sub_title} - {app.title}{/title}</title>
+  {#app.user}
+    <meta name="partake-user-id" content="{app.user.id}">
+    <meta name="partake-user-name" content="{app.user.name}">
+    <meta name="partake-user-nickname" content="{app.user.nickname}">
+    <meta name="partake-user-avatar" content="{app.user.avatar}">
+    <meta name="partake-user-description" content="{app.user.description}">
+  {/app.user}
   {+heads}{/heads}
   {+styles}
     <!-- build:css /styles/base.css -->

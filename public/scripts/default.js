@@ -4,7 +4,7 @@ var angular = require('angular');
 
 require('./components/filters/default');
 require('./components/filters/capitalize');
-require('./components/services/progress');
+require('./components/filters/day-time');
 require('./components/services/notification');
 require('./components/directives/user-avatar');
 
@@ -12,12 +12,13 @@ angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'u
 
 angular.module('defaultApp.controller', []);
 angular.module('defaultApp.directive', ['ui.user-avatar']);
-angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize']);
-angular.module('defaultApp.service', ['ui.bootstrap', 'ui.progress', 'ui.notification', 'ui.error-tip']);
+angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time']);
+angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
 require('./default/directives/form-group-default');
 require('./default/directives/project-item');
+require('./default/directives/project-upvote');
 require('./default/services/ui/error-tip');
 require('./default/services/default');
 require('./default/services/project');
@@ -27,14 +28,18 @@ angular.module('defaultApp', [
   'ngCookies',
   'ui.router',
   'ct.ui.router.extras',
+  'angularMoment',
   'sun.scrollable',
+  'angular-loading-bar',
+  'infinite-scroll',
   'defaultApp.controller',
   'defaultApp.directive',
   'defaultApp.filter',
   'defaultApp.service'
-]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   $locationProvider.html5Mode(true);
+  cfpLoadingBarProvider.includeSpinner = false;
 
   var slideModalOpenOptions = {
     template: '<scrollable class="modal-view"><div ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
@@ -86,12 +91,7 @@ angular.module('defaultApp', [
     views: {
       'wrapper@': {
         template: fs.readFileSync(__dirname + '/../templates/default/project-list.html', 'utf8'),
-        controller: 'ProjectListCtrl',
-        resolve: {
-          projects: function (Project) {
-            return Project.query();
-          }
-        }
+        controller: 'ProjectListCtrl'
       }
     }
   });
@@ -124,22 +124,14 @@ angular.module('defaultApp', [
   });
 
   $urlRouterProvider.otherwise('/');
-}).run(function ($http, $cookies, $rootScope, $window, $state, Progress, Notification, Default) {
+}).run(function ($http, $cookies, $rootScope, $state, $window, Notification, Default) {
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
   $rootScope.$state = $state;
-
-  $rootScope.$on('$stateChangeStart', function () {
-    Progress.start();
-  });
-
-  $rootScope.$on('$stateChangeSuccess', function () {
-    Progress.complete();
-  });
 
   $rootScope.logout = function () {
     Default.logout().then(function () {
       $window.location.href = '/';
-    }, function (err) {
+    }, function () {
       Notification.show('退出登录失败', 'danger');
     });
   };

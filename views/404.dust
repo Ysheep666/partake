@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{code} {message} - {app.title}</title>
+</head>
+<body>
+<div class="wrapper">
+  <div class="content">
+    <h2 class="info">{code} {message}</h2>
+    <p class="text-center"><a href="/">返回首页</a></p>
+  </div>
+</div>
+</body>
+</html>

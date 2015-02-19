@@ -4,18 +4,26 @@ var modernizr = require('modernizr');
 
 angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile) {
   return {
-    restrict: 'A',
+    restrict: 'E',
     replace: true,
     scope : {user: '=user'},
     template: fs.readFileSync(__dirname + '/../../../templates/components/user-avatar.html', 'utf8'),
-    link: function (scope, element) {
+    link: function (scope, element, attrs) {
+      scope.s =  attrs.s ? '&s=' + attrs.s : '';
+
       if (modernizr.touch) {
         return;
       }
 
-      var $el = element.find('img.a');
+      element.addClass(attrs.class);
+
+      element.on('click', function (e) {
+        e.stopPropagation();
+      });
+
+      var $el = element.find('a.u');
       $el.popover({
-        container: element,
+        container: 'body',
         html: true,
         placement: 'bottom',
         trigger: 'manual',
@@ -24,21 +32,21 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
       });
 
       var hideTimeOut = null;
-      $el.bind('mouseenter mouseleave', function (e) {
+      $el.on('mouseenter mouseleave', function (e) {
         if (e.type === 'mouseenter') {
           if (hideTimeOut) {
             window.clearTimeout(hideTimeOut);
           } else {
             var $window = $(window);
             var popover = $el.data('bs.popover');
-            if ($window.scrollTop() + $window.height() - $el.offset().top < 250) {
+            if ($window.scrollTop() + $window.height() - $el.offset().top < 300) {
               popover.options.placement = 'top';
             } else {
               popover.options.placement = 'bottom';
             }
 
             $el.popover('show');
-            popover.$tip.bind('mouseenter mouseleave', function (ev) {
+            popover.$tip.on('mouseenter mouseleave', function (ev) {
               if (ev.type === 'mouseenter') {
                 if (hideTimeOut) {
                   window.clearTimeout(hideTimeOut);

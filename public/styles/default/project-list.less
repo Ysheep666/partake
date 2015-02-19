@@ -5,10 +5,31 @@
 
 .posts {
   position: relative;
-  z-index: 1;
+
+  > .loading {
+    display: block;
+    padding: 100px 0 50px;
+    text-align: center;
+
+    span {
+      line-height: 65px;
+      font-size: 48px;
+      text-align: center;
+      color: #999;
+      animation: loading-revolve 1.2s linear infinite;
+    }
+  }
 
   .day {
     padding-top: 30px;
+  }
+
+  .more {
+    display: block;
+    padding: 30px;
+    font-size: 28px;
+    text-align: center;
+    color: #ddd;
   }
 }
 
@@ -37,7 +58,6 @@
 .project-item {
   position: relative;
   padding: 15px 10px;
-  height: 75px;
   line-height: 18px;
   border-radius: @project-item-border-radius;
   cursor: pointer;
@@ -90,7 +110,33 @@
     }
   }
 
+  .user-avatar {
+    float: right;
+    height: 45px;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    a.u {
+      display: inline-block;
+    }
+
+    img {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+
   .info {
+    margin-left: 45px;
+
     .title {
       margin: 6px 2px 0 0;
       font-size: 20px;

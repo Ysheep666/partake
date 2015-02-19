@@ -11,6 +11,8 @@
     "test": "gulp test"
   },
   "vendors": [
+    "public/components/moment/moment.js",
+    "public/components/moment/locale/zh-cn.js",
     "public/components/jquery/dist/jquery.js",
     "public/components/bootstrap/js/transition.js",
     "public/components/bootstrap/js/dropdown.js",
@@ -29,7 +31,10 @@
     "public/components/ui-bootstrap/src/tooltip/tooltip.js",
     "public/components/ui-bootstrap/src/popover/popover.js",
     "public/components/ui-bootstrap/src/modal/modal.js",
-    "public/components/angular-nanoscroller/scrollable.js"
+    "public/components/angular-loading-bar/src/loading-bar.js",
+    "public/components/angular-moment/angular-moment.js",
+    "public/components/angular-nanoscroller/scrollable.js",
+    "public/components/ngInfiniteScroll/build/ng-infinite-scroll.js"
   ],
   "angularUiTpls": [
     "public/components/ui-bootstrap/template/modal/backdrop.html",
@@ -48,6 +53,7 @@
   "browserify-shim": {
     "adou": "global:adou",
     "modernizr": "global:Modernizr",
+    "moment": "global:moment",
     "jquery": "global:$",
     "angular": "global:angular"
   },
@@ -66,6 +72,7 @@
     "js-yaml": "3.2.4",
     "lodash": "2.4.1",
     "method-override": "2.3.0",
+    "moment": "2.9.0",
     "mongoose": "3.8.21",
     "morgan": "1.5.0",
     "passport": "0.2.1",

@@ -50,7 +50,7 @@ gulp.task('jshint', function () {
 
 // Font
 gulp.task('fonts', function () {
-  gulp.src(['public/components/open-sans-fontface/fonts/**/*.{eot,svg,ttf,woff}', 'public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
+  gulp.src(['public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
     .pipe(gulp.dest('.tmp/public/fonts'))
     .pipe($.size());
   return;
@@ -212,7 +212,7 @@ gulp.task('build:assets', function () {
 
 // Build Fonts
 gulp.task('build:fonts', function () {
-  return gulp.src(['public/components/open-sans-fontface/fonts/**/*.{eot,svg,ttf,woff}', 'public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
+  return gulp.src(['public/components/ionicons/fonts/*.{eot,svg,ttf,woff}'])
     .pipe(gulp.dest('.tmp/public/fonts'))
     .pipe($.size());
 });

@@ -1,12 +1,28 @@
-<div class="container posts">
-  <div class="day">
-    <time class="posts-date" datetime="2015-01-10">
-      <h4>今天</h4> 1月10日，星期六
-    </time>
-    <ul class="project-list">
-      <li ng-repeat="project in projects">
-        <project-item project="project"></project-item>
-      </li>
-    </ul>
+<div class="container posts" infinite-scroll="more()">
+  <div class="loading" ng-if="!results.length">
+    <span class="ion-load-c"></span>
+  </div>
+  <div ng-if="results.length">
+    <div class="day" ng-repeat="(index, result) in results" ng-if="result.projects.length">
+      <time class="posts-date">
+        <h4>{{result.date|dayTime}}</h4>
+        <span ng-if="index < 3">
+          {{result.date|amDateFormat: 'MoDo，dddd'}}
+        </span>
+        <span ng-if="!(index < 3)">
+          {{result.date|amDateFormat: 'MoDo'}}
+        </span>
+      </time>
+      <ul class="project-list">
+        <li ng-repeat="project in result.projects">
+          <project-item project="project"></project-item>
+        </li>
+      </ul>
+    </div>
+    <div class="more" ng-if="status.loading">
+      <span ng-if="status.more">正在加载，请稍等...</span>
+      <span ng-if="!status.more">没有更多了</span>
+    </div>
   </div>
 </div>
+

@@ -8,6 +8,7 @@ var UserSchema = new mongoose.Schema({
   email: {type: String, default: ''}, // 电子邮件
   description: {type: String, default: ''}, // 一句话描述
   avatar: {type: String, default: ''}, // 头像
+  provider: {type: Boolean, default: false}, // 是否是项目提供者
   administrate: {type: Boolean, default: false}, // 是否是管理员
   login_count: {type: Number, default: 0}, // 登陆统计
   vote_count: {type: Number, default: 0}, // 投票统计
