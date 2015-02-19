@@ -256,7 +256,7 @@ gulp.task('build:dust', ['build:assets', 'build:fonts', 'build:styles', 'build:s
   return gulp.src(['views/**/*.dust'])
     .pipe(assets)
     .pipe($['if']('*.css', $.csso()))
-    .pipe($['if']('*.js', $.uglify()))
+    .pipe($['if']('*.js', $.streamify($.uglify())))
     .pipe(assets.restore())
     .pipe($.useref())
     .pipe($['if']('*.css', gulp.dest('.tmp/public')))
