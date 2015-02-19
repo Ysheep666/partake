@@ -22,8 +22,8 @@ upyun:
 #用户认证
 auth:
   github:
-    client_id: '0010da5d410780f81630'
-    client_secret: '6d5d72cd04c40e45f3ecf4a264a5a4e2b9c087c7'
+    client_id: 'c6951da9e1ed5e3e22f9'
+    client_secret: 'b6ae40111939ff3f3a456c9c35cf2a950767cdfb'
     callback_url: 'http://localhost:5000/auth/github/callback'
 
 
