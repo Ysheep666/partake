@@ -31,9 +31,13 @@ module.exports = function (passport) {
           email: u.email,
           avatar: u.avatar_url
         });
+      } else {
+        user.name = u.login;
+        user.nickname = u.nickname;
+        user.avatar = u.avatar_url;
+        user.login_count++;
       }
 
-      user.login_count++;
       user.save(fn);
     }], function (err, user) {
       if (err) {
