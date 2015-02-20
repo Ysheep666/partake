@@ -15,6 +15,7 @@ module.exports = function (app) {
 
   app.use('/api/', require('../controllers/api/default'));
   app.use('/api/projects', require('../controllers/api/project'));
+  app.use('/api/users', require('../controllers/api/user'));
 
   // 错误处理
   app.use(function (err, req, res, done) {

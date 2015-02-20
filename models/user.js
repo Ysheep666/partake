@@ -13,7 +13,7 @@ var UserSchema = new mongoose.Schema({
   login_count: {type: Number, default: 0}, // 登陆统计
   vote_count: {type: Number, default: 0}, // 投票统计
   submit_count: {type: Number, default: 0}, // 提交统计
-  collection_count: {type: Number, default: 0}, // 集合统计
+  favorite_count: {type: Number, default: 0}, // 集合统计
   fans_count: {type: Number, default: 0}, // 粉丝统计
   follower_count: {type: Number, default: 0}, // 关注统计
   is_delete: {type: Boolean, default: false} // 是否已删除
