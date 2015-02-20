@@ -7,7 +7,10 @@ var auth = require('../../libs/middlewares/auth');
 router.route('*').all(auth.checkUser).all(auth.checkAdministrate);
 
 // 审核管理
-router.route('/').get(function (req, res) {
+router.route([
+  '/',
+  '/users'
+]).get(function (req, res) {
   // 格言警句
   var aphorism = (function () {
     var aphorisms = adou.config.data.aphorisms;

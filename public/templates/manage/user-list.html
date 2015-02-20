@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="panel panel-transparent">
+    <div class="panel-heading">
+      <div class="panel-title">用户管理</div>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-simple nav-tabs-left bg-white">
+      <li class="active">
+        <a ui-sref="user">全部</a>
+      </li>
+      <li>
+        <a href="#">回收站</a>
+      </li>
+    </ul>
+    <div class="tab-content bg-white">
+      <div class="tab-pane users active">
+        <div class="items">
+          <div class="item clearfix" ng-repeat="user in users">
+            <a class="avatar" target="_blank" ng-href="/@{{user.name}}"><img ng-src="{{user.avatar}}&s=50"></a>
+            <div class="info">
+              <p class="name">{{user.name}}<span>{{user.nickname}}</span></p>
+              <p class="email">{{user.email}}</p>
+            </div>
+            <ul class="reactions">
+              <li>
+                <a href ng-click="provider(user)" tooltip-append-to-body="true" tooltip="取消发布项目权限" ng-if="user.provider"><span class="ion-ios-flame"></span></a>
+                <a href ng-click="provider(user)" tooltip-append-to-body="true" tooltip="添加发布项目权限" ng-if="!user.provider"><span class="ion-ios-flame-outline"></span></a>
+              </li>
+              <li>
+                <a href ng-click="administrate(user)" tooltip-append-to-body="true" tooltip="取消管理员权限" ng-if="user.administrate"><span class="ion-ios-gear"></span></a>
+                <a href ng-click="administrate(user)" tooltip-append-to-body="true" tooltip="添加管理员权限" ng-if="!user.administrate"><span class="ion-ios-gear-outline"></span></a>
+              </li>
+              <li><a href ng-click="delete(user)" tooltip-append-to-body="true" tooltip="删除该用户"><span class="ion-ios-trash-outline"></span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

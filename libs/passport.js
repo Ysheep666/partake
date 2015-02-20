@@ -11,7 +11,7 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    User.findById(id, 'name nickname email avatar description provider', done);
+    User.findById(id, 'name nickname email avatar description provider administrate', done);
   });
 
   passport.use(new (require('passport-github').Strategy)({
@@ -32,12 +32,12 @@ module.exports = function (passport) {
           avatar: u.avatar_url
         });
       } else {
+        // TODO: 在个人页面完成后这里不需要自动更新信息
         user.name = u.login;
         user.nickname = u.nickname;
         user.avatar = u.avatar_url;
         user.login_count++;
       }
-
       user.save(fn);
     }], function (err, user) {
       if (err) {

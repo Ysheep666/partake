@@ -33,7 +33,6 @@
   <div class="navbar-header pull-right">
     <ul class="nav navbar-nav partake-nav">
       <li><a class="border" ui-sref=".project">项目</a></li>
-      <li><a class="border">集合</a></li>
       <li><a class="border" ui-sref=".user">用户</a></li>
       <li class="dropdown">
         <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}" alt="{app.user.nickname}" height="30" width="30"></a>

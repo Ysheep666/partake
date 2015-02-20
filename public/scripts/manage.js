@@ -15,8 +15,10 @@ angular.module('manageApp.filter', ['filter.default', 'filter.capitalize']);
 angular.module('manageApp.service', ['ui.notification', 'ui.bootstrap', 'ui.error-tip']);
 
 require('./manage/controllers/project');
+require('./manage/controllers/user');
 require('./manage/services/default');
 require('./manage/services/project');
+require('./manage/services/user');
 
 angular.module('manageApp', [
   'ngAnimate',
@@ -49,7 +51,8 @@ angular.module('manageApp', [
     url: '/manage/users',
     views: {
       'content@': {
-        template: '12345'
+        template: fs.readFileSync(__dirname + '/../templates/manage/user-list.html', 'utf8'),
+        controller: 'UserListCtrl'
       }
     }
   });

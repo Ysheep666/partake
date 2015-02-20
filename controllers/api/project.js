@@ -27,7 +27,8 @@ var _objectIdWithTimestamp = function (timestamp) {
  * @apiGroup Project
  * @apiVersion 0.0.1
  *
- * @apiParam {Number} [page=1] 分页
+ * @apiParam {Number} [index=0] 起始位置
+ * @apiParam {Number} [count=3] 数量
  *
  * @apiSuccess {Object[]} projects 项目列表
  *
@@ -57,7 +58,7 @@ var _objectIdWithTimestamp = function (timestamp) {
  *    }]
  */
 router.route('/').get(function (req, res, done) {
-  var index = req.query.index ? parseInt(req.query.index, 10) : 1;
+  var index = req.query.index ? parseInt(req.query.index, 10) : 0;
   var count = req.query.count ? parseInt(req.query.count, 10) : 3;
 
   var startTimestamp = moment().add(1 - index - count, 'days').format('YYYY/MM/DD');

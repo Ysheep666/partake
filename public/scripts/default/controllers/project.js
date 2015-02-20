@@ -42,7 +42,7 @@ angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function
       return false;
     }
 
-    Project.create($scope.project).then(function (project) {
+    Project.create($scope.project).then(function () {
       Notification.show('提交项目成功', 'success');
 
       $scope.$close();
