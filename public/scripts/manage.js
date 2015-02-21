@@ -48,7 +48,12 @@ angular.module('manageApp', [
   });
 
   $stateProvider.state('user', {
-    url: '/manage/users',
+    abstract: true,
+    url: '/manage/users'
+  });
+
+  $stateProvider.state('user.list', {
+    url: '',
     views: {
       'content@': {
         template: fs.readFileSync(__dirname + '/../templates/manage/user-list.html', 'utf8'),

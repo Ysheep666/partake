@@ -21,7 +21,9 @@ module.exports = function (passport) {
   }, function (accessToken, refreshToken, profile, done) {
     var u = profile._json;
     async.waterfall([function (fn) {
-      User.findOne({github: u.id}, fn);
+      User.findOne({github: u.id}, function (err, user) {
+        fn(err, user);
+      });
     }, function (user, fn) {
       if (!user) {
         user = new User({
