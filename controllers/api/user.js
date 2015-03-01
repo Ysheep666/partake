@@ -5,7 +5,7 @@ var auth = require('../../libs/middlewares/auth');
 
 /**
  * @api {get} /api/users?admin=true 获取用户列表
- * @apiName user list
+ * @apiName user list admin
  * @apiPermission admin
  * @apiGroup User
  * @apiVersion 0.0.1

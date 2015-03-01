@@ -58,6 +58,10 @@ var _objectIdWithTimestamp = function (timestamp) {
  *    }]
  */
 router.route('/').get(function (req, res, done) {
+  if (req.query.admin) {
+    return done();
+  }
+
   var index = req.query.index ? parseInt(req.query.index, 10) : 0;
   var count = req.query.count ? parseInt(req.query.count, 10) : 3;
 
@@ -69,7 +73,7 @@ router.route('/').get(function (req, res, done) {
 
   async.waterfall([function (fn) {
     Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}, is_delete: false})
-      .select('name description vote_count comment_count user')
+      .select('name description languages vote_count comment_count user')
       .sort('-vote_count')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .exec(function (err, projects) {
@@ -138,6 +142,75 @@ router.route('/').get(function (req, res, done) {
     }
 
     res.status(200).json(results);
+  });
+});
+
+/**
+ * @api {get} /api/projects?admin=true 获取项目列表
+ * @apiName project list admin
+ * @apiPermission admin
+ * @apiGroup Project
+ * @apiVersion 0.0.1
+ *
+ * @apiParam {Number} [index=0] 起始位置
+ * @apiParam {Number} [count=10] 数量
+ *
+ * @apiSuccess {Object[]} projects 项目列表
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *    HTTP/1.1 200 OK
+ *    [{
+ *      id: '5482f01e7961fec060a4b045',
+ *      name: 'angular',
+ *      description: '一款优秀的前端JS框架，MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入',
+ *      agreement: 'MIT',
+ *      languages: 'JavaScript',
+ *      systems: '跨平台',
+ *      user: {
+ *        id: '5482f01e7961fec060a4babc',
+ *        name: 'sadne',
+ *        nickname: '不会飞的羊',
+ *        description: '简洁是智慧的灵魂，冗长是肤浅的藻饰',
+ *        avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
+ *      },
+ *      vote: false,
+ *      vote_count: 68,
+ *      comment_count: 5,
+ *      create_at: new Date()
+ *    }]
+ */
+
+router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (req, res, done) {
+  if (!req.query.admin) {
+    return done();
+  }
+
+  var query = {is_delete: false};
+  var index = req.query.index ? parseInt(req.query.index, 10) : 0;
+  var count = req.query.count ? parseInt(req.query.count, 10) : 10;
+
+  if (req.query.type && req.query.type === 'verify') {
+    query.verify = true;
+  }
+
+  if (req.query.type && req.query.type === 'noverify') {
+    query.verify = false;
+  }
+
+  async.waterfall([function (fn) {
+    mongoose.model('Project').count(query).exec(function (err, count) {
+      fn(err, count);
+    });
+  }, function (_count, fn) {
+    mongoose.model('Project').find(query).sort('-_id').skip(index).limit(count).exec(function (err, projects) {
+      fn(err, _count, projects);
+    });
+  }], function (err, count, projects) {
+    if (err) {
+      return done(err);
+    }
+
+    res.status(200).set('item-count', count).json(projects);
   });
 });
 
@@ -317,7 +390,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
 
 
 /**
- * @api {put} /api/projects/:id 更改项目信息
+ * @api {put} /api/projects/:id?admin=true 更改项目信息
  * @apiName project update
  * @apiPermission admin
  * @apiGroup Project
@@ -329,7 +402,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
  * @apiParam {String} [agreement] 授权协议
  * @apiParam {String} [languages] 开发语言
  * @apiParam {String} [systems] 操作系统
- * @apiParam {String} [verify] 是否通过审核
+ * @apiParam {Boolean} [verify] 是否通过审核
  *
  * @apiSuccess {String} id 项目ID
  *
@@ -339,7 +412,60 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
  *       id: '5482f01e7961fec060a4b045'
  *     }
  */
-// TODO: 接口实现
+router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(function (req, res, done) {
+  if (!req.query.admin) {
+    return done();
+  }
+
+  req.assert('name', '名称不能为空').notEmpty();
+  req.assert('url', '链接地址不能为空').notEmpty();
+  req.assert('url', '链接地址格式不正确').isURL();
+  req.assert('description', '描述不能为空').notEmpty();
+
+  var errs = req.validationErrors();
+
+  if (errs) {
+    return done({
+      isValidation: true,
+      errors: errs
+    });
+  }
+
+  var Project = mongoose.model('Project');
+
+  async.waterfall([function (fn) {
+    Project.findOne({_id: req.params.id, is_delete: false}, 'name', function (err, project) {
+      if (project) {
+        fn(null, project);
+      } else {
+        fn({isValidation: true, errors: [{
+          param: 'id',
+          msg: '该项目不存在',
+          value: req.params.id
+        }]});
+      }
+    });
+  }, function (project, fn) {
+    project.name = req.body.name.toLowerCase();
+    project.url = req.body.url;
+    project.description = req.body.description;
+    project.agreement = req.body.agreement;
+    project.languages = req.body.languages;
+    project.systems = req.body.systems;
+    project.verify = true;
+
+    project.save(function (err, project) {
+      fn(err, project);
+    });
+  }], function (err, project) {
+    if (err) {
+      return done(err);
+    }
+
+    res.status(201).json({id: project.id});
+  });
+});
+
 
 /**
  * @api {post} /api/projects/:id/unique 唯一性验证

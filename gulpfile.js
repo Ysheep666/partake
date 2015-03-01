@@ -65,7 +65,7 @@ gulp.task('styles', function () {
     .pipe($.less({
       dumpLineNumbers: 'comments'
     }))
-    .pipe($.autoprefixer('last 2 version', 'safari 5', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+    .pipe($.autoprefixer())
     .pipe($.plumber.stop())
     .pipe(gulp.dest('.tmp/public/styles'))
     .pipe($.size());

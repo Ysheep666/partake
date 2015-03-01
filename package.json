@@ -14,6 +14,8 @@
     "public/components/moment/moment.js",
     "public/components/moment/locale/zh-cn.js",
     "public/components/jquery/dist/jquery.js",
+    "public/components/select2/select2.js",
+    "public/components/select2/select2_locale_zh-CN.js",
     "public/components/bootstrap/js/transition.js",
     "public/components/bootstrap/js/dropdown.js",
     "public/components/bootstrap/js/button.js",
@@ -28,9 +30,11 @@
     "public/components/ui-bootstrap/src/transition/transition.js",
     "public/components/ui-bootstrap/src/position/position.js",
     "public/components/ui-bootstrap/src/bindHtml/bindHtml.js",
+    "public/components/ui-bootstrap/src/modal/modal.js",
     "public/components/ui-bootstrap/src/tooltip/tooltip.js",
     "public/components/ui-bootstrap/src/popover/popover.js",
-    "public/components/ui-bootstrap/src/modal/modal.js",
+    "public/components/ui-bootstrap/src/pagination/pagination.js",
+    "public/components/angular-ui-select2/src/select2.js",
     "public/components/angular-loading-bar/src/loading-bar.js",
     "public/components/angular-moment/angular-moment.js",
     "public/components/angular-nanoscroller/scrollable.js",
@@ -41,7 +45,9 @@
     "public/components/ui-bootstrap/template/modal/window.html",
     "public/components/ui-bootstrap/template/popover/popover.html",
     "public/components/ui-bootstrap/template/tooltip/tooltip-html-unsafe-popup.html",
-    "public/components/ui-bootstrap/template/tooltip/tooltip-popup.html"
+    "public/components/ui-bootstrap/template/tooltip/tooltip-popup.html",
+    "public/components/ui-bootstrap/template/pagination/pager.html",
+    "public/components/ui-bootstrap/template/pagination/pagination.html"
   ],
   "browserify": {
     "transform": [

@@ -4,18 +4,39 @@
       <div class="panel-title">项目管理</div>
     </div>
     <ul class="nav nav-tabs nav-tabs-simple nav-tabs-left bg-white">
-      <li class="active">
-        <a href="#">全部</a>
+      <li ng-class="{active: $state.includes('project.list')}">
+        <a ui-sref="project.list({page: 1})">全部</a>
       </li>
-      <li>
-        <a href="#">已审核</a>
+      <li ng-class="{active: $state.includes('project.verify')}">
+        <a ui-sref="project.verify({page: 1})">已审核</a>
       </li>
-      <li>
-        <a href="#">未审核</a>
+      <li ng-class="{active: $state.includes('project.noverify')}">
+        <a ui-sref="project.noverify({page: 1})">未审核</a>
       </li>
     </ul>
     <div class="tab-content bg-white">
-      <div class="tab-pane posts active">
+      <div class="tab-pane projects active">
+        <div class="items">
+          <div class="item clearfix" ng-repeat="project in projects | filter: filterVerify">
+            <div class="info">
+              <h4>
+                <a target="_blank" href="{{project.url}}">{{project.name | capitalize}}</a>
+                <div class="languages" ng-if="project.languages.length">
+                  <span ng-repeat="language in project.languages">#{{language}}</span>
+                </div>
+              </h4>
+              <p class="description">{{project.description}}</p>
+            </div>
+            <ul class="reactions">
+              <li ng-if="project.verify"><a href ng-click="verify(project)"><span class="ion-ios-paw"></span></a></li>
+              <li ng-if="!project.verify"><a href ng-click="verify(project)" tooltip-append-to-body="true" tooltip="审核该项目"><span class="ion-ios-paw-outline"></span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="pager" ng-show="projects.length">
+          <div class="info">显示 {{10 * (currentPage -1) + 1}} 到 {{10 * currentPage}}，共有 {{count}} 条数据</div>
+          <pagination total-items="count" ng-model="currentPage" ng-click="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
+        </div>
       </div>
     </div>
   </div>
