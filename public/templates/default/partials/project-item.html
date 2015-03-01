@@ -2,7 +2,12 @@
   <project-upvote project="project"></project-upvote>
   <user-avatar class="user-avatar" user="project.user" s="30"></user-avatar>
   <div class="info">
-    <a class="title" target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>
-    <span class="description">{{project.description}}</span>
+    <h4 class="title">
+      <a target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>
+      <div class="languages" ng-if="project.languages.length">
+        <span ng-repeat="language in project.languages">#{{language}}</span>
+      </div>
+    </h4>
+    <p class="description">{{project.description}}</p>
   </div>
 </div>

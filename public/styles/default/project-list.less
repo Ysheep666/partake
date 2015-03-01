@@ -138,14 +138,28 @@
     margin-left: 45px;
 
     .title {
-      margin: 6px 2px 0 0;
-      font-size: 20px;
-      font-weight: 600;
-      color: @color-black-default;
-      text-decoration: none;
+      margin: 0 2px 0 0;
 
-      &:hover {
-        border-bottom: 1px solid @color-black-default;
+      a {
+        font-size: 20px;
+        font-weight: 600;
+        color: @color-black-default;
+        text-decoration: none;
+
+        &:hover {
+          border-bottom: 1px solid @color-black-default;
+        }
+      }
+
+      .languages {
+        display: inline-block;
+
+        span {
+          margin-left: 5px;
+          font-size: 12px;
+          font-weight: normal;
+          color: #bbb;
+        }
       }
     }
 

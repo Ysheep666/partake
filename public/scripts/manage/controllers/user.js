@@ -20,12 +20,4 @@ angular.module('manageApp.controller').controller('UserListCtrl', function ($sco
       ErrorTip.show(err.data);
     });
   };
-
-  $scope.delete = function (user) {
-    User.delete(user.id).then(function () {
-      $scope.users.splice($scope.users.indexOf(user), 1);
-    }, function (err) {
-      ErrorTip.show(err.data);
-    });
-  };
 });

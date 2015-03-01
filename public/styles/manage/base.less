@@ -1,0 +1,50 @@
+.wrapper {
+  margin-bottom: 60px;
+}
+
+.pager {
+  margin: 10px 0 0;
+
+  .info {
+    float: left;
+    padding: 5px;
+    font-size: 13px;
+    color: @color-black-default;
+  }
+
+  ul.pagination {
+    text-align: right;
+
+    &, li {
+      margin: 0;
+    }
+
+    li {
+      display: inline-block;
+      list-style: none;
+      padding-left: 0;
+      font-size: 13px;
+
+      &.active a {
+        color: @color-black-default;
+        border-bottom: 1px solid @color-black-default;
+      }
+
+      &.disabled a, &.disabled a:hover {
+        color: lighten(@color-black-default, 60%);
+        border-bottom: none;
+      }
+
+      a {
+        padding: 5px;
+        color: lighten(@color-black-default, 30%);
+
+        &:hover {
+          color: @color-black-default;
+          border-bottom: 1px solid @color-black-default;
+        }
+      }
+    }
+  }
+}
+

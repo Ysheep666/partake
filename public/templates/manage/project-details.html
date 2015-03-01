@@ -1,0 +1,63 @@
+<div class="modal-header clearfix">
+  <button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <h4>{{project.name|capitalize}}</h4>
+</div>
+<div class="modal-body">
+  <form name="form" ng-submit="submit()" novalidate>
+    <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.name.$touched) && form.name.$error.required}">
+      <label>名称</label>
+      <div class="controls">
+        <input type="text" class="form-control" name="name" ng-model="project.name" placeholder="如：Angular" autocomplete="off" required>
+      </div>
+    </div>
+    <div class="error-help-block" ng-show="form.$submitted || form.name.$touched">
+      <p ng-show="form.name.$error.required">名称不能为空。</p>
+    </div>
+    <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.url.$touched) && (form.url.$error.required || form.url.$error.url)}">
+      <label>链接地址</label>
+      <div class="controls">
+        <input type="url" class="form-control" name="url" ng-model="project.url" placeholder="以 http:// 开头的有效网址" autocomplete="off" required>
+      </div>
+    </div>
+    <div class="error-help-block" ng-show="form.$submitted || form.url.$touched">
+      <p ng-show="form.url.$error.required">链接地址不能为空。</p>
+      <p ng-show="form.url.$error.url">链接地址格式错误。</p>
+    </div>
+    <div class="form-group form-group-default" ng-class="{'has-error': (form.$submitted || form.description.$touched) && form.description.$error.required}">
+      <label>一句话简介</label>
+      <div class="controls">
+        <textarea class="form-control" name="description" ng-model="project.description" placeholder="请精简描述, 50字以内" rows="3" autocomplete="off" required></textarea>
+      </div>
+    </div>
+    <div class="error-help-block" ng-show="form.$submitted || form.description.$touched">
+      <p ng-show="form.description.$error.required">一句话简介不能为空。</p>
+    </div>
+    <div class="form-group form-group-default form-group-default-select2">
+      <label>授权协议</label>
+      <div class="controls">
+        <select ui-select2 ng-model="project.agreement" data-placeholder="选择授权协议">
+          <option ng-repeat="agreement in agreements" value="{{agreement}}">{{agreement}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group form-group-default form-group-default-select2">
+      <label>开发语言</label>
+      <div class="controls">
+        <select ui-select2 ng-model="project.languages" data-placeholder="选择开发语言" multiple="multiple">
+          <option ng-repeat="language in languages" value="{{language}}">{{language}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group form-group-default form-group-default-select2">
+      <label>操作系统</label>
+      <div class="controls">
+        <select ui-select2 ng-model="project.systems" data-placeholder="选操作系统" multiple="multiple">
+          <option ng-repeat="system in systems" value="{{system}}">{{system}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-default" type="submit">提交</button>
+    </div>
+  </form>
+</div>

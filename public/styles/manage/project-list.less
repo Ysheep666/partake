@@ -1,5 +1,86 @@
 @import '../../components/bootstrap/less/mixins';
 
-.posts {
+.projects {
   min-height: 400px;
+
+  .item {
+    position: relative;
+    display: block;
+    padding: 12px 20px ;
+    margin: 0 0 10px;
+    background: #e1f0fd;
+    border-radius: 3px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .info {
+      h4 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+
+        a {
+          color: @color-black-default;
+        }
+      }
+
+      .languages {
+        display: inline-block;
+
+        span {
+          margin-left: 5px;
+          font-size: 12px;
+          font-weight: normal;
+          color: #bbb;
+        }
+      }
+
+      .description {
+        display: block;
+        margin: 5px 0 0 0;
+        line-height: 20px;
+        color: #999;
+      }
+    }
+
+    .reactions {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      display: block;
+      transform: translateY(-50%);
+
+      li {
+        display: inline-block;
+        margin-left: 10px;
+      }
+
+      a {
+        font-size: 24px;
+        color: #bbb;
+
+        &:hover {
+          color: @color-black-default;
+        }
+      }
+    }
+  }
+}
+
+.project-details {
+  .btns {
+    text-align: center;
+  }
+
+  .btn-default {
+    display: inline-block;
+    min-width: 120px;
+    margin-top: 15px;
+    color: #fff;
+    background-color: #40d47e;
+    border-color: #40d47e;
+    outline: none!important;
+  }
 }

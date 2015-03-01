@@ -32,7 +32,7 @@
   </div>
 </div>
 <div class="project-details-upvoted">
-  <h2 class="title">{{project.vote_count}} 人觉得很赞</h2>
+  <h2 class="title">共 {{project.vote_count}} 个赞</h2>
   <div class="content">
     <div class="null" ng-if="!project.vote_count">
       <span class="ion-sad-outline"></span> 该项目还没有人点赞。
@@ -40,5 +40,13 @@
     <ul class="items" ng-if="project.vote_count">
       <li class="item" ng-repeat="user in project.votes"><user-avatar class="people" user="user" s="30"></user-avatar></li>
     </ul>
+  </div>
+</div>
+<div class="project-details-comments">
+  <h2 class="title">共 {{project.comment_count}} 条评论</h2>
+  <div class="content">
+    <div class="null" ng-if="!project.comment_count">
+      <span class="ion-sad-outline"></span> 该项目还没有人评论。
+    </div>
   </div>
 </div>

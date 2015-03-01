@@ -5,7 +5,7 @@ var auth = require('../../libs/middlewares/auth');
 
 /**
  * @api {get} /api/users?admin=true 获取用户列表
- * @apiName user list
+ * @apiName user list admin
  * @apiPermission admin
  * @apiGroup User
  * @apiVersion 0.0.1
@@ -32,14 +32,23 @@ router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (
     return done();
   }
 
-  mongoose.model('User').find({is_delete: false})
-    .select('-is_delete')
-    .exec(function (err, users) {
-      if (err) {
-        return done(err);
-      }
-      res.status(200).json(users);
-    });
+  var query = {is_delete: false};
+
+  if (req.query.type && req.query.type === 'provider') {
+    query.provider = true;
+  }
+
+  if (req.query.type && req.query.type === 'administrate') {
+    query.administrate = true;
+  }
+
+  mongoose.model('User').find(query).exec(function (err, users) {
+    if (err) {
+      return done(err);
+    }
+
+    res.status(200).json(users);
+  });
 });
 
 /**
@@ -87,43 +96,5 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
     res.status(200).json({id: user.id});
   });
 });
-
-/**
- * @api {delete} /api/users/:id?admin=true 更改用户信息
- * @apiName user update
- * @apiPermission admin
- * @apiGroup User
- * @apiVersion 0.0.1
- *
- * @apiSuccess {String} id 用户ID
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 201 OK
- *     {
- *       id: '5482f01e7961fec060a4b045'
- *     }
- */
-router.route('/:id').delete(auth.checkUser).delete(auth.checkAdministrate).delete(function (req, res, done) {
-  if (!req.query.admin) {
-    return done();
-  }
-
-  if (req.user.id  === req.params.id) {
-    return done({isValidation: true, errors: [{
-      param: 'id',
-      msg: '不能删除自己',
-      value: req.params.id
-    }]});
-  }
-
-  mongoose.model('User').findOneAndUpdate({_id: req.params.id, is_delete: false}, {$set: {is_delete: true}}, function (err, user) {
-    if (err) {
-      return done(err);
-    }
-    res.status(200).json({id: user.id});
-  });
-});
-
-
 
 module.exports = router;

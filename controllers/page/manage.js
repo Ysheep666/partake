@@ -9,6 +9,10 @@ router.route('*').all(auth.checkUser).all(auth.checkAdministrate);
 // 审核管理
 router.route([
   '/',
+  '/projects',
+  '/projects/:id',
+  '/projects/:id/verify',
+  '/projects/:id/noverify',
   '/users'
 ]).get(function (req, res) {
   // 格言警句
