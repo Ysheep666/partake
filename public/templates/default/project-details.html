@@ -48,5 +48,18 @@
     <div class="null" ng-if="!project.comment_count">
       <span class="ion-sad-outline"></span> 该项目还没有人评论。
     </div>
+    <ul class="items" ng-if="project.comment_count">
+      <li class="item" ng-repeat="comment in project.comments">
+        <user-avatar class="people" user="comment.user" s="30"></user-avatar>
+        <div class="c">
+          <h3>{{comment.user.name}}<span>{{comment.user.nickname}}不会飞的羊</span></h3>
+          <div class="text">{{comment.content}}</div>
+          <div class="options">
+            <comment-upvote comment="comment"></comment-upvote>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
+<div class="project-details-comment-new" ng-if="$root.me !== null"><comment  project="project"></comment></div>

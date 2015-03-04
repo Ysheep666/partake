@@ -22,10 +22,9 @@ angular.module('defaultApp.directive').directive('projectUpvote', function () {
           $scope.project.vote_count = project.vote_count;
           if ($scope.project.votes && $scope.project.vote_count < 38) {
             var _index = -1;
-            var _id = angular.element('meta[name="partake-user-id"]').attr('content');
             for (var i = 0; i < $scope.project.votes.length; i++) {
               var v = $scope.project.votes[i];
-              if (v.id === _id) {
+              if (v.id === $rootScope.me.id) {
                 _index = i;
                 break;
               }
@@ -33,11 +32,11 @@ angular.module('defaultApp.directive').directive('projectUpvote', function () {
 
             if (_index === -1) {
               $scope.project.votes.push({
-                id: _id,
-                name: angular.element('meta[name="partake-user-name"]').attr('content'),
-                nickname: angular.element('meta[name="partake-user-nickname"]').attr('content'),
-                avatar: angular.element('meta[name="partake-user-avatar"]').attr('content'),
-                description: angular.element('meta[name="partake-user-description"]').attr('content')
+                id: $rootScope.me.id,
+                name: $rootScope.me.name,
+                nickname: $rootScope.me.nickname,
+                avatar: $rootScope.me.avatar,
+                description: $rootScope.me.description
               });
             } else {
               $scope.project.votes.splice(_index, 1);
@@ -48,6 +47,7 @@ angular.module('defaultApp.directive').directive('projectUpvote', function () {
     },
     link: function (scope, element) {
       element.on('click', function (e) {
+        e.preventDefault();
         e.stopPropagation();
         scope.vote();
       });

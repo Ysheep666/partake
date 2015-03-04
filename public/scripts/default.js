@@ -16,10 +16,14 @@ angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'fil
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
+require('./default/directives/comment-upvote');
+require('./default/directives/comment');
 require('./default/directives/form-group-default');
 require('./default/directives/project-item');
 require('./default/directives/project-upvote');
+require('./default/directives/textarea-auth-height');
 require('./default/services/ui/error-tip');
+require('./default/services/comment');
 require('./default/services/default');
 require('./default/services/project');
 
@@ -42,7 +46,7 @@ angular.module('defaultApp', [
   cfpLoadingBarProvider.includeSpinner = false;
 
   var slideModalOpenOptions = {
-    template: '<scrollable class="modal-view"><div ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
+    template: '<scrollable class="modal-view"><div class="slide-right-content" ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
     backdrop: true,
     windowClass: 'slide-right'
   };
@@ -125,6 +129,17 @@ angular.module('defaultApp', [
 
   $urlRouterProvider.otherwise('/');
 }).run(function ($http, $cookies, $rootScope, $state, $window, Notification, Default) {
+  $rootScope.me = null;
+  if (angular.element('meta[name="partake-user-id"]').length) {
+    $rootScope.me = {
+      id: angular.element('meta[name="partake-user-id"]').attr('content'),
+      name: angular.element('meta[name="partake-user-name"]').attr('content'),
+      nickname: angular.element('meta[name="partake-user-nickname"]').attr('content'),
+      avatar: angular.element('meta[name="partake-user-avatar"]').attr('content'),
+      description: angular.element('meta[name="partake-user-description"]').attr('content')
+    };
+  }
+
   $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
   $rootScope.$state = $state;
 

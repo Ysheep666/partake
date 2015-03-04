@@ -1,0 +1,8 @@
+<form class="form-comment" name="form" ng-submit="submit()" novalidate>
+  <button class="btn btn-default" type="submit">提交</button>
+  <div class="form-group form-group-default" ng-class="{'has-error': form.$submitted && form.content.$error.required}">
+    <div class="controls">
+      <textarea class="form-control" name="content" ng-model="comment.content" placeholder="参与讨论" rows="3" autocomplete="off" textarea-auth-height required></textarea>
+    </div>
+  </div>
+</form>

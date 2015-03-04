@@ -237,3 +237,116 @@
     }
   }
 }
+
+.project-details-comments {
+  margin-bottom: 100px;
+
+  .content {
+    ul, li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .item {
+      min-height: 60px;
+
+      .people {
+        float: left;
+
+        a {
+          display: block;
+        }
+
+        img {
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          vertical-align: middle;
+        }
+      }
+
+      .c {
+        margin-left: 40px;
+
+        h3 {
+          display: inline-block;
+          margin: 0px;
+          padding: 0px;
+          font-size: 16px;
+
+          span {
+            margin-left: 5px;
+            color: #bbb;
+            font-size: 13px;
+            font-weight: normal;
+          }
+        }
+
+        .text {
+          margin-top: 3px;
+          line-height: 24px;
+          font-size: 16px;
+          font-weight: normal;
+          color: @color-black-default;
+        }
+
+        .options {
+          margin-bottom: 5px;
+
+          a {
+            line-height: 24px;
+            font-size: 16px;
+            color: #bbb;
+
+            &:hover {
+              color: @color-black-default;
+            }
+
+            span {
+              margin-right: 4px;
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.project-details-comment-new {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 15px 20px;
+  background-color: @color-white;
+  box-shadow: 0px -1px 0px 0px rgba(83,69,64,0.14);
+
+  .form-group-default {
+    margin-top: 0;
+
+    textarea {
+      overflow: auto;
+      word-break: break-all;
+    }
+  }
+
+  .btn-default {
+    float: right;
+    margin-left: 10px;
+    width: 60px;
+    height: 60px;
+    color: @color-white;
+    background-color: @color-default;
+    border-color: @color-default;
+    outline: none !important;
+
+    &:hover{
+      background-color: lighten(@color-default, 10%);
+      border-color: lighten(@color-default, 10%);
+    }
+  }
+}

@@ -14,6 +14,7 @@ module.exports = function (app) {
   });
 
   app.use('/api/', require('../controllers/api/default'));
+  app.use('/api/comments', require('../controllers/api/comment'));
   app.use('/api/projects', require('../controllers/api/project'));
   app.use('/api/users', require('../controllers/api/user'));
 
