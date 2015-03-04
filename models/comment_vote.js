@@ -3,8 +3,8 @@ var ObjectId = mongoose.Schema.ObjectId;
 
 // 结构
 var CommentVoteSchema = new mongoose.Schema({
-  user: {type: ObjectId, ref: 'User'}, // 用户
   comment: {type: ObjectId, ref: 'Comment'}, // 评论
+  user: {type: ObjectId, ref: 'User'}, // 用户
   is_delete: {type: Boolean, default: false} // 是否已删除
 });
 

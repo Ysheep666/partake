@@ -1,4 +1,3 @@
-var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 

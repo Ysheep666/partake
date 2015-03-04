@@ -264,6 +264,8 @@ router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (
  */
 // TODO: 未完成
 router.route('/:id').get(function (req, res, done) {
+  var Comment = mongoose.model('Comment');
+  // var CommentVote = mongoose.model('CommentVote');
   var Project = mongoose.model('Project');
   var ProjectVote = mongoose.model('ProjectVote');
 
@@ -306,6 +308,18 @@ router.route('/:id').get(function (req, res, done) {
         for (var i = 0; i < votes.length; i++) {
           project.votes.push(votes[i].user);
         }
+        fn(null, project);
+      });
+  }, function (project, fn) {
+    Comment.find({project: project.id, is_delete: false})
+      .select('content vote_count user')
+      .populate({path: 'user', select: 'name nickname description avatar'})
+      .limit(20)
+      .exec(function (err, comments) {
+        if (err) {
+          fn(err);
+        }
+        project.comments = comments;
         fn(null, project);
       });
   }], function (err, project) {
@@ -468,27 +482,6 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
 
 
 /**
- * @api {post} /api/projects/:id/unique 唯一性验证
- * @apiName project unique
- * @apiGroup Project
- * @apiVersion 0.0.1
- *
- * @apiParam {String} [name] 名称
- * @apiParam {String} [url] 链接地址
- *
- * @apiSuccess {String} id 项目ID
- * @apiSuccess {Boolean} unique 是否唯一
- *
- * @apiSuccessExample {json} Success-Response:
- *    HTTP/1.1 200 OK
- *    {
- *      id: '5482f01e7961fec060a4babc',
- *      unique: true
- *    }
- */
-// TODO: 接口实现
-
-/**
  * @api {get} /api/projects/:id/votes 获取项目投票人
  * @apiName project vote list
  * @apiGroup Project
@@ -539,8 +532,11 @@ router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
     });
     fn(null, vote);
   }, function (vote, fn) {
-    Project.findOne({_id: vote.project, is_delete: false}, 'name', function (err, project) {
-      if (project) {
+    Project.count({_id: vote.project, is_delete: false}, function (err, count) {
+      if (err) {
+        return fn(err);
+      }
+      if (0 < count) {
         fn(null, vote);
       } else {
         fn({isValidation: true, errors: [{
@@ -612,27 +608,6 @@ router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
  *        avatar: 'https://avatars.githubusercontent.com/u/1539923?v=3'
  *      }
  *    }]
- */
-// TODO: 接口实现
-
-/**
- * @api {post} /api/projects/:id/comments 提交项目评论
- * @apiName project comment create
- * @apiPermission user
- * @apiGroup Project
- * @apiVersion 0.0.1
- *
- * @apiParam {String} project 项目ID
- * @apiParam {String} [comment] 评论ID
- * @apiParam {String} content 评论内容
- *
- * @apiSuccess {String} id 评论ID
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 201 OK
- *     {
- *       id: '5482f01e7961fec060a4b045'
- *     }
  */
 // TODO: 接口实现
 
