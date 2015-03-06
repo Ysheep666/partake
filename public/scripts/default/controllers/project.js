@@ -32,8 +32,14 @@ angular.module('defaultApp.controller').controller('ProjectListCtrl', function (
   });
 });
 
-angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', function ($scope, project) {
-  $scope.project = project;
+angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', function ($scope, $stateParams, Project) {
+  Project.get($stateParams.id).then(function (project) {
+    $scope.project = project;
+  });
+
+  $scope.filterComments = function (comment) {
+    return !comment.is_delete;
+  };
 });
 
 angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function ($rootScope, $scope, Notification, ErrorTip, Project) {

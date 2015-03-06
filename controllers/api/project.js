@@ -262,10 +262,9 @@ router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (
  *      }]
  *    }
  */
-// TODO: 未完成
 router.route('/:id').get(function (req, res, done) {
   var Comment = mongoose.model('Comment');
-  // var CommentVote = mongoose.model('CommentVote');
+  var CommentVote = mongoose.model('CommentVote');
   var Project = mongoose.model('Project');
   var ProjectVote = mongoose.model('ProjectVote');
 
@@ -322,10 +321,48 @@ router.route('/:id').get(function (req, res, done) {
         project.comments = comments;
         fn(null, project);
       });
+  }, function (project, fn) {
+    var results = [];
+    if (req.user) {
+      var ids = _.map(project.comments, function (comment) {
+        return comment.id;
+      });
+
+      CommentVote.find({comment: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
+        if (err) {
+          fn(err);
+        }
+
+        for (var i = 0; i < project.comments.length; i++) {
+          var comment = project.comments[i].toJSON();
+          comment.vote = false;
+          for (var j = 0; j < votes.length; j++) {
+            if (votes[j].comment.equals(comment.id)) {
+              comment.vote = true;
+              break;
+            }
+          }
+          results.push(comment);
+        }
+
+        project.comments = results;
+        fn(null, project);
+      });
+    } else {
+      for (var i = 0; i < project.comments.length; i++) {
+        var comment = project.comments[i].toJSON();
+        comment.vote = false;
+        results.push(comment);
+      }
+
+      project.comments = results;
+      fn(null, project);
+    }
   }], function (err, project) {
     if (err) {
       return done(err);
     }
+
     res.status(200).json(project);
   });
 });
@@ -370,7 +407,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
     var project = new Project({
       name: req.body.name.toLowerCase(),
       url: req.body.url,
-      description: req.body.description,
+      description: req.sanitize('description').escape(),
       user: req.user.id
     });
     fn(null, project);
@@ -462,7 +499,7 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
   }, function (project, fn) {
     project.name = req.body.name.toLowerCase();
     project.url = req.body.url;
-    project.description = req.body.description;
+    project.description = req.sanitize('description').escape();
     project.agreement = req.body.agreement;
     project.languages = req.body.languages;
     project.systems = req.body.systems;

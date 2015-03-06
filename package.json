@@ -23,6 +23,7 @@
     "public/components/bootstrap/js/popover.js",
     "public/components/nanoscroller/bin/javascripts/jquery.nanoscroller.js",
     "public/components/angular/angular.js",
+    "public/components/angular-sanitize/angular-sanitize.js",
     "public/components/angular-animate/angular-animate.js",
     "public/components/angular-cookies/angular-cookies.js",
     "public/components/ui-router/release/angular-ui-router.js",

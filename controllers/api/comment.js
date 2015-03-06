@@ -66,7 +66,7 @@ router.route('/').post(auth.checkUser).post(function (req, res, done) {
     var comment = new Comment({
       user: req.user.id,
       project: req.body.project,
-      content: req.body.content
+      content: req.sanitize('content').escape()
     });
     fn(null, comment);
   }, function (comment, fn) {
@@ -182,5 +182,56 @@ router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
   });
 });
 
+/**
+ * @api {delete} /api/comments/:id 删除评论
+ * @apiName comment delete
+ * @apiPermission user
+ * @apiGroup Comment
+ * @apiVersion 0.0.1
+ *
+ * @apiSuccess {String} id 评论ID
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       id: '5482f01e7961fec060a4b045'
+ *     }
+ */
+router.route('/:id').delete(auth.checkUser).delete(function (req, res, done) {
+  var Project = mongoose.model('Project');
+  var Comment = mongoose.model('Comment');
+
+  async.waterfall([function (fn) {
+    Comment.findOne({_id: req.params.id, is_delete: false}, function (err, comment) {
+      if (err) {
+        return fn(err);
+      }
+
+      if (!comment.user.equals(req.user.id)) {
+        return done({isValidation: true, errors: [{
+          param: 'id',
+          msg: '只能删除自己的评论',
+          value: req.params.id
+        }]});
+      }
+      fn(null, comment);
+    });
+  }, function (comment, fn) {
+    comment.is_delete = true;
+    comment.save(function (err, comment) {
+      fn(err, comment);
+    });
+  }, function (comment, fn) {
+    Project.findByIdAndUpdate(comment.project, {$inc: {'comment_count': -1}}, function (err) {
+      fn(err, comment);
+    });
+  }], function (err, comment) {
+    if (err) {
+      return done(err);
+    }
+
+    res.status(200).json({id: comment.id});
+  });
+});
 
 module.exports = router;

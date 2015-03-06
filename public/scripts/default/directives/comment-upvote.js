@@ -14,7 +14,7 @@ angular.module('defaultApp.directive').directive('commentUpvote', function () {
           $scope.comment.vote_count = comment.vote_count;
         }, function (err) {
           ErrorTip.show(err.data);
-        })
+        });
       };
     },
     link: function (scope, element) {

@@ -2,6 +2,17 @@ var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 
+window.PT = {};
+
+window.PT.escape = function (str) {
+  return (str.replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\//g, '&#x2F;'));
+};
+
 require('./components/filters/default');
 require('./components/filters/capitalize');
 require('./components/filters/day-time');
@@ -16,6 +27,7 @@ angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'fil
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
+require('./default/directives/comment-delete');
 require('./default/directives/comment-upvote');
 require('./default/directives/comment');
 require('./default/directives/form-group-default');
@@ -28,6 +40,7 @@ require('./default/services/default');
 require('./default/services/project');
 
 angular.module('defaultApp', [
+  'ngSanitize',
   'ngAnimate',
   'ngCookies',
   'ui.router',
@@ -106,12 +119,7 @@ angular.module('defaultApp', [
     views: {
       'modal@': {
         template: fs.readFileSync(__dirname + '/../templates/default/project-details.html', 'utf8'),
-        controller: 'ProjectDetailsCtrl',
-        resolve: {
-          project: function ($stateParams, Project) {
-            return Project.get($stateParams.id);
-          }
-        }
+        controller: 'ProjectDetailsCtrl'
       }
     }
   });

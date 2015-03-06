@@ -14,13 +14,13 @@ angular.module('defaultApp.directive').directive('comment', function($state, Not
 
       scope.comment = {};
 
-      scope.comment.project = scope.project.id;
-      scope.comment.user = scope.$root.me.id;
-
       scope.submit = function () {
         if (!scope.form.$valid) {
           return false;
         }
+
+        scope.comment.project = scope.project.id;
+        scope.comment.user = scope.$root.me.id;
 
         Comment.create(scope.comment).then(function (data) {
           Notification.show('提交评论成功', 'success');
@@ -28,7 +28,7 @@ angular.module('defaultApp.directive').directive('comment', function($state, Not
           if (scope.project.comment_count < 20) {
             scope.project.comments.push({
               id: data.id,
-              content: scope.comment.content,
+              content: window.PT.escape(scope.comment.content),
               vote_count: 0,
               created_at: new Date(),
               user: scope.$root.me
