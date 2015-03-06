@@ -25,7 +25,7 @@
                   <span ng-repeat="language in project.languages">#{{language}}</span>
                 </div>
               </h4>
-              <p class="description">{{project.description}}</p>
+              <p class="description" ng-bind-html="project.description"></p>
             </div>
             <ul class="reactions">
               <li ng-if="project.verify"><a href ng-click="verify(project)"><span class="ion-ios-paw"></span></a></li>

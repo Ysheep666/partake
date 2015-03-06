@@ -4,18 +4,10 @@ var angular = require('angular');
 
 window.PT = {};
 
-window.PT.escape = function (str) {
-  return (str.replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\//g, '&#x2F;'));
-};
-
-require('./components/filters/default');
 require('./components/filters/capitalize');
 require('./components/filters/day-time');
+require('./components/filters/default');
+require('./components/filters/escape');
 require('./components/services/notification');
 require('./components/directives/user-avatar');
 
@@ -23,7 +15,7 @@ angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'u
 
 angular.module('defaultApp.controller', []);
 angular.module('defaultApp.directive', ['ui.user-avatar']);
-angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time']);
+angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time', 'filter.escape']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
