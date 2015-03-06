@@ -14,6 +14,12 @@ angular.module('defaultApp.service').factory('Comment', function ($http) {
       return $http.post('/api/comments/' + id + '/votes').then(function (response) {
         return response.data;
       });
+    },
+    // 删除
+    delete: function (id) {
+      return $http.delete('/api/comments/' + id ).then(function (response) {
+        return response.data;
+      });
     }
   };
 });

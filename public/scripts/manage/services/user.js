@@ -15,12 +15,6 @@ angular.module('manageApp.service').factory('User', function ($http) {
       return $http.put('/api/users/' + id + '?admin=true', update).then(function (response) {
         return response.data;
       });
-    },
-    // 删除
-    delete: function (id) {
-      return $http.delete('/api/users/' + id + '?admin=true').then(function (response) {
-        return response.data;
-      });
     }
   };
 });

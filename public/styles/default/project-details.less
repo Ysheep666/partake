@@ -1,5 +1,19 @@
 @project-details-header-bg-color: @color-black-default;
 
+.project-detailsloading {
+  display: block;
+  padding: 120px 0 50px;
+  text-align: center;
+
+  span {
+    line-height: 65px;
+    font-size: 48px;
+    text-align: center;
+    color: #999;
+    animation: loading-revolve 1.2s linear infinite;
+  }
+}
+
 .project-details-header {
   position: relative;
   padding: 30px;
@@ -271,42 +285,70 @@
         margin-left: 40px;
 
         h3 {
-          display: inline-block;
+          display: block;
           margin: 0px;
           padding: 0px;
           font-size: 16px;
 
           span {
             margin-left: 5px;
-            color: #bbb;
             font-size: 13px;
             font-weight: normal;
+            color: #bbb;
+          }
+
+          .delete {
+            margin-left: 2px;
+            font-weight: normal;
+            color: #bbb;
+
+            span {
+              font-size: 15px;
+            }
           }
         }
 
         .text {
-          margin-top: 3px;
+          margin-top: 5px;
           line-height: 24px;
           font-size: 16px;
           font-weight: normal;
           color: @color-black-default;
         }
 
+        .time {
+          float: left;
+          line-height: 24px;
+          font-size: 14px;
+          color: #bbb;
+        }
+
         .options {
-          margin-bottom: 5px;
+          margin-bottom: 10px;
+          height: 24px;
+          text-align: right;
 
           a {
             line-height: 24px;
             font-size: 16px;
             color: #bbb;
+            margin-left: 6px;
 
             &:hover {
               color: @color-black-default;
             }
 
             span {
+              display: inline-block;
               margin-right: 4px;
+              line-height: 24px;
               font-size: 18px;
+            }
+
+            .t {
+              margin-left: -2px;
+              margin-right: 0;
+              font-size: 14px;
             }
           }
         }

@@ -8,6 +8,6 @@
         <span ng-repeat="language in project.languages">#{{language}}</span>
       </div>
     </h4>
-    <p class="description">{{project.description}}</p>
+    <p class="description" ng-bind-html="project.description"></p>
   </div>
 </div>
