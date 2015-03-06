@@ -7,8 +7,9 @@ window.PT.agreements = ['Apache Licence' , 'BSD', 'GPL', 'LGPL', 'MIT', 'MPL', '
 window.PT.languages = ['Swift', 'Java', 'C/C++', 'Objective-C', 'PHP', 'Perl', 'Python', 'Ruby', 'C', '.NET', 'ASP', 'Google Go', 'D语言', 'Groovy', 'Scala', 'JavaScript', 'HTML/CSS', 'ActionScript', 'VBScript', 'Delphi/Pascal', 'Basic', 'ErLang', 'COBOL', 'Fortran', 'Lua', 'SHELL', 'Smalltalk', '汇编', 'Sliverlight', 'Lisp'];
 window.PT.systems = ['跨平台', 'Windows', 'Linux', 'BSD', 'UNIX', 'OS X', 'Symbian', 'J2ME', '嵌入式', 'Android', 'iPhone/iPad/iPod', 'Windows Phone/Mobile', 'Meego', 'Moblin', 'Firefox OS'];
 
-require('./components/filters/default');
 require('./components/filters/capitalize');
+require('./components/filters/default');
+require('./components/filters/escape');
 require('./components/services/notification');
 require('./components/services/error-tip');
 
@@ -16,7 +17,7 @@ angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'u
 
 angular.module('manageApp.controller', []);
 angular.module('manageApp.directive', []);
-angular.module('manageApp.filter', ['filter.default', 'filter.capitalize']);
+angular.module('manageApp.filter', ['filter.default', 'filter.capitalize', 'filter.escape']);
 angular.module('manageApp.service', ['ui.notification', 'ui.bootstrap', 'ui.select2', 'ui.error-tip']);
 
 require('./manage/controllers/project');
@@ -26,6 +27,7 @@ require('./manage/services/project');
 require('./manage/services/user');
 
 angular.module('manageApp', [
+  'ngSanitize',
   'ngAnimate',
   'ngCookies',
   'ui.router',

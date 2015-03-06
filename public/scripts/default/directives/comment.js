@@ -1,7 +1,7 @@
 var fs = require('fs');
 var angular = require('angular');
 
-angular.module('defaultApp.directive').directive('comment', function($state, Notification, ErrorTip, Comment) {
+angular.module('defaultApp.directive').directive('comment', function($state, $filter, Notification, ErrorTip, Comment) {
  return {
     restrict: 'E',
     replace: true,
@@ -28,7 +28,7 @@ angular.module('defaultApp.directive').directive('comment', function($state, Not
           if (scope.project.comment_count < 20) {
             scope.project.comments.push({
               id: data.id,
-              content: window.PT.escape(scope.comment.content),
+              content: $filter('escape')(scope.comment.content),
               vote_count: 0,
               created_at: new Date(),
               user: scope.$root.me

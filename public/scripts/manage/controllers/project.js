@@ -7,6 +7,12 @@ angular.module('manageApp.controller').controller('ProjectDetailsCtrl', function
   $scope.systems = window.PT.systems;
 
   $scope.project = project;
+  $scope.project.description = ($scope.project.description.replace('&amp;', '&')
+    .replace('&quot;', '"')
+    .replace('&#x27;', "'")
+    .replace('&lt;', '<')
+    .replace('&gt;', '>')
+    .replace('&#x2F;', '/'));
 
   // 提交项目
   $scope.submit = function () {
