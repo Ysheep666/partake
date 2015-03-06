@@ -78,7 +78,6 @@ angular.module('manageApp', [
     }
   });
 
-
   $stateProvider.state('user', {
     abstract: true,
     url: '/manage/users'

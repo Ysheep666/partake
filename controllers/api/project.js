@@ -312,6 +312,7 @@ router.route('/:id').get(function (req, res, done) {
   }, function (project, fn) {
     Comment.find({project: project.id, is_delete: false})
       .select('content vote_count user')
+      .sort('-vote_count')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .limit(20)
       .exec(function (err, comments) {

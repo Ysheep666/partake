@@ -1,4 +1,3 @@
-var moment = require('moment');
 var angular = require('angular');
 
 angular.module('defaultApp.controller').controller('ProjectListCtrl', function ($rootScope, $scope, Project) {
@@ -40,6 +39,10 @@ angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', functio
   $scope.filterComments = function (comment) {
     return !comment.is_delete;
   };
+
+  $scope.$on('$stateChangeStart', function () {
+    $scope.$close(true);
+  });
 });
 
 angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function ($rootScope, $scope, Notification, ErrorTip, Project) {

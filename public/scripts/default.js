@@ -19,6 +19,7 @@ angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'fil
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
+require('./default/controllers/user');
 require('./default/directives/comment-delete');
 require('./default/directives/comment-upvote');
 require('./default/directives/comment');
@@ -52,17 +53,19 @@ angular.module('defaultApp', [
 
   var slideModalOpenOptions = {
     template: '<scrollable class="modal-view"><div class="slide-right-content" ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
-    backdrop: true,
+    backdrop: 'static',
     windowClass: 'slide-right'
   };
   var slideModalOpen = function (modal, previousState, state, options) {
     options = $.extend(true, {}, slideModalOpenOptions, options);
     previousState.memo('modalInvoker');
-    modal.open(options).result.finally(function () {
-      if (!previousState.get('modalInvoker').state.name) {
-        state.go('project.list');
-      } else {
-        previousState.go('modalInvoker');
+    modal.open(options).result.then(function (status) {
+      if (!status) {
+        if (!previousState.get('modalInvoker').state.name) {
+          state.go('project.list');
+        } else {
+          previousState.go('modalInvoker');
+        }
       }
     });
   };
@@ -93,6 +96,7 @@ angular.module('defaultApp', [
     sticky: true
   });
 
+  // 项目
   $stateProvider.state('project', {sticky: true});
 
   $stateProvider.state('project.list', {
@@ -123,6 +127,22 @@ angular.module('defaultApp', [
       'modal@': {
         template: fs.readFileSync(__dirname + '/../templates/default/project-create.html', 'utf8'),
         controller: 'ProjectCreateCtrl'
+      }
+    }
+  });
+
+  // 用户
+  $stateProvider.state('user', {
+    abstract: true,
+    url: '/@{name:[^/]*}'
+  });
+
+  $stateProvider.state('user.details', {
+    url: '',
+    views: {
+      'wrapper@': {
+        template: '1234',
+        controller: 'UserDetailsCtrl'
       }
     }
   });
