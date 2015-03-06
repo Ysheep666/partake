@@ -363,9 +363,7 @@ router.route('/:id').get(function (req, res, done) {
       return done(err);
     }
 
-    setTimeout(function () {
-      res.status(200).json(project);
-    }, 2000);
+    res.status(200).json(project);
   });
 });
 
