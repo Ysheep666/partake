@@ -33,8 +33,8 @@
   <div class="navbar-header pull-right">
     <ul class="nav navbar-nav partake-nav">
       {#app.user}
-        <li><a class="border hidden-xs" ui-sref=".project.create">分享您喜欢的项目</a></li>
-        <li><a class="ion-ios-search-strong border" ui-sref=".search"></a></li>
+        <li><a class="border hidden-xs" ui-sref=".slide.project.create">分享您喜欢的项目</a></li>
+        <li><a class="ion-ios-search-strong border" ui-sref=".default.search"></a></li>
         <li><a class="ion-ios-pulse-strong border" href="#"></a></li>
         <li class="dropdown">
           <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}&s=30" alt="{app.user.nickname}" height="30" width="30"></a>
@@ -44,7 +44,7 @@
               <p class="email">{app.user.email}</p>
             </li>
             <li class="divider"></li>
-            <li><a href="#">个人主页</a></li>
+            <li><a  ui-sref=".default.user.details({name: '{app.user.name}'})">个人主页</a></li>
             <li><a href="#">我的收集</a></li>
             <li><a href ng-click="logout()">退出登录</a></li>
           </ul>

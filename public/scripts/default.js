@@ -9,12 +9,13 @@ require('./components/filters/day-time');
 require('./components/filters/default');
 require('./components/filters/escape');
 require('./components/services/notification');
+require('./components/directives/contenteditable');
 require('./components/directives/user-avatar');
 
 angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'ui.bootstrap.popover', 'ui.bootstrap.tpls']);
 
 angular.module('defaultApp.controller', []);
-angular.module('defaultApp.directive', ['ui.user-avatar']);
+angular.module('defaultApp.directive', ['ui.contenteditable', 'ui.user-avatar']);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time', 'filter.escape']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
@@ -31,6 +32,7 @@ require('./default/services/ui/error-tip');
 require('./default/services/comment');
 require('./default/services/default');
 require('./default/services/project');
+require('./default/services/user');
 
 angular.module('defaultApp', [
   'ngSanitize',
@@ -59,14 +61,15 @@ angular.module('defaultApp', [
   var slideModalOpen = function (modal, previousState, state, options) {
     options = $.extend(true, {}, slideModalOpenOptions, options);
     previousState.memo('modalInvoker');
-    modal.open(options).result.then(function (status) {
-      if (!status) {
-        if (!previousState.get('modalInvoker').state.name) {
-          state.go('project.list');
-        } else {
-          previousState.go('modalInvoker');
-        }
+    modal.open(options).result.then(function () {
+      if (!previousState.get('modalInvoker').state.name) {
+        state.go('default.project.list');
+      } else {
+        previousState.go('modalInvoker');
       }
+    }, function () {
+      // TODO: 这里不应该直接这样处理
+      angular.element('.modal-backdrop').remove();
     });
   };
 
@@ -86,30 +89,12 @@ angular.module('defaultApp', [
     }
   });
 
-  $stateProvider.state('search', {
-    url: '/search',
-    views: {
-      'wrapper@': {
-        template: '1234'
-      }
-    },
-    sticky: true
-  });
+
+  $stateProvider.state('slide', {abstract: true});
 
   // 项目
-  $stateProvider.state('project', {sticky: true});
-
-  $stateProvider.state('project.list', {
-    url: '/',
-    views: {
-      'wrapper@': {
-        template: fs.readFileSync(__dirname + '/../templates/default/project-list.html', 'utf8'),
-        controller: 'ProjectListCtrl'
-      }
-    }
-  });
-
-  $stateProvider.state('project.details', {
+  $stateProvider.state('slide.project', {abstract: true});
+  $stateProvider.state('slide.project.details', {
     parent: 'slideModal',
     url: '/projects/{id:[0-9a-fA-F]{24}}',
     views: {
@@ -120,7 +105,7 @@ angular.module('defaultApp', [
     }
   });
 
-  $stateProvider.state('project.create', {
+  $stateProvider.state('slide.project.create', {
     parent: 'slideModalSm',
     url: '/projects/create',
     views: {
@@ -131,17 +116,43 @@ angular.module('defaultApp', [
     }
   });
 
+
+
+  $stateProvider.state('default', {sticky: true, abstract: true});
+
+  // 查找
+  $stateProvider.state('default.search', {
+    url: '/search',
+    views: {
+      'wrapper@': {
+        template: '1234'
+      }
+    }
+  });
+
+  // 项目
+  $stateProvider.state('default.project', {abstract: true});
+  $stateProvider.state('default.project.list', {
+    url: '/',
+    views: {
+      'wrapper@': {
+        template: fs.readFileSync(__dirname + '/../templates/default/project-list.html', 'utf8'),
+        controller: 'ProjectListCtrl'
+      }
+    }
+  });
+
   // 用户
-  $stateProvider.state('user', {
+  $stateProvider.state('default.user', {
     abstract: true,
     url: '/@{name:[^/]*}'
   });
 
-  $stateProvider.state('user.details', {
+  $stateProvider.state('default.user.details', {
     url: '',
     views: {
       'wrapper@': {
-        template: '1234',
+        template: fs.readFileSync(__dirname + '/../templates/default/user-details.html', 'utf8'),
         controller: 'UserDetailsCtrl'
       }
     }

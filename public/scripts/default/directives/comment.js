@@ -19,10 +19,11 @@ angular.module('defaultApp.directive').directive('comment', function($state, $fi
           return false;
         }
 
-        scope.comment.project = scope.project.id;
-        scope.comment.user = scope.$root.me.id;
-
-        Comment.create(scope.comment).then(function (data) {
+        Comment.create({
+          project: scope.project.id,
+          user: scope.$root.me.id,
+          content: scope.comment.content
+        }).then(function (data) {
           Notification.show('提交评论成功', 'success');
 
           if (scope.project.comment_count < 20) {

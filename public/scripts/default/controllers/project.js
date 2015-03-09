@@ -41,7 +41,7 @@ angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', functio
   };
 
   $scope.$on('$stateChangeStart', function () {
-    $scope.$close(true);
+    $scope.$dismiss();
   });
 });
 
@@ -51,7 +51,7 @@ angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function
       return false;
     }
 
-    Project.create($scope.project).then(function () {
+    Project.create(angular.copy($scope.project)).then(function () {
       Notification.show('提交项目成功', 'success');
 
       $scope.$close();
