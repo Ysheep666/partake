@@ -116,6 +116,7 @@ angular.module('defaultApp', [
   });
 
   $stateProvider.state('default', {sticky: true, abstract: true});
+  $stateProvider.state('default.nil', {url: ''});
 
   // 查找
   $stateProvider.state('default.search', {
@@ -172,7 +173,7 @@ angular.module('defaultApp', [
   });
 
   $urlRouterProvider.otherwise('/');
-}).run(function ($http, $cookies, $rootScope, $state, $window, Notification, Default) {
+}).run(function ($http, $cookies, $rootScope, $state, $timeout, $window, Notification, Default) {
   $rootScope.me = null;
   if (angular.element('meta[name="partake-user-id"]').length) {
     $rootScope.me = {
@@ -186,6 +187,16 @@ angular.module('defaultApp', [
 
   $http.defaults.headers.common['X-Csrf-Token'] = $cookies._csrf;
   $rootScope.$state = $state;
+
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    if (fromState.name === 'slide.project.details') {
+      event.preventDefault();
+      $state.go('default.nil', {}, {notify: false});
+      $timeout(function () {
+        $state.go(toState, toParams);
+      }, 0);
+    }
+  });
 
   $rootScope.logout = function () {
     Default.logout().then(function () {

@@ -248,7 +248,7 @@ router.route('/:id/votes').get(function (req, res, done) {
       .skip(index).limit(count).exec(function (err, votes) {
         fn(err, _count, votes);
       });
-  }, function (_count, votes, fn) {
+  }, function (count, votes, fn) {
     var ids = _.map(votes, function (vote) {
       return vote.project.id;
     });
@@ -257,8 +257,43 @@ router.route('/:id/votes').get(function (req, res, done) {
       .select('name description languages vote_count comment_count user')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .exec(function (err, projects) {
-        fn(err, _count, projects);
+        fn(err, count, projects);
       });
+  }, function (count, projects, fn) {
+    var results = [];
+    if (req.user) {
+      var ids = _.map(projects, function (project) {
+        return project.id;
+      });
+
+      ProjectVote.find({project: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
+        if (err) {
+          fn(err);
+        }
+
+        for (var i = 0; i < projects.length; i++) {
+          var project = projects[i].toJSON();
+          project.vote = false;
+          for (var j = 0; j < votes.length; j++) {
+            if (votes[j].project.equals(project.id)) {
+              project.vote = true;
+              break;
+            }
+          }
+          results.push(project);
+        }
+
+        fn(null, count, results);
+      });
+    } else {
+      for (var i = 0; i < projects.length; i++) {
+        var project = projects[i].toJSON();
+        project.vote = false;
+        results.push(project);
+      }
+
+      fn(null, count, results);
+    }
   }], function (err, count, projects) {
     if (err) {
       return done(err);
@@ -306,6 +341,7 @@ router.route('/:id/submits').get(function (req, res, done) {
   var count = req.query.count ? parseInt(req.query.count, 10) : 10;
 
   var Project = mongoose.model('Project');
+  var ProjectVote = mongoose.model('ProjectVote');
 
   var query = {user: req.params.id, is_delete: false};
   async.waterfall([function (fn) {
@@ -320,6 +356,41 @@ router.route('/:id/submits').get(function (req, res, done) {
       .skip(index).limit(count).exec(function (err, projects) {
         fn(err, _count, projects);
       });
+  }, function (count, projects, fn) {
+    var results = [];
+    if (req.user) {
+      var ids = _.map(projects, function (project) {
+        return project.id;
+      });
+
+      ProjectVote.find({project: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
+        if (err) {
+          fn(err);
+        }
+
+        for (var i = 0; i < projects.length; i++) {
+          var project = projects[i].toJSON();
+          project.vote = false;
+          for (var j = 0; j < votes.length; j++) {
+            if (votes[j].project.equals(project.id)) {
+              project.vote = true;
+              break;
+            }
+          }
+          results.push(project);
+        }
+
+        fn(null, count, results);
+      });
+    } else {
+      for (var i = 0; i < projects.length; i++) {
+        var project = projects[i].toJSON();
+        project.vote = false;
+        results.push(project);
+      }
+
+      fn(null, count, results);
+    }
   }], function (err, count, projects) {
     if (err) {
       return done(err);

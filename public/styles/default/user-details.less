@@ -141,7 +141,7 @@
 
     .title span, .subtitle {
       position: relative;
-      display: block;
+      display: inline-block;
       padding-bottom: 6px;
       border-bottom: 1px solid @color-white;
       overflow: hidden;
@@ -165,6 +165,7 @@
     .title span {
       float: left;
       height: 40px;
+      min-width: 60px;
 
       &.null {
         width: 210px;
@@ -173,6 +174,7 @@
 
     .subtitle {
       height: 26px;
+      min-width: 300px;
 
       &.null {
         width: 400px;
