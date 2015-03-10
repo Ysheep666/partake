@@ -140,13 +140,16 @@
     }
 
     .title span, .subtitle {
-      display: inline-block;
+      position: relative;
+      display: block;
       padding-bottom: 6px;
-      border-bottom: 1px solid lighten(@user-details-header-bg-color, 50%);
+      border-bottom: 1px solid @color-white;
+      overflow: hidden;
       outline: none;
 
       &:before {
         position: absolute;
+        top: 1px;
         display: none;
         content: attr(placeholder);
         color: lighten(@user-details-header-bg-color, 10%);
@@ -160,6 +163,7 @@
     }
 
     .title span {
+      float: left;
       height: 40px;
 
       &.null {
@@ -168,7 +172,7 @@
     }
 
     .subtitle {
-      display: block;
+      height: 26px;
 
       &.null {
         width: 400px;
