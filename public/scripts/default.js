@@ -189,7 +189,7 @@ angular.module('defaultApp', [
   $rootScope.$state = $state;
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    if (fromState.name === 'slide.project.details') {
+    if (fromState.name === 'slide.project.details' && toState.name === 'default.user.votes') {
       event.preventDefault();
       $state.go('default.nil', {}, {notify: false});
       $timeout(function () {

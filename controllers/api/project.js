@@ -204,7 +204,7 @@ router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (
     });
   }, function (_count, fn) {
     Project.find(query)
-      .select('name url description agreement languages systems')
+      .select('name url description agreement languages systems verify')
       .sort('-_id').skip(index).limit(count).exec(function (err, projects) {
         fn(err, _count, projects);
       });
