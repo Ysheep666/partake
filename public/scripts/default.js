@@ -2,20 +2,19 @@ var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 
-window.PT = {};
-
 require('./components/filters/capitalize');
 require('./components/filters/day-time');
 require('./components/filters/default');
 require('./components/filters/escape');
 require('./components/services/notification');
 require('./components/directives/contenteditable');
+require('./components/directives/image-src');
 require('./components/directives/user-avatar');
 
 angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'ui.bootstrap.popover', 'ui.bootstrap.tpls']);
 
 angular.module('defaultApp.controller', []);
-angular.module('defaultApp.directive', ['ui.contenteditable', 'ui.user-avatar']);
+angular.module('defaultApp.directive', ['ui.contenteditable', 'ui.image-src', 'ui.user-avatar']);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time', 'filter.escape']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
@@ -43,6 +42,7 @@ angular.module('defaultApp', [
   'angularMoment',
   'sun.scrollable',
   'angular-loading-bar',
+  'angularFileUpload',
   'infinite-scroll',
   'defaultApp.controller',
   'defaultApp.directive',
@@ -171,7 +171,7 @@ angular.module('defaultApp', [
     };
   }
 
-  $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
+  $http.defaults.headers.common['X-Csrf-Token'] = $cookies._csrf;
   $rootScope.$state = $state;
 
   $rootScope.logout = function () {

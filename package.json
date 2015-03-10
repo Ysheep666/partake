@@ -39,6 +39,7 @@
     "public/components/angular-loading-bar/src/loading-bar.js",
     "public/components/angular-moment/angular-moment.js",
     "public/components/angular-nanoscroller/scrollable.js",
+    "public/components/ng-file-upload/angular-file-upload-all.js",
     "public/components/ngInfiniteScroll/build/ng-infinite-scroll.js"
   ],
   "angularUiTpls": [

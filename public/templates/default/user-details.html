@@ -1,7 +1,7 @@
 <div>
   <div class="user-details-header">
     <div class="container" ng-if="!is_edit">
-      <a  class="avatar" ui-sref="default.user.details({name: user.name})"><img ng-src="{{user.avatar}}&s=120"></a>
+      <a  class="avatar" ui-sref="default.user.details({name: user.name})"><img image-src="{{user.avatar}}" v="avatar.small"></a>
       <div class="info">
         <h1 class="title"><span ng-if="user.nickname">{{user.nickname}}</span><a ui-sref="default.user.details({name: user.name})">@{{user.name}}</a></h1>
         <h2 class="subtitle">{{user.description || '一句话介绍一下自己吧，让别人更了解你'}}</h2>
@@ -16,7 +16,11 @@
       </div>
     </div>
     <div class="container edit" ng-if="is_edit">
-      <a  class="avatar" href="" ng-click="avatarToEdit()"><img ng-src="{{temporary_user.avatar}}&s=120"><span class="ion-image"></span></a>
+      <a ng-class="{avatar: true, loading: temporary_avatar_upload}" href="" ng-file-select ng-file-change="upload($files)" accept=".jpg,.png">
+        <img image-src="{{temporary_user.avatar}}" v="avatar.small">
+        <span class="ion-image"></span>
+        <span class="ion-load-c"></span>
+      </a>
       <div class="info">
         <h1 class="title"><span contenteditable="true" ng-model="temporary_user.nickname" no-line-breaks="true" max-text-length="16" placeholder="请输入您的姓名"></span><a ui-sref="default.user.details({name: user.name})">@{{user.name}}</a></h1>
         <h2 class="subtitle" contenteditable="true" ng-model="temporary_user.description" no-line-breaks="true" max-text-length="50" placeholder="请输入一句话简介"></h2>

@@ -120,11 +120,29 @@
           font-size: 40px;
           color: @color-white;
         }
+
+        &.ion-load-c {
+          display: none;
+          animation: loading-revolve 1.2s linear infinite;
+        }
+      }
+
+
+      &.loading span {
+        &.ion-image {
+          display: none;
+        }
+
+        &.ion-load-c {
+          display: block;
+        }
       }
     }
 
     .title span, .subtitle {
       display: inline-block;
+      padding-bottom: 6px;
+      border-bottom: 1px solid lighten(@user-details-header-bg-color, 50%);
       outline: none;
 
       &:before {
@@ -151,10 +169,9 @@
 
     .subtitle {
       display: block;
-      margin-left: 4px;
 
       &.null {
-        width: 300px;
+        width: 400px;
       }
     }
   }

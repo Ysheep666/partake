@@ -1,5 +1,6 @@
 // 默认 Api
 var router = require('express').Router();
+var crypto = require('crypto');
 
 /**
  * @api {delete} /api/logout 退出登录
@@ -42,6 +43,28 @@ router.route('/logout').delete(function (req, res) {
  *       "signature":"621db6c45d1ed7ca7f068115a409ab6c"
  *     }
  */
-// TODO: 接口实现
+router.route('/uptoken').post(function (req, res) {
+  var bucket = ((function () {
+    var results = [];
+    var buckets = PT.config.upyun.buckets;
+    for (var i = 0; i < buckets.length; i++) {
+      var b = buckets[i];
+      if (b.name === req.body.bucket.trim()) {
+        results.push(b);
+      }
+    }
+    return results;
+  })())[0];
+
+  req.body.expiration = parseInt((new Date().getTime() + 600000)/1000, 10);
+  req.body['save-key'] = '/{year}{mon}/{day}/{filemd5}-{random}{.suffix}';
+
+  var policy = new Buffer(JSON.stringify(req.body)).toString('base64');
+  var signature = crypto.createHash('md5').update(policy + '&' + bucket.secret).digest('hex');
+  return res.status(200).json({
+    policy: policy,
+    signature: signature
+  });
+});
 
 module.exports = router;

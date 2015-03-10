@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 module.exports = function (passport) {
   var User = mongoose.model('User');
-  var auth = adou.config.auth;
+  var auth = PT.config.auth;
 
   passport.serializeUser(function (user, done) {
     done(null, user.id);

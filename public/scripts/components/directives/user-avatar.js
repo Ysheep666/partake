@@ -6,11 +6,9 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
   return {
     restrict: 'E',
     replace: true,
-    scope : {user: '=user'},
+    scope : {user: '=user', v: '@v'},
     template: fs.readFileSync(__dirname + '/../../../templates/components/user-avatar.html', 'utf8'),
     link: function (scope, element, attrs) {
-      scope.s =  attrs.s ? '&s=' + attrs.s : '';
-
       if (modernizr.touch) {
         return;
       }

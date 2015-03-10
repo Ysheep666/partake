@@ -37,7 +37,7 @@
         <li><a class="ion-ios-search-strong border" ui-sref=".default.search"></a></li>
         <li><a class="ion-ios-pulse-strong border" href="#"></a></li>
         <li class="dropdown">
-          <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}&s=30" alt="{app.user.nickname}" height="30" width="30"></a>
+          <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img image-src="{app.user.avatar}" v="avatar.extra.small" alt="{app.user.nickname}" height="30" width="30"></a>
           <ul class="dropdown-menu profile-box">
             <li class="info">
               <p class="name">{app.user.name}<span>{app.user.nickname}</span></p>
