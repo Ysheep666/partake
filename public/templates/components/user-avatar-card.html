@@ -1,8 +1,8 @@
 <div class="user-avatar-card">
-  <a class="avatar-image" ui-sref="default.user.details({name: user.name})"><img image-src="{{user.avatar}}" v="avatar.small"></a>
+  <a class="avatar-image" ui-sref="default.user.votes({name: user.name})"><img image-src="{{user.avatar}}" v="avatar.small"></a>
   <h3>{{user.nickname}}</h3>
   <h4 class="user-name">
-    <a ui-sref="default.user.details({name: user.name})">@{{user.name}}</a>
+    <a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a>
   </h4>
   <a class="btn btn-default" href="#">关注</a>
 </div>

@@ -14,6 +14,18 @@ angular.module('defaultApp.service').factory('User', function ($http) {
       return $http.put('/api/users/' + id, user).then(function (response) {
         return response.data;
       });
+    },
+    // 查询投票的项目
+    queryVote: function (id, query) {
+      return $http.get('/api/users/' + id + '/votes' + (query ? '?' + $.param(query) : '')).then(function (response) {
+        return response.data;
+      });
+    },
+    // 查询提交的项目
+    querySubmit: function (id, query) {
+      return $http.get('/api/users/' + id + '/submits' + (query ? '?' + $.param(query) : '')).then(function (response) {
+        return response.data;
+      });
     }
   };
 });

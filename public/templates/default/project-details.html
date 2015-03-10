@@ -4,7 +4,7 @@
 <div ng-if="project">
   <div class="project-details-header">
     <project-upvote project="project"></project-upvote>
-    <a  class="avatar" ui-sref="user.details({name: project.user.name})"><img image-src="{{project.user.avatar}}" v="avatar.small"></a>
+    <a  class="avatar" ui-sref="user.votes({name: project.user.name})"><img image-src="{{project.user.avatar}}" v="avatar.small"></a>
     <div class="info">
       <h1 class="title">
         <a target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>

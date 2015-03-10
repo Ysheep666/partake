@@ -89,7 +89,6 @@ angular.module('defaultApp', [
     }
   });
 
-
   $stateProvider.state('slide', {abstract: true});
 
   // 项目
@@ -115,8 +114,6 @@ angular.module('defaultApp', [
       }
     }
   });
-
-
 
   $stateProvider.state('default', {sticky: true, abstract: true});
 
@@ -145,15 +142,31 @@ angular.module('defaultApp', [
   // 用户
   $stateProvider.state('default.user', {
     abstract: true,
-    url: '/@{name:[^/]*}'
-  });
-
-  $stateProvider.state('default.user.details', {
-    url: '',
+    url: '/@{name:[^/]*}',
     views: {
       'wrapper@': {
         template: fs.readFileSync(__dirname + '/../templates/default/user-details.html', 'utf8'),
         controller: 'UserDetailsCtrl'
+      }
+    }
+  });
+
+  $stateProvider.state('default.user.votes', {
+    url: '',
+    views: {
+      'content': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-projects.html', 'utf8'),
+        controller: 'UserVotesCtrl'
+      }
+    }
+  });
+
+  $stateProvider.state('default.user.submits', {
+    url: '/submits',
+    views: {
+      'content': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-projects.html', 'utf8'),
+        controller: 'UserSubmitsCtrl'
       }
     }
   });

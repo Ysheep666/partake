@@ -20,7 +20,7 @@ angular.module('defaultApp.controller').controller('UserDetailsCtrl', function (
             'X-Csrf-Token': undefined
           },
           fields: data
-        }).success(function (data, status, headers, config) {;
+        }).success(function (data) {;
           $scope.upload = upload;
           $scope.temporary_avatar_upload = false;
           $scope.temporary_user.avatar = window.PT.upyun.buckets['partake-images'] + data.url;
@@ -56,3 +56,61 @@ angular.module('defaultApp.controller').controller('UserDetailsCtrl', function (
     $scope.is_edit = false;
   };
 });
+
+angular.module('defaultApp.controller').controller('UserVotesCtrl', function ($scope, User) {
+  $scope.count = 10;
+  $scope.projects = [];
+  $scope.status = {more: true, loading: false};
+
+  $scope.more = function () {
+    if (!$scope.status.loading) {
+      $scope.status.loading = true;
+      User.queryVote($scope.$parent.user.id, {
+        index: $scope.projects.length,
+        count: $scope.count
+      }).then(function (projects) {
+        if (projects.length) {
+          for (var i = 0; i < projects.length; i++) {
+            $scope.projects.push(projects[i]);
+          }
+          $scope.status.loading = false;
+        } else {
+          $scope.status.more = false;
+        }
+      });
+    }
+  };
+});
+
+angular.module('defaultApp.controller').controller('UserSubmitsCtrl', function ($scope, User) {
+  $scope.count = 10;
+  $scope.projects = [];
+  $scope.status = {more: true, loading: false};
+
+  $scope.more = function () {
+    if (!$scope.status.loading) {
+      $scope.status.loading = true;
+      User.querySubmit($scope.$parent.user.id, {
+        index: $scope.projects.length,
+        count: $scope.count
+      }).then(function (projects) {
+        if (projects.length) {
+          for (var i = 0; i < projects.length; i++) {
+            $scope.projects.push(projects[i]);
+          }
+          $scope.status.loading = false;
+        } else {
+          $scope.status.more = false;
+        }
+      });
+    }
+  };
+
+  $scope.$on('refreshProjectList', function () {
+    $scope.results = [];
+    $scope.status = {more: true, loading: false};
+    $scope.more();
+  });
+});
+
+

@@ -24,7 +24,7 @@ angular.module('defaultApp.controller').controller('ProjectListCtrl', function (
     }
   };
 
-  $rootScope.$on('refreshProjectList', function () {
+  $scope.$on('refreshProjectList', function () {
     $scope.results = [];
     $scope.status = {more: true, loading: false};
     $scope.more();

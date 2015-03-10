@@ -1,9 +1,9 @@
-<div>
+<div ng-if="user">
   <div class="user-details-header">
     <div class="container" ng-if="!is_edit">
-      <a  class="avatar" ui-sref="default.user.details({name: user.name})"><img image-src="{{user.avatar}}" v="avatar.small"></a>
+      <a  class="avatar" ui-sref="default.user.votes({name: user.name})"><img image-src="{{user.avatar}}" v="avatar.small"></a>
       <div class="info">
-        <h1 class="title"><span ng-if="user.nickname">{{user.nickname}}</span><a ui-sref="default.user.details({name: user.name})">@{{user.name}}</a></h1>
+        <h1 class="title"><span ng-if="user.nickname">{{user.nickname}}</span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
         <h2 class="subtitle">{{user.description || '一句话介绍一下自己吧，让别人更了解你'}}</h2>
         <div class="links">
           <a target="_blank" ng-href="{{'mailto:' + user.email}}" ng-if="user.email">{{user.email}}</a>
@@ -22,7 +22,7 @@
         <span class="ion-load-c"></span>
       </a>
       <div class="info">
-        <h1 class="title"><span contenteditable="true" ng-model="temporary_user.nickname" no-line-breaks="true" max-text-length="16" placeholder="请输入您的姓名"></span><a ui-sref="default.user.details({name: user.name})">@{{user.name}}</a></h1>
+        <h1 class="title"><span contenteditable="true" ng-model="temporary_user.nickname" no-line-breaks="true" max-text-length="16" placeholder="请输入您的姓名"></span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
         <h2 class="subtitle" contenteditable="true" ng-model="temporary_user.description" no-line-breaks="true" max-text-length="50" placeholder="请输入一句话简介"></h2>
       </div>
       <div class="options">
@@ -34,12 +34,13 @@
   <div class="user-details-content container">
     <div class="navigation">
       <ul>
-        <li><a ui-sref="default.user.details({name: user.name})" class="active"><strong>{{user.vote_count}}</strong>投票</a></li>
-        <li><a ui-sref="default.user.details({name: user.name})"><strong>{{user.submit_count}}</strong>提交</a></li>
-        <li><a ui-sref="default.user.details({name: user.name})"><strong>{{user.favorite_count}}</strong>集合</a></li>
-        <li><a ui-sref="default.user.details({name: user.name})"><strong>{{user.fans_count}}</strong>粉丝</a></li>
-        <li><a ui-sref="default.user.details({name: user.name})"><strong>{{user.follower_count}}</strong>关注</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})" ng-class="{active: $state.includes('default.user.votes')}"><strong>{{user.vote_count}}</strong>投票</a></li>
+        <li><a ui-sref="default.user.submits({name: user.name})" ng-class="{active: $state.includes('default.user.submits')}"><strong>{{user.submit_count}}</strong>提交</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.favorite_count}}</strong>集合</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.fans_count}}</strong>粉丝</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.follower_count}}</strong>关注</a></li>
       </ul>
     </div>
+    <div class="list" ui-view="content"></div>
   </div>
 </div>

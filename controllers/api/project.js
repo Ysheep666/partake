@@ -179,7 +179,6 @@ router.route('/').get(function (req, res, done) {
  *      create_at: new Date()
  *    }]
  */
-
 router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (req, res, done) {
   if (!req.query.admin) {
     return done();
@@ -197,14 +196,18 @@ router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (
     query.verify = false;
   }
 
+  var Project = mongoose.model('Project');
+
   async.waterfall([function (fn) {
-    mongoose.model('Project').count(query).exec(function (err, count) {
+    Project.count(query).exec(function (err, count) {
       fn(err, count);
     });
   }, function (_count, fn) {
-    mongoose.model('Project').find(query).sort('-_id').skip(index).limit(count).exec(function (err, projects) {
-      fn(err, _count, projects);
-    });
+    Project.find(query)
+      .select('name description agreement languages systems vote_count comment_count user')
+      .sort('-_id').skip(index).limit(count).exec(function (err, projects) {
+        fn(err, _count, projects);
+      });
   }], function (err, count, projects) {
     if (err) {
       return done(err);
