@@ -2,23 +2,24 @@ var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 
-window.PT = {};
-
 require('./components/filters/capitalize');
 require('./components/filters/day-time');
 require('./components/filters/default');
 require('./components/filters/escape');
 require('./components/services/notification');
+require('./components/directives/contenteditable');
+require('./components/directives/image-src');
 require('./components/directives/user-avatar');
 
 angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'ui.bootstrap.popover', 'ui.bootstrap.tpls']);
 
 angular.module('defaultApp.controller', []);
-angular.module('defaultApp.directive', ['ui.user-avatar']);
+angular.module('defaultApp.directive', ['ui.contenteditable', 'ui.image-src', 'ui.user-avatar']);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time', 'filter.escape']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
+require('./default/controllers/user');
 require('./default/directives/comment-delete');
 require('./default/directives/comment-upvote');
 require('./default/directives/comment');
@@ -30,6 +31,7 @@ require('./default/services/ui/error-tip');
 require('./default/services/comment');
 require('./default/services/default');
 require('./default/services/project');
+require('./default/services/user');
 
 angular.module('defaultApp', [
   'ngSanitize',
@@ -40,6 +42,7 @@ angular.module('defaultApp', [
   'angularMoment',
   'sun.scrollable',
   'angular-loading-bar',
+  'angularFileUpload',
   'infinite-scroll',
   'defaultApp.controller',
   'defaultApp.directive',
@@ -52,18 +55,21 @@ angular.module('defaultApp', [
 
   var slideModalOpenOptions = {
     template: '<scrollable class="modal-view"><div class="slide-right-content" ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
-    backdrop: true,
+    backdrop: 'static',
     windowClass: 'slide-right'
   };
   var slideModalOpen = function (modal, previousState, state, options) {
     options = $.extend(true, {}, slideModalOpenOptions, options);
     previousState.memo('modalInvoker');
-    modal.open(options).result.finally(function () {
+    modal.open(options).result.then(function () {
       if (!previousState.get('modalInvoker').state.name) {
-        state.go('project.list');
+        state.go('default.project.list');
       } else {
         previousState.go('modalInvoker');
       }
+    }, function () {
+      // TODO: 这里不应该直接这样处理
+      angular.element('.modal-backdrop').remove();
     });
   };
 
@@ -83,29 +89,11 @@ angular.module('defaultApp', [
     }
   });
 
-  $stateProvider.state('search', {
-    url: '/search',
-    views: {
-      'wrapper@': {
-        template: '1234'
-      }
-    },
-    sticky: true
-  });
+  $stateProvider.state('slide', {abstract: true});
 
-  $stateProvider.state('project', {sticky: true});
-
-  $stateProvider.state('project.list', {
-    url: '/',
-    views: {
-      'wrapper@': {
-        template: fs.readFileSync(__dirname + '/../templates/default/project-list.html', 'utf8'),
-        controller: 'ProjectListCtrl'
-      }
-    }
-  });
-
-  $stateProvider.state('project.details', {
+  // 项目
+  $stateProvider.state('slide.project', {abstract: true});
+  $stateProvider.state('slide.project.details', {
     parent: 'slideModal',
     url: '/projects/{id:[0-9a-fA-F]{24}}',
     views: {
@@ -116,13 +104,69 @@ angular.module('defaultApp', [
     }
   });
 
-  $stateProvider.state('project.create', {
+  $stateProvider.state('slide.project.create', {
     parent: 'slideModalSm',
     url: '/projects/create',
     views: {
       'modal@': {
         template: fs.readFileSync(__dirname + '/../templates/default/project-create.html', 'utf8'),
         controller: 'ProjectCreateCtrl'
+      }
+    }
+  });
+
+  $stateProvider.state('default', {sticky: true, abstract: true});
+
+  // 查找
+  $stateProvider.state('default.search', {
+    url: '/search',
+    views: {
+      'wrapper@': {
+        template: '1234'
+      }
+    }
+  });
+
+  // 项目
+  $stateProvider.state('default.project', {abstract: true});
+  $stateProvider.state('default.project.list', {
+    url: '/',
+    views: {
+      'wrapper@': {
+        template: fs.readFileSync(__dirname + '/../templates/default/project-list.html', 'utf8'),
+        controller: 'ProjectListCtrl'
+      }
+    }
+  });
+
+  // 用户
+  $stateProvider.state('default.user', {
+    abstract: true,
+    url: '/@{name:[^/]*}',
+    views: {
+      'wrapper@': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-details.html', 'utf8'),
+        controller: 'UserDetailsCtrl'
+      }
+    }
+  });
+
+  $stateProvider.state('default.user.votes', {
+    url: '',
+    views: {
+      'content': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-projects.html', 'utf8'),
+        controller: 'UserVotesCtrl'
+      }
+    }
+  });
+
+  $stateProvider.state('default.user.submits', {
+    url: '/submits',
+    views: {
+      'content': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-projects.html', 'utf8'),
+        controller: 'UserSubmitsCtrl'
       }
     }
   });
@@ -140,7 +184,7 @@ angular.module('defaultApp', [
     };
   }
 
-  $http.defaults.headers.common['x-csrf-token'] = $cookies._csrf;
+  $http.defaults.headers.common['X-Csrf-Token'] = $cookies._csrf;
   $rootScope.$state = $state;
 
   $rootScope.logout = function () {

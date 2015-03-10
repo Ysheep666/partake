@@ -20,7 +20,14 @@ angular.module('manageApp.controller').controller('ProjectDetailsCtrl', function
       return false;
     }
 
-    Project.update($scope.project.id, $scope.project).then(function () {
+    Project.update($scope.project.id, {
+      name: $scope.project.name,
+      url: $scope.project.url,
+      description: $scope.project.description,
+      agreement: $scope.project.agreement,
+      languages: $scope.project.languages,
+      systems: $scope.project.systems
+    }).then(function () {
       $scope.project.verify = true;
       project = $scope.project;
       Notification.show('提交项目成功', 'success');

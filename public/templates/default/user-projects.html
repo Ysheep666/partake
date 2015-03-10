@@ -1,0 +1,16 @@
+<div class="projects" infinite-scroll="more()">
+  <div class="loading" ng-if="!projects.length">
+    <span class="ion-load-c"></span>
+  </div>
+  <div ng-if="projects.length">
+    <ul class="project-list">
+      <li ng-repeat="project in projects">
+        <project-item project="project"></project-item>
+      </li>
+    </ul>
+    <div class="more" ng-if="status.loading">
+      <span ng-if="status.more">正在加载，请稍等...</span>
+      <span ng-if="!status.more">没有更多了</span>
+    </div>
+  </div>
+</div>

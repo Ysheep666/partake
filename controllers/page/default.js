@@ -5,7 +5,8 @@ var router = require('express').Router();
 router.route([
   '/',
   '/search',
-  '/projects/:id'
+  '/projects/:id',
+  /^\/\@(.+)$/
 ]).get(function (req, res) {
   res.render('default');
 });

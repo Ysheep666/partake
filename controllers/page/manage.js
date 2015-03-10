@@ -17,7 +17,7 @@ router.route([
 ]).get(function (req, res) {
   // 格言警句
   var aphorism = (function () {
-    var aphorisms = adou.config.data.aphorisms;
+    var aphorisms = PT.config.data.aphorisms;
     return aphorisms[Math.floor(Math.random() * aphorisms.length)];
   }());
 

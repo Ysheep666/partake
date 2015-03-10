@@ -4,7 +4,7 @@
 <div ng-if="project">
   <div class="project-details-header">
     <project-upvote project="project"></project-upvote>
-    <a  class="avatar" ng-href="/@{{project.user.name}}"><img ng-src="{{project.user.avatar}}&s=80"></a>
+    <a  class="avatar" ui-sref="user.votes({name: project.user.name})"><img image-src="{{project.user.avatar}}" v="avatar.small"></a>
     <div class="info">
       <h1 class="title">
         <a target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>
@@ -42,7 +42,7 @@
         <span class="ion-sad-outline"></span> 该项目还没有人点赞。
       </div>
       <ul class="items" ng-if="project.vote_count">
-        <li class="item" ng-repeat="user in project.votes"><user-avatar class="people" user="user" s="30"></user-avatar></li>
+        <li class="item" ng-repeat="user in project.votes"><user-avatar class="people" user="user" v="avatar.small"></user-avatar></li>
       </ul>
     </div>
   </div>
@@ -54,7 +54,7 @@
       </div>
       <ul class="items" ng-if="project.comment_count">
         <li class="item" ng-repeat="comment in project.comments | filter: filterComments">
-          <user-avatar class="people" user="comment.user" s="30"></user-avatar>
+          <user-avatar class="people" user="comment.user" v="avatar.small"></user-avatar>
           <div class="c">
             <h3>
               {{comment.user.name}}<span>{{comment.user.nickname}}不会飞的羊</span>

@@ -9,7 +9,7 @@ module.exports = function (app) {
 
   app.use('/api/*', function (req, res, done) {
     req.isApi = true;
-    res.contentType('application/vnd.' + adou.config.setting.api_vnd + '+json');
+    res.contentType('application/vnd.' + PT.config.setting.api_vnd + '+json');
     done();
   });
 

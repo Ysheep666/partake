@@ -6,7 +6,7 @@
     <div class="users bg-white">
       <div class="items">
         <div class="item clearfix" ng-repeat="user in users">
-          <a class="avatar" target="_blank" ng-href="/@{{user.name}}"><img ng-src="{{user.avatar}}&s=50"></a>
+          <a class="avatar" target="_blank" ng-href="/@{{user.name}}"><img image-src="{{user.avatar}}" v="avatar.small"></a>
           <div class="info">
             <p class="name">{{user.name}}<span>{{user.nickname}}</span></p>
             <p class="email">{{user.email}}</p>

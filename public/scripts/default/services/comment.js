@@ -5,7 +5,7 @@ angular.module('defaultApp.service').factory('Comment', function ($http) {
   return {
     // 创建评论
     create: function (comment) {
-      return $http.post('/api/comments', angular.copy(comment)).then(function (response) {
+      return $http.post('/api/comments', comment).then(function (response) {
         return response.data;
       });
     },

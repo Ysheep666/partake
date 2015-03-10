@@ -179,7 +179,6 @@ router.route('/').get(function (req, res, done) {
  *      create_at: new Date()
  *    }]
  */
-
 router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (req, res, done) {
   if (!req.query.admin) {
     return done();
@@ -197,14 +196,18 @@ router.route('/').get(auth.checkUser).get(auth.checkAdministrate).get(function (
     query.verify = false;
   }
 
+  var Project = mongoose.model('Project');
+
   async.waterfall([function (fn) {
-    mongoose.model('Project').count(query).exec(function (err, count) {
+    Project.count(query).exec(function (err, count) {
       fn(err, count);
     });
   }, function (_count, fn) {
-    mongoose.model('Project').find(query).sort('-_id').skip(index).limit(count).exec(function (err, projects) {
-      fn(err, _count, projects);
-    });
+    Project.find(query)
+      .select('name description agreement languages systems vote_count comment_count user')
+      .sort('-_id').skip(index).limit(count).exec(function (err, projects) {
+        fn(err, _count, projects);
+      });
   }], function (err, count, projects) {
     if (err) {
       return done(err);
@@ -312,6 +315,7 @@ router.route('/:id').get(function (req, res, done) {
   }, function (project, fn) {
     Comment.find({project: project.id, is_delete: false})
       .select('content vote_count user')
+      .sort('-vote_count')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .limit(20)
       .exec(function (err, comments) {
@@ -402,6 +406,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
   }
 
   var Project = mongoose.model('Project');
+  var User = mongoose.model('User');
 
   async.waterfall([function (fn) {
     var project = new Project({
@@ -428,6 +433,10 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
     });
   }, function (project, fn) {
     project.save(function (err, project) {
+      fn(err, project);
+    });
+  }, function (project, fn) {
+    User.findByIdAndUpdate(project.user, {$inc: {'submit_count': 1}}, function (err) {
       fn(err, project);
     });
   }], function (err, project) {
@@ -561,6 +570,7 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
 router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
   var Project = mongoose.model('Project');
   var ProjectVote = mongoose.model('ProjectVote');
+  var User = mongoose.model('User');
 
   async.waterfall([function (fn) {
     var vote = new ProjectVote({
@@ -605,6 +615,10 @@ router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
     });
   }, function (vote, inc, fn) {
     Project.findByIdAndUpdate(vote.project, {$inc: {'vote_count': inc}}, function (err, project) {
+      fn(err, inc, vote, project);
+    });
+  }, function (inc, vote, project, fn) {
+    User.findByIdAndUpdate(project.user, {$inc: {'vote_count': inc}}, function (err) {
       fn(err, vote, project);
     });
   }], function (err, vote, project) {

@@ -1,0 +1,233 @@
+@user-details-header-bg-color: @color-black-default;
+
+.user-details-header {
+  padding: 30px 10px 80px;
+  background-color: @user-details-header-bg-color;
+  color: @color-white;
+  overflow: hidden;
+  .clearfix();
+
+  .avatar {
+    position: relative;
+    display: block;
+    float: left;
+    margin-right: 20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      background: #aaa;
+    }
+  }
+
+  .info {
+    float: left;
+    max-width: 600px;
+  }
+
+  .title {
+    margin: 5px 0 0;
+    line-height: 40px;
+    font-size: 30px;
+    font-weight: normal;
+
+    span {
+      margin-right: 10px;
+    }
+
+    a {
+      font-size: 25px;
+      color: lighten(@user-details-header-bg-color, 30%);
+    }
+  }
+
+  .subtitle {
+    margin: 5px 0 0;
+    font-size: 18px;
+    font-weight: normal;
+    color: lighten(@user-details-header-bg-color, 30%);
+  }
+
+  .links {
+    margin-top: 10px;
+
+    a {
+      margin-right: 20px;
+      font-size: 16px;
+      color: lighten(@user-details-header-bg-color, 30%);
+    }
+  }
+
+  .options {
+    float: right;
+    margin-top: 38px;
+    padding-top: 10px;
+
+    p {
+      margin-right: 16px;
+      margin-bottom: 20px;
+      line-height: 34px;
+      font-size: 14px;
+      display: inline-block;
+      color: lighten(@user-details-header-bg-color, 30%);
+    }
+
+    a {
+      padding: 6px 20px;
+      letter-spacing: 1px;
+      border-radius: 18px;
+      background: @color-default;
+      border-color: @color-default;
+      text-decoration: none;
+      color: @color-white;
+
+      &:hover{
+        background-color: lighten(@color-default, 10%);
+        border-color: lighten(@color-default, 10%);
+      }
+
+      &.cancel {
+        background: lighten(@user-details-header-bg-color, 30%);
+        border-color: lighten(@user-details-header-bg-color, 30%);
+
+        &:hover{
+          background-color: lighten(@user-details-header-bg-color, 50%);
+          border-color: lighten(@user-details-header-bg-color, 50%);
+        }
+      }
+    }
+  }
+
+  .edit {
+    .avatar {
+      span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: fade(@user-details-header-bg-color, 30%);
+
+        &:before {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateY(-50%) translateX(-50%);
+          font-size: 40px;
+          color: @color-white;
+        }
+
+        &.ion-load-c {
+          display: none;
+          animation: loading-revolve 1.2s linear infinite;
+        }
+      }
+
+
+      &.loading span {
+        &.ion-image {
+          display: none;
+        }
+
+        &.ion-load-c {
+          display: block;
+        }
+      }
+    }
+
+    .title span, .subtitle {
+      display: inline-block;
+      padding-bottom: 6px;
+      border-bottom: 1px solid lighten(@user-details-header-bg-color, 50%);
+      outline: none;
+
+      &:before {
+        position: absolute;
+        display: none;
+        content: attr(placeholder);
+        color: lighten(@user-details-header-bg-color, 10%);
+      }
+
+      &.null {
+        &:before {
+          display: block;
+        }
+      }
+    }
+
+    .title span {
+      height: 40px;
+
+      &.null {
+        width: 210px;
+      }
+    }
+
+    .subtitle {
+      display: block;
+
+      &.null {
+        width: 400px;
+      }
+    }
+  }
+}
+
+.user-details-content {
+  margin-top: -60px;
+
+  .navigation {
+    clear: both;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    overflow: hidden;
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px 3px 0 0;
+
+    ul {
+      padding: 0px;
+      margin: 0px;
+      display: table-row;
+      list-style: none;
+    }
+
+    li {
+      display: table-cell;
+      text-align: center;
+    }
+
+    a {
+      display: block;
+      padding: 7px 0px;
+      height: 60px;
+      letter-spacing: 3px;
+      font-size: 15px;
+      color: lighten(@user-details-header-bg-color, 30%);
+
+      strong {
+        display: block;
+        letter-spacing: 1px;
+        font-weight: normal;
+        font-size: 18px;
+        color: @color-white;
+      }
+
+      &:hover {
+        background: rgba(255,255,255,0.1);
+      }
+
+      &.active {
+        background: @body-bg;
+
+        strong {
+          color: @color-black-default;
+        }
+      }
+    }
+  }
+}

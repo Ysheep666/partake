@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 module.exports = function (passport) {
   var User = mongoose.model('User');
-  var auth = adou.config.auth;
+  var auth = PT.config.auth;
 
   passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -34,10 +34,6 @@ module.exports = function (passport) {
           avatar: u.avatar_url
         });
       } else {
-        // TODO: 在个人页面完成后这里不需要自动更新信息
-        user.name = u.login;
-        user.nickname = u.nickname;
-        user.avatar = u.avatar_url;
         user.login_count++;
       }
       user.save(fn);

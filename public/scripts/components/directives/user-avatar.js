@@ -6,22 +6,23 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
   return {
     restrict: 'E',
     replace: true,
-    scope : {user: '=user'},
+    scope : {user: '=user', v: '@v'},
     template: fs.readFileSync(__dirname + '/../../../templates/components/user-avatar.html', 'utf8'),
     link: function (scope, element, attrs) {
-      scope.s =  attrs.s ? '&s=' + attrs.s : '';
-
       if (modernizr.touch) {
         return;
       }
 
       element.addClass(attrs.class);
 
+      var $el = element.find('a.u');
+
       element.on('click', function (e) {
         e.stopPropagation();
+        $el.data('bs.popover').$tip.unbind();
+        $el.popover('hide');
       });
 
-      var $el = element.find('a.u');
       $el.popover({
         container: 'body',
         html: true,
@@ -58,6 +59,12 @@ angular.module('ui.user-avatar', []).directive('userAvatar', function ($compile)
                   $el.popover('hide');
                 }, 150);
               }
+            });
+
+            popover.$tip.on('click', 'a', function (e) {
+              e.stopPropagation();
+              $el.data('bs.popover').$tip.unbind();
+              $el.popover('hide');
             });
           }
         } else {

@@ -1,4 +1,3 @@
-var moment = require('moment');
 var angular = require('angular');
 
 angular.module('defaultApp.controller').controller('ProjectListCtrl', function ($rootScope, $scope, Project) {
@@ -25,7 +24,7 @@ angular.module('defaultApp.controller').controller('ProjectListCtrl', function (
     }
   };
 
-  $rootScope.$on('refreshProjectList', function () {
+  $scope.$on('refreshProjectList', function () {
     $scope.results = [];
     $scope.status = {more: true, loading: false};
     $scope.more();
@@ -40,6 +39,10 @@ angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', functio
   $scope.filterComments = function (comment) {
     return !comment.is_delete;
   };
+
+  $scope.$on('$stateChangeStart', function () {
+    $scope.$dismiss();
+  });
 });
 
 angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function ($rootScope, $scope, Notification, ErrorTip, Project) {
@@ -48,7 +51,7 @@ angular.module('defaultApp.controller').controller('ProjectCreateCtrl', function
       return false;
     }
 
-    Project.create($scope.project).then(function () {
+    Project.create(angular.copy($scope.project)).then(function () {
       Notification.show('提交项目成功', 'success');
 
       $scope.$close();

@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+var async = require('async');
+var mongoose = require('mongoose');
+
+require('../libs/config')();
+require('../libs/mongoose')();
+
+/**
+ * 用户相关统计数据
+ * @return {[type]} [description]
+ */
+(function () {
+  var Project = mongoose.model('Project');
+  var ProjectVote = mongoose.model('ProjectVote');
+  var User = mongoose.model('User');
+
+  async.waterfall([function (fn) {
+    User.find({is_delete: false}).exec(function (err, users) {
+      fn(err, users);
+    });
+  }, function (users, fn) {
+    async.eachSeries(users, function (user, callback) {
+      async.waterfall([function (fn) {
+        ProjectVote.count({user: user.id, is_delete: false}, function (err, count) {
+          if (err) {
+            return fn(err);
+          }
+          user.vote_count = count;
+          fn(null, user)
+        });
+      }, function (user, fn) {
+        Project.count({user: user.id, is_delete: false}, function (err, count) {
+          if (err) {
+            return fn(err);
+          }
+
+          user.submit_count = count;
+          fn(null, user)
+        });
+      }], function (err, user) {
+        if (err) {
+          return callback(err);
+        }
+
+        user.save(function (err) {
+          callback(err);
+        });
+      })
+    }, function (err) {
+      fn(err, users);
+    });
+  }], function (err, users) {
+    if (err) {
+      throw new Error(err);
+    }
+
+    process.exit();
+  });
+})();

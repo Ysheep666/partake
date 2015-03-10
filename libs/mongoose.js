@@ -3,7 +3,7 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 
 module.exports = function () {
-  var config = adou.config;
+  var config = PT.config;
   mongoose.connect(config.db.mongodb);
   var db = mongoose.connection;
   db.on('error', function () {

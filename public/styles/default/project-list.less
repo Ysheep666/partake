@@ -3,7 +3,7 @@
 @project-item-border-radius: 3px;
 @project-upvote-border-radius: 3px;
 
-.posts {
+.projects {
   position: relative;
 
   > .loading {
@@ -123,14 +123,16 @@
 
     a.u {
       display: inline-block;
-    }
-
-    img {
-      display: inline-block;
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      vertical-align: middle;
+      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      background: #aaa;
     }
   }
 

@@ -98,10 +98,10 @@ gulp.task('scripts:ui:template', function () {
 // Scripts Vendor
 gulp.task('scripts:vendor', ['scripts:modernizr', 'scripts:ui:template'], function () {
   var buckets = {};
-  var setting = adou.config.setting, upyun = adou.config.upyun;
+  var setting = PT.config.setting, upyun = PT.config.upyun;
   for (var i = 0; i < upyun.buckets.length; i++) {
     var bucket = upyun.buckets[i];
-    buckets[bucket.name] = buckets.url;
+    buckets[bucket.name] = bucket.url;
   }
 
   var script = JSON.stringify({
@@ -116,7 +116,7 @@ gulp.task('scripts:vendor', ['scripts:modernizr', 'scripts:ui:template'], functi
   return gulp.src(pkg.vendors)
     .pipe($.sourcemaps.init())
     .pipe($.concat('vendor.js'))
-    .pipe($.insert.append('var adou = ' + script + ';'))
+    .pipe($.insert.append('window.PT = ' + script + ';'))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/public/scripts'))
     .pipe($.size());

@@ -3,7 +3,7 @@ var path = require('path');
 var express = require('express');
 
 module.exports = function (app, passport) {
-  var setting = adou.config.setting;
+  var setting = PT.config.setting;
 
   app.use(require('compression')());
 
@@ -52,7 +52,7 @@ module.exports = function (app, passport) {
     },
     store: new (require('connect-redis')(session))((function () {
       var options = {};
-      var url = require('url').parse(adou.config.db.redis);
+      var url = require('url').parse(PT.config.db.redis);
       if (url.auth) {
         var userparts = url.auth.split(':');
         options.user = userparts[0];

@@ -14,7 +14,7 @@ angular.module('manageApp.service').factory('Project', function ($http) {
     },
 
     update: function (id, project) {
-      return $http.put('/api/projects/' + id + '?admin=true', angular.copy(project)).then(function (response) {
+      return $http.put('/api/projects/' + id + '?admin=true', project).then(function (response) {
         return response.data;
       });
     }

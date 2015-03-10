@@ -11,8 +11,8 @@ angular.module('manageApp.service').factory('User', function ($http) {
       });
     },
     // 更新用户
-    update: function (id, update) {
-      return $http.put('/api/users/' + id + '?admin=true', update).then(function (response) {
+    update: function (id, user) {
+      return $http.put('/api/users/' + id + '?admin=true', user).then(function (response) {
         return response.data;
       });
     }

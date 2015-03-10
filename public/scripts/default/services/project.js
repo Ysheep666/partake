@@ -17,7 +17,7 @@ angular.module('defaultApp.service').factory('Project', function ($http) {
     },
     // 创建项目
     create: function (project) {
-      return $http.post('/api/projects', angular.copy(project)).then(function (response) {
+      return $http.post('/api/projects', project).then(function (response) {
         return response.data;
       });
     },

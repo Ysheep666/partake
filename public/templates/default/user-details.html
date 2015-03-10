@@ -1,0 +1,46 @@
+<div ng-if="user">
+  <div class="user-details-header">
+    <div class="container" ng-if="!is_edit">
+      <a  class="avatar" ui-sref="default.user.votes({name: user.name})"><img image-src="{{user.avatar}}" v="avatar.small"></a>
+      <div class="info">
+        <h1 class="title"><span ng-if="user.nickname">{{user.nickname}}</span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
+        <h2 class="subtitle">{{user.description || '一句话介绍一下自己吧，让别人更了解你'}}</h2>
+        <div class="links">
+          <a target="_blank" ng-href="{{'mailto:' + user.email}}" ng-if="user.email">{{user.email}}</a>
+        </div>
+      </div>
+      <div class="options">
+        <p class="t" ng-if="user.is_me">这是您自己</p>
+        <a class="btn btn-default" href="" ng-click="toEdit()"  ng-if="user.is_me">编辑个人信息</a>
+        <a class="btn btn-default" href=""  ng-if="!user.is_me">关注</a>
+      </div>
+    </div>
+    <div class="container edit" ng-if="is_edit">
+      <a ng-class="{avatar: true, loading: temporary_avatar_upload}" href="" ng-file-select ng-file-change="upload($files)" accept=".jpg,.png">
+        <img image-src="{{temporary_user.avatar}}" v="avatar.small">
+        <span class="ion-image"></span>
+        <span class="ion-load-c"></span>
+      </a>
+      <div class="info">
+        <h1 class="title"><span contenteditable="true" ng-model="temporary_user.nickname" no-line-breaks="true" max-text-length="16" placeholder="请输入您的姓名"></span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
+        <h2 class="subtitle" contenteditable="true" ng-model="temporary_user.description" no-line-breaks="true" max-text-length="50" placeholder="请输入一句话简介"></h2>
+      </div>
+      <div class="options">
+        <a class="btn btn-default" href="" ng-click="toSave()"  ng-if="user.is_me">保存</a>
+        <a class="btn btn-default cancel" href="" ng-click="toCancel()"  ng-if="user.is_me">取消</a>
+      </div>
+    </div>
+  </div>
+  <div class="user-details-content container">
+    <div class="navigation">
+      <ul>
+        <li><a ui-sref="default.user.votes({name: user.name})" ng-class="{active: $state.includes('default.user.votes')}"><strong>{{user.vote_count}}</strong>投票</a></li>
+        <li><a ui-sref="default.user.submits({name: user.name})" ng-class="{active: $state.includes('default.user.submits')}"><strong>{{user.submit_count}}</strong>提交</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.favorite_count}}</strong>集合</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.fans_count}}</strong>粉丝</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.follower_count}}</strong>关注</a></li>
+      </ul>
+    </div>
+    <div class="list" ui-view="content"></div>
+  </div>
+</div>

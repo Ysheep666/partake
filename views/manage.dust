@@ -35,14 +35,14 @@
       <li><a class="border" ui-sref=".project.list({page: 1})">项目</a></li>
       <li><a class="border" ui-sref=".user.list">用户</a></li>
       <li class="dropdown">
-        <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img src="{app.user.avatar}" alt="{app.user.nickname}" height="30" width="30"></a>
+        <a class="dropdown-toggle avatar" data-toggle="dropdown" href="#"><img image-src="{app.user.avatar}" v="avatar.extra.small" alt="{app.user.nickname}" height="30" width="30"></a>
         <ul class="dropdown-menu profile-box">
           <li class="info">
             <p class="name">{app.user.name}<span>{app.user.nickname}</span></p>
             <p class="email">{app.user.email}</p>
           </li>
           <li class="divider"></li>
-          <li><a href="#">个人主页</a></li>
+          <li><a target="_self" href="/@{app.user.name}">个人主页</a></li>
           <li><a href="#">我的收集</a></li>
           <li><a href ng-click="logout()">退出登录</a></li>
         </ul>

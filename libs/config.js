@@ -31,6 +31,6 @@ module.exports = function () {
     options.db.mongodb = process.env.WERCKER_MONGODB_URL + '/partake';
   }
 
-  global.adou = {};
-  adou.config = options;
+  global.PT = {};
+  PT.config = options;
 };

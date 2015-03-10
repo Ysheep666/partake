@@ -17,6 +17,6 @@
   "trailing": true,
   "smarttabs": true,
   "globals": {
-    "adou": true
+    "PT": true
   }
 }
