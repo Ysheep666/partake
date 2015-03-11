@@ -81,7 +81,7 @@ router.route(/^\/\@(.+)$/).get(function (req, res, done) {
         fn(err, user.toJSON());
       });
   }, function (user, fn) {
-    if (req.user.id && req.user.id === user.id) {
+    if (req.user && req.user.id === user.id) {
       user.is_me = true;
     }
     fn(null, user);
