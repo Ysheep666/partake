@@ -262,7 +262,7 @@ router.route('/:id/votes').get(function (req, res, done) {
   }, function (_count, fn) {
     ProjectVote.find(query).select('project')
       .populate({path: 'project', select: 'id'})
-      .sort('-project.vote_count')
+      .sort('-updated_at')
       .skip(index).limit(count).exec(function (err, votes) {
         fn(err, _count, votes);
       });
@@ -275,7 +275,20 @@ router.route('/:id/votes').get(function (req, res, done) {
       .select('name description languages vote_count comment_count user')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .exec(function (err, projects) {
-        fn(err, count, projects);
+        var results = [];
+        for (var i = 0; i < ids.length; i++) {
+          var _id = ids[i];
+          for (var j = 0; j < projects.length; j++) {
+            var project = projects[j].toJSON();
+            if (_id === project.id) {
+              results.push(project);
+              projects.splice(j, 1);
+              break;
+            }
+          }
+        }
+
+        fn(err, count, results);
       });
   }, function (count, projects, fn) {
     var results = [];
@@ -290,7 +303,7 @@ router.route('/:id/votes').get(function (req, res, done) {
         }
 
         for (var i = 0; i < projects.length; i++) {
-          var project = projects[i].toJSON();
+          var project = projects[i];
           project.vote = false;
           for (var j = 0; j < votes.length; j++) {
             if (votes[j].project.equals(project.id)) {
@@ -305,7 +318,7 @@ router.route('/:id/votes').get(function (req, res, done) {
       });
     } else {
       for (var i = 0; i < projects.length; i++) {
-        var project = projects[i].toJSON();
+        var project = projects[i];
         project.vote = false;
         results.push(project);
       }
@@ -411,7 +424,7 @@ router.route('/:id/submits').get(function (req, res, done) {
     Project.find(query)
       .select('name description languages vote_count comment_count user')
       .populate({path: 'user', select: 'name nickname description avatar'})
-      .sort('-vote_count')
+      .sort('-_id')
       .skip(index).limit(count).exec(function (err, projects) {
         fn(err, _count, projects);
       });
@@ -535,7 +548,7 @@ router.route('/:id/fans').get(function (req, res, done) {
     Follow.find(query)
       .select('fans')
       .populate({path: 'fans', select: 'name nickname description avatar'})
-      .sort('-fans_count')
+      .sort('-updated_at')
       .skip(index).limit(count).exec(function (err, follows) {
         fn(err, _count, follows);
       });
@@ -718,7 +731,7 @@ router.route('/:id/follows').get(function (req, res, done) {
     Follow.find(query)
       .select('follower')
       .populate({path: 'follower', select: 'name nickname description avatar'})
-      .sort('-fans_count')
+      .sort('-updated_at')
       .skip(index).limit(count).exec(function (err, follows) {
         fn(err, _count, follows);
       });
