@@ -1,4 +1,4 @@
-<div class="project-detailsloading" ng-if="!project">
+<div class="project-details-loading" ng-if="!project">
   <span class="ion-load-c"></span>
 </div>
 <div ng-if="project">
@@ -58,7 +58,7 @@
           <div class="c">
             <h3>
               {{comment.user.name}}<span>{{comment.user.nickname}}不会飞的羊</span>
-              <comment-delete project="project" comment="comment" ng-if="comment.user.id === me.id"></comment-delete>
+              <comment-delete project="project" comment="comment" ng-if="comment.user.is_me"></comment-delete>
             </h3>
             <div class="text" ng-bind-html="comment.content"></div>
             <span class="time">{{comment.created_at|amTimeAgo}}</span>

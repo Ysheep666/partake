@@ -83,6 +83,12 @@
     color: @color-default;
   }
 
+  .me {
+    margin: 10px 0 20px;
+    font-size: 15px;
+    color: lighten(@color-black-default, 30%);
+  }
+
   .btn {
     margin: 15px 0 20px;
   }
@@ -97,6 +103,16 @@
     &:hover{
       background-color: lighten(@color-default, 10%);
       border-color: lighten(@color-default, 10%);
+    }
+
+    &.cancel {
+      background: lighten(@color-black-default, 30%);
+      border-color: lighten(@color-black-default, 30%);
+
+      &:hover{
+        background-color: lighten(@color-black-default, 50%);
+        border-color: lighten(@color-black-default, 50%);
+      }
     }
   }
 }

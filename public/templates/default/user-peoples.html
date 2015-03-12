@@ -1,0 +1,25 @@
+<div class="peoples" infinite-scroll="more()">
+  <div class="loading" ng-if="!users.length && !status.nil">
+    <span class="ion-load-c"></span>
+  </div>
+  <div ng-if="users.length">
+    <ul class="people-list">
+      <li ng-repeat="user in users">
+        <a class="people-item" ng-class="{isnt: user.isnt_follower}" ui-sref="default.user.votes({name: user.name})">
+          <user-avatar class="people" user="user" v="avatar.small"></user-avatar>
+          <div class="info">
+            <h2 class="name">{{user.name}}<span>{{user.nickname}}</span></h2>
+            <h3 class="description">{{user.description}}</h3>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <div class="more" ng-if="status.loading">
+      <span ng-if="status.more">正在加载，请稍等...</span>
+      <span ng-if="!status.more">没有更多了</span>
+    </div>
+  </div>
+  <div class="nil" ng-if="status.nil">
+    <span>暂时没有项目</span>
+  </div>
+</div>

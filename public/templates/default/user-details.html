@@ -12,7 +12,7 @@
       <div class="options">
         <p class="t" ng-if="user.is_me">这是您自己</p>
         <a class="btn btn-default" href="" ng-click="toEdit()"  ng-if="user.is_me">编辑个人信息</a>
-        <a class="btn btn-default" href=""  ng-if="!user.is_me">关注</a>
+        <user-follow class="btn btn-default" user="user" ng-if="!user.is_me"></user-follow>
       </div>
     </div>
     <div class="container edit" ng-if="is_edit">
@@ -36,9 +36,9 @@
       <ul>
         <li><a ui-sref="default.user.votes({name: user.name})" ng-class="{active: $state.includes('default.user.votes')}"><strong>{{user.vote_count}}</strong>投票</a></li>
         <li><a ui-sref="default.user.submits({name: user.name})" ng-class="{active: $state.includes('default.user.submits')}"><strong>{{user.submit_count}}</strong>提交</a></li>
-        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.favorite_count}}</strong>集合</a></li>
-        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.fans_count}}</strong>粉丝</a></li>
-        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.follower_count}}</strong>关注</a></li>
+        <li><a ui-sref="default.user.votes({name: user.name})"><strong>{{user.favorite_count}}</strong>收集</a></li>
+        <li><a ui-sref="default.user.fans({name: user.name})" ng-class="{active: $state.includes('default.user.fans')}"><strong>{{user.fans_count}}</strong>粉丝</a></li>
+        <li><a ui-sref="default.user.follows({name: user.name})" ng-class="{active: $state.includes('default.user.follows')}"><strong>{{user.follower_count}}</strong>关注</a></li>
       </ul>
     </div>
     <div class="list" ui-view="content"></div>

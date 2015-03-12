@@ -5,6 +5,16 @@ angular.module('defaultApp.controller').controller('UserDetailsCtrl', function (
     $scope.user = user;
   });
 
+  $scope.$on('follow', function (event, user) {
+    if ($scope.user.is_me) {
+      if (user.follower) {
+        $scope.user.follower_count++;
+      } else {
+        $scope.user.follower_count--;
+      }
+    }
+  });
+
   $scope.temporary_avatar_upload = false;
   var upload = function (files) {
     for (var i = 0; i < files.length; i++) {
@@ -60,7 +70,7 @@ angular.module('defaultApp.controller').controller('UserDetailsCtrl', function (
 angular.module('defaultApp.controller').controller('UserVotesCtrl', function ($scope, User) {
   $scope.count = 10;
   $scope.projects = [];
-  $scope.status = {more: true, loading: false};
+  $scope.status = {more: true, loading: false, nil: false};
 
   $scope.more = function () {
     if (!$scope.status.loading) {
@@ -77,6 +87,10 @@ angular.module('defaultApp.controller').controller('UserVotesCtrl', function ($s
         } else {
           $scope.status.more = false;
         }
+
+        if (!$scope.projects.length) {
+          $scope.status.nil = true;
+        }
       });
     }
   };
@@ -85,7 +99,7 @@ angular.module('defaultApp.controller').controller('UserVotesCtrl', function ($s
 angular.module('defaultApp.controller').controller('UserSubmitsCtrl', function ($scope, User) {
   $scope.count = 10;
   $scope.projects = [];
-  $scope.status = {more: true, loading: false};
+  $scope.status = {more: true, loading: false, nil: false};
 
   $scope.more = function () {
     if (!$scope.status.loading) {
@@ -102,6 +116,10 @@ angular.module('defaultApp.controller').controller('UserSubmitsCtrl', function (
         } else {
           $scope.status.more = false;
         }
+
+        if (!$scope.projects.length) {
+          $scope.status.nil = true;
+        }
       });
     }
   };
@@ -111,6 +129,75 @@ angular.module('defaultApp.controller').controller('UserSubmitsCtrl', function (
     $scope.status = {more: true, loading: false};
     $scope.more();
   });
+});
+
+angular.module('defaultApp.controller').controller('UserFansCtrl', function ($scope, User) {
+  $scope.count = 30;
+  $scope.users = [];
+  $scope.status = {more: true, loading: false, nil: false};
+
+  $scope.more = function () {
+    if (!$scope.status.loading) {
+      $scope.status.loading = true;
+      User.queryFans($scope.$parent.user.id, {
+        index: $scope.users.length,
+        count: $scope.count
+      }).then(function (users) {
+        if (users.length) {
+          for (var i = 0; i < users.length; i++) {
+            $scope.users.push(users[i]);
+          }
+          $scope.status.loading = false;
+        } else {
+          $scope.status.more = false;
+        }
+
+        if (!$scope.users.length) {
+          $scope.status.nil = true;
+        }
+      });
+    }
+  };
+});
+
+angular.module('defaultApp.controller').controller('UserFollowsCtrl', function ($scope, User) {
+  $scope.count = 30;
+  $scope.users = [];
+  $scope.status = {more: true, loading: false, nil: false};
+
+  $scope.$on('follow', function (event, user) {
+    if ($scope.$parent.user.is_me) {
+      for (var i = 0; i < $scope.users.length; i++) {
+        if (user.id === $scope.users[i].id) {
+          $scope.users[i].isnt_follower = !user.follower;
+          break;
+        }
+      }
+    }
+  });
+
+  $scope.more = function () {
+    if (!$scope.status.loading) {
+      $scope.status.loading = true;
+      User.queryFollows($scope.$parent.user.id, {
+        index: $scope.users.length,
+        count: $scope.count
+      }).then(function (users) {
+        if (users.length) {
+          for (var i = 0; i < users.length; i++) {
+            $scope.users.push(users[i]);
+          }
+          $scope.status.loading = false;
+        } else {
+          $scope.status.more = false;
+        }
+
+        if (!$scope.users.length) {
+          $scope.status.nil = true;
+        }
+      });
+    }
+  };
 });
 
 

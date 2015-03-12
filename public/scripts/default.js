@@ -27,6 +27,7 @@ require('./default/directives/form-group-default');
 require('./default/directives/project-item');
 require('./default/directives/project-upvote');
 require('./default/directives/textarea-auth-height');
+require('./default/directives/user-follow');
 require('./default/services/ui/error-tip');
 require('./default/services/comment');
 require('./default/services/default');
@@ -172,11 +173,32 @@ angular.module('defaultApp', [
     }
   });
 
+  $stateProvider.state('default.user.fans', {
+    url: '/fans',
+    views: {
+      'content': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-peoples.html', 'utf8'),
+        controller: 'UserFansCtrl'
+      }
+    }
+  });
+
+  $stateProvider.state('default.user.follows', {
+    url: '/follows',
+    views: {
+      'content': {
+        template: fs.readFileSync(__dirname + '/../templates/default/user-peoples.html', 'utf8'),
+        controller: 'UserFollowsCtrl'
+      }
+    }
+  });
+
   $urlRouterProvider.otherwise('/');
 }).run(function ($http, $cookies, $rootScope, $state, $timeout, $window, Notification, Default) {
   $rootScope.me = null;
   if (angular.element('meta[name="partake-user-id"]').length) {
     $rootScope.me = {
+      is_me: true,
       id: angular.element('meta[name="partake-user-id"]').attr('content'),
       name: angular.element('meta[name="partake-user-name"]').attr('content'),
       nickname: angular.element('meta[name="partake-user-nickname"]').attr('content'),

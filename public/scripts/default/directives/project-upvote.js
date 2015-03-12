@@ -13,10 +13,10 @@ angular.module('defaultApp.directive').directive('projectUpvote', function () {
            $rootScope.$broadcast('vote', project);
         }, function (err) {
           ErrorTip.show(err.data);
-        })
+        });
       };
 
-      $rootScope.$on('vote', function (event, project) {
+      $scope.$on('vote', function (event, project) {
         if ($scope.project.id === project.id) {
           $scope.project.vote = project.vote;
           $scope.project.vote_count = project.vote_count;
@@ -31,13 +31,7 @@ angular.module('defaultApp.directive').directive('projectUpvote', function () {
             }
 
             if (_index === -1) {
-              $scope.project.votes.push({
-                id: $rootScope.me.id,
-                name: $rootScope.me.name,
-                nickname: $rootScope.me.nickname,
-                avatar: $rootScope.me.avatar,
-                description: $rootScope.me.description
-              });
+              $scope.project.votes.push($rootScope.me);
             } else {
               $scope.project.votes.splice(_index, 1);
             }

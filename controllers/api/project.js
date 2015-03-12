@@ -9,7 +9,7 @@ var auth = require('../../libs/middlewares/auth');
 /**
  * 生成时间的 ObjectId
  * @param  {number} timestamp 时间戳
- * @return {string}           ObjectId 编码
+ * @return {string} ObjectId 编码
  */
 var _objectIdWithTimestamp = function (timestamp) {
   if (typeof timestamp === 'string') {
@@ -70,6 +70,7 @@ router.route('/').get(function (req, res, done) {
 
   var Project = mongoose.model('Project');
   var ProjectVote = mongoose.model('ProjectVote');
+  var Follow = mongoose.model('Follow');
 
   async.waterfall([function (fn) {
     Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}, is_delete: false})
@@ -109,6 +110,45 @@ router.route('/').get(function (req, res, done) {
       for (var i = 0; i < projects.length; i++) {
         var project = projects[i].toJSON();
         project.vote = false;
+        results.push(project);
+      }
+
+      fn(null, results);
+    }
+  }, function (projects, fn) {
+    var results = [];
+    if (req.user) {
+      var ids = _.map(projects, function (project) {
+        return project.user.id;
+      });
+
+      Follow.find({fans: req.user.id, follower: {$in: ids}, is_delete: false}).exec(function (err, follows) {
+        if (err) {
+          fn(err);
+        }
+
+        for (var i = 0; i < projects.length; i++) {
+          var project = projects[i];
+          project.user.follower = false;
+          for (var j = 0; j < follows.length; j++) {
+            if (follows[j].follower.equals(project.user.id)) {
+              project.user.follower = true;
+              break;
+            }
+          }
+
+          if (req.user.id === project.user.id) {
+            project.user.is_me = true;
+          }
+          results.push(project);
+        }
+
+        fn(null, results);
+      });
+    } else {
+      for (var i = 0; i < projects.length; i++) {
+        var project = projects[i];
+        project.user.follower = false;
         results.push(project);
       }
 
@@ -270,6 +310,7 @@ router.route('/:id').get(function (req, res, done) {
   var CommentVote = mongoose.model('CommentVote');
   var Project = mongoose.model('Project');
   var ProjectVote = mongoose.model('ProjectVote');
+  var Follow = mongoose.model('Follow');
 
   async.waterfall([function (fn) {
     Project.findOne({_id: req.params.id, is_delete: false}).select('name description agreement languages systems vote_count comment_count user')
@@ -278,14 +319,14 @@ router.route('/:id').get(function (req, res, done) {
         fn(err, project);
       });
   }, function (project, fn) {
+    project = project.toJSON();
     if (req.user) {
-      ProjectVote.findOne({project: project.id, user: req.user.id, is_delete: false}).exec(function (err, vote) {
+      ProjectVote.count({project: project.id, user: req.user.id, is_delete: false}).exec(function (err, count) {
         if (err) {
           fn(err);
         }
 
-        project = project.toJSON();
-        if (vote && vote.project.equals(project.id)) {
+        if (count) {
           project.vote = true;
         } else {
           project.vote = false;
@@ -294,8 +335,27 @@ router.route('/:id').get(function (req, res, done) {
         fn(null, project);
       });
     } else {
-      project = project.toJSON();
       project.vote = false;
+      fn(null, project);
+    }
+  }, function (project, fn) {
+    if (req.user) {
+      if (req.user.id === project.user.id) {
+        project.user.is_me = true;
+        fn(null, project);
+      } else {
+        Follow.count({fans: req.user.id, follower: project.user.id, is_delete: false}).exec(function (err, count) {
+          if (err) {
+            fn(err);
+          }
+
+          if (count) {
+            project.user.follower = true;
+          }
+          fn(null, project);
+        });
+      }
+    } else {
       fn(null, project);
     }
   }, function (project, fn) {
@@ -306,12 +366,47 @@ router.route('/:id').get(function (req, res, done) {
         if (err) {
           fn(err);
         }
+
         project.votes = [];
         for (var i = 0; i < votes.length; i++) {
-          project.votes.push(votes[i].user);
+          project.votes.push(votes[i].user.toJSON());
         }
         fn(null, project);
       });
+  }, function (project, fn) {
+    var results = [];
+    if (req.user) {
+      var ids = _.map(project.votes, function (vote) {
+        return vote.id;
+      });
+
+      Follow.find({fans: req.user.id, follower: {$in: ids}, is_delete: false}).exec(function (err, follows) {
+        if (err) {
+          fn(err);
+        }
+
+        for (var i = 0; i < project.votes.length; i++) {
+          var vote = project.votes[i];
+          vote.follower = false;
+          for (var j = 0; j < follows.length; j++) {
+            if (follows[j].follower.equals(vote.id)) {
+              vote.follower = true;
+              break;
+            }
+          }
+
+          if (req.user.id === vote.id) {
+            vote.is_me = true;
+          }
+          results.push(vote);
+        }
+
+        project.votes = results;
+        fn(null, project);
+      });
+    } else {
+      fn(null, project);
+    }
   }, function (project, fn) {
     Comment.find({project: project.id, is_delete: false})
       .select('content vote_count user')
@@ -360,6 +455,40 @@ router.route('/:id').get(function (req, res, done) {
       }
 
       project.comments = results;
+      fn(null, project);
+    }
+  }, function (project, fn) {
+    var results = [];
+    if (req.user) {
+      var ids = _.map(project.comments, function (comment) {
+        return comment.user.id;
+      });
+
+      Follow.find({fans: req.user.id, follower: {$in: ids}, is_delete: false}).exec(function (err, follows) {
+        if (err) {
+          fn(err);
+        }
+
+        for (var i = 0; i < project.comments.length; i++) {
+          var comment = project.comments[i];
+          comment.user.follower = false;
+          for (var j = 0; j < follows.length; j++) {
+            if (follows[j].follower.equals(comment.user.id)) {
+              comment.user.follower = true;
+              break;
+            }
+          }
+
+          if (req.user.id === comment.user.id) {
+            comment.user.is_me = true;
+          }
+          results.push(comment);
+        }
+
+        project.comments = results;
+        fn(null, project);
+      });
+    } else {
       fn(null, project);
     }
   }], function (err, project) {
@@ -556,8 +685,9 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
  * @apiGroup Project
  * @apiVersion 0.0.1
  *
- * @apiSuccess {String} project 项目ID
+ * @apiSuccess {String} id 项目ID
  * @apiSuccess {Boolean} vote 是否赞成
+ * @apiSuccess {Number} vote_count 赞成数量
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
