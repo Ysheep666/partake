@@ -66,6 +66,7 @@ angular.module('defaultApp', [
       if (!previousState.get('modalInvoker').state.name) {
         state.go('default.project.list');
       } else {
+        state.invoker = true;
         previousState.go('modalInvoker');
       }
     }, function () {
@@ -211,13 +212,14 @@ angular.module('defaultApp', [
   $rootScope.$state = $state;
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    if (fromState.name === 'slide.project.details' && toState.name === 'default.user.votes') {
+    if (fromState.name === 'slide.project.details' && toState.name === 'default.user.votes' && !$state.invoker) {
       event.preventDefault();
       $state.go('default.nil', {}, {notify: false});
       $timeout(function () {
         $state.go(toState, toParams);
       }, 0);
     }
+    $state.invoker = false;
   });
 
   $rootScope.logout = function () {
