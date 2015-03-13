@@ -140,45 +140,31 @@
       }
     }
 
-    .title span, .subtitle {
-      position: relative;
-      display: inline-block;
-      padding-bottom: 6px;
+    input {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: inherit;
       border-bottom: 1px solid @color-white;
-      overflow: hidden;
       outline: none;
-
-      &:before {
-        position: absolute;
-        top: 1px;
-        display: none;
-        content: attr(placeholder);
-        color: lighten(@user-details-header-bg-color, 10%);
-      }
-
-      &.null {
-        &:before {
-          display: block;
-        }
-      }
     }
 
-    .title span {
-      float: left;
-      height: 40px;
-      min-width: 60px;
-
-      &.null {
-        width: 210px;
+    .title {
+      input {
+        margin-right: 10px;
+        min-width: 120px;
+        max-width: 450px;
+        line-height: 40px;
+        font-size: 30px;
       }
     }
 
     .subtitle {
-      height: 26px;
-      min-width: 300px;
-
-      &.null {
-        width: 400px;
+      input {
+        min-width: 200px;
+        max-width: 500px;
+        line-height: 26px;
+        font-size: 18px;
       }
     }
   }

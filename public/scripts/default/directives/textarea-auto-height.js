@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var angular = require('angular');
 
-angular.module('defaultApp.directive').directive('textareaAuthHeight', function($timeout) {
+angular.module('defaultApp.directive').directive('textareaAutoHeight', function($timeout) {
  return {
     restrict: 'A',
     link: function (scope, element) {

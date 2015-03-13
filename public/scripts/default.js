@@ -7,14 +7,13 @@ require('./components/filters/day-time');
 require('./components/filters/default');
 require('./components/filters/escape');
 require('./components/services/notification');
-require('./components/directives/contenteditable');
 require('./components/directives/image-src');
 require('./components/directives/user-avatar');
 
 angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'ui.bootstrap.popover', 'ui.bootstrap.tpls']);
 
 angular.module('defaultApp.controller', []);
-angular.module('defaultApp.directive', ['ui.contenteditable', 'ui.image-src', 'ui.user-avatar']);
+angular.module('defaultApp.directive', ['ui.image-src', 'ui.user-avatar']);
 angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time', 'filter.escape']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
@@ -23,10 +22,11 @@ require('./default/controllers/user');
 require('./default/directives/comment-delete');
 require('./default/directives/comment-upvote');
 require('./default/directives/comment');
+require('./default/directives/input-auto-width');
 require('./default/directives/form-group-default');
 require('./default/directives/project-item');
 require('./default/directives/project-upvote');
-require('./default/directives/textarea-auth-height');
+require('./default/directives/textarea-auto-height');
 require('./default/directives/user-follow');
 require('./default/services/ui/error-tip');
 require('./default/services/comment');

@@ -22,8 +22,8 @@
         <span class="ion-load-c"></span>
       </a>
       <div class="info">
-        <h1 class="title"><span contenteditable="true" ng-model="temporary_user.nickname" no-line-breaks="true" max-text-length="16" placeholder="请输入您的姓名"></span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
-        <h2 class="subtitle" contenteditable="true" ng-model="temporary_user.description" no-line-breaks="true" max-text-length="50" placeholder="请输入一句话简介"></h2>
+        <h1 class="title"><input ng-model="temporary_user.nickname" input-auto-width placeholder="请输入您的姓名" width="210px"></span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
+        <h2 class="subtitle"><input ng-model="temporary_user.description" input-auto-width placeholder="请输入一句话简介" width="360px"></h2>
       </div>
       <div class="options">
         <a class="btn btn-default" href="" ng-click="toSave()"  ng-if="user.is_me">保存</a>
