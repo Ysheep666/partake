@@ -635,6 +635,10 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
       }
     });
   }, function (project, fn) {
+    if (!project.verify) {
+      project.online_at = new Date();
+    }
+
     project.name = req.body.name.toLowerCase();
     project.url = req.body.url;
     project.description = req.sanitize('description').escape();

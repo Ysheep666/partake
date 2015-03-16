@@ -59,33 +59,34 @@ angular.module('defaultApp', [
     backdrop: 'static',
     windowClass: 'slide-right'
   };
-  var slideModalOpen = function (modal, previousState, state, options) {
+  var slideModalOpen = function (modal, previousState, state, timeout, options) {
     options = $.extend(true, {}, slideModalOpenOptions, options);
     previousState.memo('modalInvoker');
     modal.open(options).result.then(function () {
       if (!previousState.get('modalInvoker').state.name) {
-        state.go('default.project.list');
+        timeout(function () {
+          state.go('default.project.list');
+        }, 200);
       } else {
         state.invoker = true;
         previousState.go('modalInvoker');
       }
     }, function () {
-      // TODO: 这里不应该直接这样处理
       angular.element('.modal-backdrop').remove();
     });
   };
 
   $stateProvider.state('slideModal', {
     abstract: true,
-    onEnter: function ($modal, $previousState, $state) {
-      slideModalOpen($modal, $previousState, $state);
+    onEnter: function ($modal, $previousState, $state, $timeout) {
+      slideModalOpen($modal, $previousState, $state, $timeout);
     }
   });
 
   $stateProvider.state('slideModalSm', {
     abstract: true,
-    onEnter: function ($modal, $previousState, $state) {
-      slideModalOpen($modal, $previousState, $state, {
+    onEnter: function ($modal, $previousState, $state, $timeout) {
+      slideModalOpen($modal, $previousState, $state, $timeout, {
         size: 'sm'
       });
     }

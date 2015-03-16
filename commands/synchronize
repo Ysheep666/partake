@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+var async = require('async');
+var mongoose = require('mongoose');
+
+require('../libs/config')();
+require('../libs/mongoose')();
+
+/**
+ * 数据同步
+ */
+var Project = mongoose.model('Project');
+var esClient = Project.esClient;
+
+var deleteIndexIfExists = function (indexes, done) {
+  async.forEach(indexes, function (index, cb) {
+    esClient.indices.exists({
+      index: index
+    }, function (err, exists) {
+      if(exists){
+        esClient.indices.delete({
+          index: index
+        }, cb);
+      }else{
+        cb();
+      }
+    });
+  }, done);
+};
+
+deleteIndexIfExists(['partake'], function () {
+  var count = 0;
+  var stream = Project.synchronize();
+
+  stream.on('data', function (err, doc) {
+    count++;
+  });
+
+  stream.on('close', function () {
+    console.log('共 ' + count + ' 条数据');
+    setTimeout(function(){
+    }, 2000);
+  });
+});

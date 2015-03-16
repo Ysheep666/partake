@@ -11,6 +11,11 @@ db:
   redis: 'redis://127.0.0.1'
   mongodb: 'mongodb://127.0.0.1/partake'
 
+# 搜索引擎配置
+elasticsearch:
+  host: 'localhost'
+  port: '9200'
+
 # 又拍云
 upyun:
   api: 'http://v0.api.upyun.com'
@@ -19,7 +24,7 @@ upyun:
       secret: 'Zetk/7ysh3W2Js7yMybtmNEzOyU='
       url: 'http://partake-images.b0.upaiyun.com'
 
-#用户认证
+# 用户认证
 auth:
   github:
     client_id: 'c6951da9e1ed5e3e22f9'

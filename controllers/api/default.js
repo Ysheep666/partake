@@ -1,25 +1,45 @@
 // 默认 Api
 var router = require('express').Router();
 var crypto = require('crypto');
+var mongoose = require('mongoose');
 
 /**
- * @api {delete} /api/logout 退出登录
- * @apiName logout
+ * @api {get} /api/search 搜索
+ * @apiName search
  * @apiGroup Default
  * @apiVersion 0.0.1
  *
- * @apiSuccess {String} message 成功提示消息
+ * @apiParam {String} q 搜索文字
  *
  * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 204 OK
+ *     HTTP/1.1 200 OK
  *     {
- *       "message": "退出登录成功"
+ *       ...
  *     }
+ *
  */
-router.route('/logout').delete(function (req, res) {
-  req.logout();
-  return res.status(202).json({
-    message: '退出登录成功'
+router.route('/search').get(function (req, res, done) {
+  var Project = mongoose.model('Project');
+  Project.search({}, {
+    body: {
+      query: {
+        multi_match: {
+          query: req.query.q,
+          fields: ['name', 'url', 'description']
+        }
+      },
+      highlight: {
+        fields: {
+          name: {},
+          description: {}
+        }
+      }
+    },
+  }, function (err, results) {
+    if (err) {
+      return done(err);
+    }
+    res.send(results);
   });
 });
 
@@ -64,6 +84,27 @@ router.route('/uptoken').post(function (req, res) {
   return res.status(200).json({
     policy: policy,
     signature: signature
+  });
+});
+
+/**
+ * @api {delete} /api/logout 退出登录
+ * @apiName logout
+ * @apiGroup Default
+ * @apiVersion 0.0.1
+ *
+ * @apiSuccess {String} message 成功提示消息
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 204 OK
+ *     {
+ *       "message": "退出登录成功"
+ *     }
+ */
+router.route('/logout').delete(function (req, res) {
+  req.logout();
+  return res.status(202).json({
+    message: '退出登录成功'
   });
 });
 
