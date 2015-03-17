@@ -72,6 +72,11 @@
     background-color: @color-white;
   }
 
+  &.isnt {
+    background: lighten(@user-details-header-bg-color, 60%);
+    .opacity(.5);
+  }
+
   .upvote {
     display: inline-block;
     float: left;
@@ -115,8 +120,10 @@
   }
 
   .user-avatar {
-    float: right;
-    height: 45px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 
     &:before {
       content: '';
@@ -141,7 +148,7 @@
   }
 
   .info {
-    margin-left: 45px;
+    margin: 0 50px 0 45px;
 
     .title {
       margin: 0 2px 0 0;

@@ -41,7 +41,7 @@ angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', functio
   };
 
   $scope.$on('$stateChangeStart', function () {
-    $scope.$dismiss();
+    $scope.$dismiss({state_change: true});
   });
 });
 

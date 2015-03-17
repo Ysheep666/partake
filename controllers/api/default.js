@@ -1,6 +1,7 @@
 // 默认 Api
 var router = require('express').Router();
 var crypto = require('crypto');
+var async = require('async');
 var mongoose = require('mongoose');
 
 /**
@@ -19,26 +20,42 @@ var mongoose = require('mongoose');
  *
  */
 router.route('/search').get(function (req, res, done) {
+  var query = req.query.q;
+
   var Project = mongoose.model('Project');
-  Project.search({}, {
-    body: {
-      query: {
-        multi_match: {
-          query: req.query.q,
-          fields: ['name', 'url', 'description']
-        }
-      },
-      highlight: {
-        fields: {
-          name: {},
-          description: {}
-        }
+  var User = mongoose.model('User');
+
+  async.parallel([function (fn) {
+    Project.search({
+      bool: {
+        should: [{
+          prefix: {name: query}
+        }, {
+          match: {description: query}
+        }]
       }
-    },
-  }, function (err, results) {
+    }, function (err, results) {
+      fn(err, {projects: results.hits.hits});
+    });
+  }, function (fn) {
+    User.search({
+      bool: {
+        should: [{
+          prefix: {name: query}
+        }, {
+          prefix: {nickname: query}
+        }, {
+          prefix: {email: query}
+        }]
+      }
+    }, function (err, results) {
+      fn(err, {users: results.hits.hits});
+    });
+  }], function (err, results) {
     if (err) {
       return done(err);
     }
+
     res.send(results);
   });
 });

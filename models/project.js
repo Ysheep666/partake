@@ -5,17 +5,9 @@ var ObjectId = mongoose.Schema.ObjectId;
 
 // 结构
 var ProjectSchema = new mongoose.Schema({
-  name: { // 名称
-    type: String, index: true,
-    es_type: 'string', es_boost: 2.0, es_analyzer : 'whitespace'
-  },
-  url: { // 链接地址
-    type: String, default: ''
-  },
-  description: { // 一句话描述
-    type: String, default: '',
-    es_type: 'string', es_boost: 2.0, es_analyzer : 'whitespace'
-  },
+  name: {type: String, index: true, es_boost: 1.0}, // 名称
+  url: {type: String, default: ''}, // 链接地址
+  description: {type: String, default: ''}, // 一句话描述
   agreement: {type: String, default: ''}, // 授权协议
   languages: [{type: String}], // 开发语言
   systems: [{type: String}], // 操作系统

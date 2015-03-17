@@ -2,10 +2,10 @@ var fs = require('fs');
 var $ = require('jquery');
 var angular = require('angular');
 
-require('./components/filters/capitalize');
 require('./components/filters/day-time');
 require('./components/filters/default');
 require('./components/filters/escape');
+require('./components/filters/replace-wrap');
 require('./components/services/notification');
 require('./components/directives/image-src');
 require('./components/directives/user-avatar');
@@ -14,7 +14,7 @@ angular.module('ui.bootstrap', ['ui.bootstrap.modal', 'ui.bootstrap.tooltip', 'u
 
 angular.module('defaultApp.controller', []);
 angular.module('defaultApp.directive', ['ui.image-src', 'ui.user-avatar']);
-angular.module('defaultApp.filter', ['filter.default', 'filter.capitalize', 'filter.day-time', 'filter.escape']);
+angular.module('defaultApp.filter', ['filter.default', 'filter.day-time', 'filter.escape', 'filter.replace-wrap']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
 require('./default/controllers/project');
@@ -56,13 +56,14 @@ angular.module('defaultApp', [
 
   var slideModalOpenOptions = {
     template: '<scrollable class="modal-view"><div class="slide-right-content" ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
-    backdrop: 'static',
     windowClass: 'slide-right'
   };
+
   var slideModalOpen = function (modal, previousState, state, timeout, options) {
     options = $.extend(true, {}, slideModalOpenOptions, options);
     previousState.memo('modalInvoker');
-    modal.open(options).result.then(function () {
+
+    var _close = function () {
       if (!previousState.get('modalInvoker').state.name) {
         timeout(function () {
           state.go('default.project.list');
@@ -71,8 +72,14 @@ angular.module('defaultApp', [
         state.invoker = true;
         previousState.go('modalInvoker');
       }
-    }, function () {
-      angular.element('.modal-backdrop').remove();
+    };
+
+    modal.open(options).result.then(_close, function (status) {
+      if (status && status.state_change) {
+        angular.element('.modal-backdrop').remove();
+      } else {
+        _close();
+      }
     });
   };
 

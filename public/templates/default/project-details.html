@@ -7,7 +7,7 @@
     <a  class="avatar" ui-sref="user.votes({name: project.user.name})"><img image-src="{{project.user.avatar}}" v="avatar.small"></a>
     <div class="info">
       <h1 class="title">
-        <a target="_blank" href="/projects/{{project.id}}/link">{{project.name | capitalize}}</a>
+        <a target="_blank" href="/projects/{{project.id}}/link">{{project.name}}</a>
       </h1>
       <span class="description" ng-bind-html="project.description"></span>
     </div>
@@ -57,13 +57,17 @@
           <user-avatar class="people" user="comment.user" v="avatar.small"></user-avatar>
           <div class="c">
             <h3>
-              {{comment.user.name}}<span>{{comment.user.nickname}}不会飞的羊</span>
+              {{comment.user.name}}<span>{{comment.user.nickname}}</span>
               <comment-delete project="project" comment="comment" ng-if="comment.user.is_me"></comment-delete>
             </h3>
-            <div class="text" ng-bind-html="comment.content"></div>
+            <div class="text" ng-bind-html="comment.content | replaceWrap"></div>
             <span class="time">{{comment.created_at|amTimeAgo}}</span>
             <div class="options">
               <comment-upvote comment="comment"></comment-upvote>
+              <a href="#">
+                <span class="ion-ios-undo"></span>
+                <span class="t">回复</span>
+              </a>
             </div>
           </div>
         </li>

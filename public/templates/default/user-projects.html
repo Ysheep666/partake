@@ -5,7 +5,7 @@
   <div ng-if="projects.length">
     <ul class="project-list">
       <li ng-repeat="project in projects">
-        <project-item project="project"></project-item>
+        <project-item project="project" ng-class="{isnt: project.isnt_vote}"></project-item>
       </li>
     </ul>
     <div class="more" ng-if="status.loading">

@@ -5,6 +5,16 @@ angular.module('defaultApp.controller').controller('UserDetailsCtrl', function (
     $scope.user = user;
   });
 
+  $scope.$on('vote', function (event, project) {
+    if ($scope.user.is_me) {
+      if (project.vote) {
+        $scope.user.vote_count++;
+      } else {
+        $scope.user.vote_count--;
+      }
+    }
+  });
+
   $scope.$on('follow', function (event, user) {
     if ($scope.user.is_me) {
       if (user.follower) {
@@ -71,6 +81,17 @@ angular.module('defaultApp.controller').controller('UserVotesCtrl', function ($s
   $scope.count = 10;
   $scope.projects = [];
   $scope.status = {more: true, loading: false, nil: false};
+
+  $scope.$on('vote', function (event, project) {
+    if ($scope.$parent.user.is_me) {
+      for (var i = 0; i < $scope.projects.length; i++) {
+        if (project.id === $scope.projects[i].id) {
+          $scope.projects[i].isnt_vote = !project.vote;
+          break;
+        }
+      }
+    }
+  });
 
   $scope.more = function () {
     if (!$scope.status.loading) {
@@ -199,5 +220,3 @@ angular.module('defaultApp.controller').controller('UserFollowsCtrl', function (
     }
   };
 });
-
-

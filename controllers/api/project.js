@@ -539,7 +539,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
 
   async.waterfall([function (fn) {
     var project = new Project({
-      name: req.body.name.toLowerCase(),
+      name: req.body.name,
       url: req.body.url,
       description: req.sanitize('description').escape(),
       user: req.user.id
@@ -639,7 +639,7 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
       project.online_at = new Date();
     }
 
-    project.name = req.body.name.toLowerCase();
+    project.name = req.body.name;
     project.url = req.body.url;
     project.description = req.sanitize('description').escape();
     project.agreement = req.body.agreement;

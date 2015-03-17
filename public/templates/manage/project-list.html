@@ -20,7 +20,7 @@
           <div class="item clearfix" ng-repeat="project in projects | filter: filterVerify">
             <div class="info">
               <h4>
-                <a target="_blank" href="{{project.url}}">{{project.name | capitalize}}</a>
+                <a target="_blank" href="{{project.url}}">{{project.name}}</a>
                 <div class="languages" ng-if="project.languages.length">
                   <span ng-repeat="language in project.languages">#{{language}}</span>
                 </div>

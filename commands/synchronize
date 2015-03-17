@@ -9,6 +9,7 @@ require('../libs/mongoose')();
  * 数据同步
  */
 var Project = mongoose.model('Project');
+var User = mongoose.model('User');
 var esClient = Project.esClient;
 
 var deleteIndexIfExists = function (indexes, done) {
@@ -27,7 +28,22 @@ var deleteIndexIfExists = function (indexes, done) {
   }, done);
 };
 
-deleteIndexIfExists(['partake'], function () {
+
+async.waterfall([function (fn) {
+  deleteIndexIfExists(['partake'], fn);
+}, function (fn) {
+  var count = 0;
+  var stream = User.synchronize();
+
+  stream.on('data', function (err, doc) {
+    count++;
+  });
+
+  stream.on('close', function () {
+    console.log('共 ' + count + ' 条 User 数据');
+    fn(null);
+  });
+}, function (fn) {
   var count = 0;
   var stream = Project.synchronize();
 
@@ -36,8 +52,11 @@ deleteIndexIfExists(['partake'], function () {
   });
 
   stream.on('close', function () {
-    console.log('共 ' + count + ' 条数据');
-    setTimeout(function(){
-    }, 2000);
+    console.log('共 ' + count + ' 条 Project 数据');
+    fn(null);
   });
+}], function (err) {
+  setTimeout(function () {
+    process.exit();
+  }, 100);
 });
