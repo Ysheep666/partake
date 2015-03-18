@@ -12,8 +12,8 @@ angular.module('defaultApp.directive').directive('projectItem', function($state)
         $state.go('slide.project.details', {id: scope.project.id});
       });
 
-      element.find('a.title').on('click', function (event) {
-        event.stopPropagation();
+      element.find('.title a').on('click', function (e) {
+        e.stopPropagation();
       });
     }
   };

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>分享到微信 - {app.title}</title>
+  <!-- build:css /styles/base.css -->
+  <link rel="stylesheet" href="/styles/base.css">
+  <!-- endbuild -->
+</head>
+<body class="share">
+  <div class="share_to_weixin">
+    <div class="title">分享到微信</div>
+    <div class="qrcode" id="qrcode" data-url="http://partake.top/projects/{project.id}"></div>
+  </div>
+  <!-- build:js /scripts/project/share.js -->
+  <script src="/components/jquery/dist/jquery.js"></script>
+  <script src="/components/jquery-qrcode/jquery.qrcode.min.js"></script>
+  <!-- endbuild -->
+  <script type="text/javascript">
+  $(function () {
+    var $qrcode = $('#qrcode');
+    $qrcode.qrcode({
+      width: 240,
+      height: 240,
+      text: $qrcode.data('url')
+    });
+  });
+  </script>
+</body>
+</html>
