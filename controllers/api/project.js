@@ -408,7 +408,7 @@ router.route('/:id').get(function (req, res, done) {
       fn(null, project);
     }
   }, function (project, fn) {
-    Comment.find({project: project.id, is_delete: false})
+    Comment.find({project: project.id, parent: {'$exists': false}, is_delete: false})
       .select('content vote_count user')
       .sort('-vote_count')
       .populate({path: 'user', select: 'name nickname description avatar'})
@@ -418,6 +418,23 @@ router.route('/:id').get(function (req, res, done) {
           fn(err);
         }
         project.comments = comments;
+        fn(null, project);
+      });
+  }, function (project, fn) {
+    var ids = _.map(project.comments, function (comment) {
+      return comment.id;
+    });
+
+    Comment.find({parent: {$in: ids}, is_delete: false})
+      .select('parent content vote_count user')
+      .sort('-vote_count')
+      .populate({path: 'user', select: 'name nickname description avatar'})
+      .limit(20)
+      .exec(function (err, comments) {
+        if (err) {
+          fn(err);
+        }
+        project.comments = project.comments.concat(comments);
         fn(null, project);
       });
   }, function (project, fn) {
@@ -491,6 +508,32 @@ router.route('/:id').get(function (req, res, done) {
     } else {
       fn(null, project);
     }
+  }, function (project, fn) {
+    var results = [];
+    var comments = project.comments;
+    for (var i = 0; i < comments.length; i++) {
+      var comment = comments[i];
+      if (!comment.parent) {
+        comment.children = [];
+        results.push(comment);
+      }
+    }
+
+    for (var x = 0; x < comments.length; x++) {
+      var _comment = comments[x];
+      if (_comment.parent) {
+        for (var j = 0; j < results.length; j++) {
+          if (_comment.parent.equals(results[j].id)) {
+            delete _comment.parent;
+            results[j].children.push(_comment);
+            break;
+          }
+        }
+      }
+    }
+
+    project.comments = results;
+    fn(null, project);
   }], function (err, project) {
     if (err) {
       return done(err);
@@ -546,7 +589,7 @@ router.route('/').post(auth.checkUser).post(auth.checkProvider).post(function (r
     });
     fn(null, project);
   }, function (project, fn) {
-    Project.count({name: project.name, is_delete: false}, function (err, count) {
+    Project.count({name: {$regex: project.name, $options: 'i'}, is_delete: false}, function (err, count) {
       if (err) {
         return fn(err);
       }

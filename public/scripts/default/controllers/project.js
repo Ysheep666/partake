@@ -31,13 +31,17 @@ angular.module('defaultApp.controller').controller('ProjectListCtrl', function (
   });
 });
 
-angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', function ($scope, $stateParams, Project) {
+angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', function ($scope, $rootScope, $stateParams, Project) {
   Project.get($stateParams.id).then(function (project) {
     $scope.project = project;
   });
 
-  $scope.filterComments = function (comment) {
+  $scope.filterComment = function (comment) {
     return !comment.is_delete;
+  };
+
+  $scope.replyComment = function (comment) {
+    $rootScope.$broadcast('reply', comment);
   };
 
   $scope.$on('$stateChangeStart', function () {

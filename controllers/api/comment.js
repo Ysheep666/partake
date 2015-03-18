@@ -68,6 +68,11 @@ router.route('/').post(auth.checkUser).post(function (req, res, done) {
       project: req.body.project,
       content: req.sanitize('content').escape()
     });
+
+    if (req.body.parent) {
+      comment.parent = req.body.parent;
+    }
+
     fn(null, comment);
   }, function (comment, fn) {
     Project.count({_id: comment.project, is_delete: false}, function (err, count) {

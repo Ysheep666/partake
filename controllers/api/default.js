@@ -28,6 +28,9 @@ router.route('/search').get(function (req, res, done) {
   async.parallel([function (fn) {
     Project.search({
       bool: {
+        must_not: [{
+          term: {is_delete: true}
+        }],
         should: [{
           prefix: {name: query}
         }, {
@@ -40,6 +43,9 @@ router.route('/search').get(function (req, res, done) {
   }, function (fn) {
     User.search({
       bool: {
+        must_not: [{
+          term: {is_delete: true}
+        }],
         should: [{
           prefix: {name: query}
         }, {

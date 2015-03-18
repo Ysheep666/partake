@@ -53,7 +53,7 @@
         <span class="ion-sad-outline"></span> 该项目还没有人评论。
       </div>
       <ul class="items" ng-if="project.comment_count">
-        <li class="item" ng-repeat="comment in project.comments | filter: filterComments">
+        <li class="item" ng-repeat="comment in project.comments | filter: filterComment">
           <user-avatar class="people" user="comment.user" v="avatar.small"></user-avatar>
           <div class="c">
             <h3>
@@ -64,12 +64,28 @@
             <span class="time">{{comment.created_at|amTimeAgo}}</span>
             <div class="options">
               <comment-upvote comment="comment"></comment-upvote>
-              <a href="#">
+              <a href="#" ng-click="replyComment(comment)">
                 <span class="ion-ios-undo"></span>
                 <span class="t">回复</span>
               </a>
             </div>
           </div>
+          <ul class="children" ng-if="comment.children.length">
+            <li class="item" ng-repeat="comment in comment.children | filter: filterComment">
+              <user-avatar class="people" user="comment.user" v="avatar.small"></user-avatar>
+              <div class="c">
+                <h3>
+                  {{comment.user.name}}<span>{{comment.user.nickname}}</span>
+                  <comment-delete project="project" comment="comment" ng-if="comment.user.is_me"></comment-delete>
+                </h3>
+                <div class="text" ng-bind-html="comment.content | replaceWrap"></div>
+                <span class="time">{{comment.created_at|amTimeAgo}}</span>
+                <div class="options">
+                  <comment-upvote comment="comment"></comment-upvote>
+                </div>
+              </div>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

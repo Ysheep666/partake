@@ -1,4 +1,12 @@
 <form class="form-comment" name="form" ng-submit="submit()" novalidate>
+  <div class="popover comment-popover top" ng-if="parent">
+    <div class="arrow"></div>
+    <div class="popover-content">
+      回复 <a target="_black" ui-sref="default.user.votes({name: parent.user.name})">{{parent.user.name}}</a> 的话题
+      <a class="cancel" href="#" ng-click="cancel()">取消</a>
+      <blockquote>{{parent.content}}</blockquote>
+    </div>
+  </div>
   <button class="btn btn-default" type="submit">提交</button>
   <div class="form-group form-group-default" ng-class="{'has-error': form.$submitted && form.content.$error.required}">
     <div class="controls">
