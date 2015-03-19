@@ -26,6 +26,12 @@
     }
   }
 
+  .project-box {
+    float: left;
+    padding-right: 30px;
+    width: 75%;
+  }
+
   .people-box {
     float: right;
     width: 25%;
@@ -34,10 +40,15 @@
       width: 100%;
     }
   }
+}
 
-  .project-box {
-    float: left;
-    padding-right: 30px;
-    width: 75%;
+@media (max-width: 768px) {
+  .search-content {
+    .project-box, .people-box {
+      float: none;
+      padding: 0;
+      width: 100%;
+    }
+
   }
 }

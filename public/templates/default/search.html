@@ -3,6 +3,14 @@
     <input type="text" ng-model="query" placeholder="搜索项目..." autocomplete="off">
   </div>
   <div class="search-results">
+    <div class="box project-box" ng-if="projects.length">
+      <div class="box-title"><h3>项目</h3></div>
+      <ul class="project-list">
+        <li ng-repeat="project in projects">
+          <project-item project="project"></project-item>
+        </li>
+      </ul>
+    </div>
     <div class="box people-box" ng-if="users.length">
       <div class="box-title"><h3>用户</h3></div>
       <ul class="people-list">
@@ -14,14 +22,6 @@
               <h3 class="description">{{user.description}}</h3>
             </div>
           </a>
-        </li>
-      </ul>
-    </div>
-    <div class="box project-box" ng-if="projects.length">
-      <div class="box-title"><h3>项目</h3></div>
-      <ul class="project-list">
-        <li ng-repeat="project in projects">
-          <project-item project="project"></project-item>
         </li>
       </ul>
     </div>
