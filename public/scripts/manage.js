@@ -31,7 +31,6 @@ angular.module('manageApp', [
   'ngCookies',
   'ui.router',
   'ct.ui.router.extras',
-  'sun.scrollable',
   'angular-loading-bar',
   'manageApp.controller',
   'manageApp.directive',
@@ -108,4 +107,5 @@ angular.module('manageApp', [
 
 $(document).ready(function () {
   angular.bootstrap(document, ['manageApp']);
+  document.body.addEventListener('touchstart', function () {}, false);
 });

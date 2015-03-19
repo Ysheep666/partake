@@ -115,6 +115,8 @@ angular.module('defaultApp.controller').controller('UserVotesCtrl', function ($s
       });
     }
   };
+
+  $scope.more();
 });
 
 angular.module('defaultApp.controller').controller('UserSubmitsCtrl', function ($scope, User) {
@@ -150,6 +152,8 @@ angular.module('defaultApp.controller').controller('UserSubmitsCtrl', function (
     $scope.status = {more: true, loading: false};
     $scope.more();
   });
+
+  $scope.more();
 });
 
 angular.module('defaultApp.controller').controller('UserFansCtrl', function ($scope, User) {
@@ -179,6 +183,8 @@ angular.module('defaultApp.controller').controller('UserFansCtrl', function ($sc
       });
     }
   };
+
+  $scope.more();
 });
 
 angular.module('defaultApp.controller').controller('UserFollowsCtrl', function ($scope, User) {
@@ -219,4 +225,6 @@ angular.module('defaultApp.controller').controller('UserFollowsCtrl', function (
       });
     }
   };
+
+  $scope.more();
 });

@@ -86,11 +86,7 @@
       border: none;
       border-radius: 0;
       box-shadow: -1px 0 2px 0 rgba(0,0,0,.25);
-    }
-
-    .modal-view {
-      height: 100%;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .slide-right-content {
@@ -106,5 +102,26 @@
 
   .modal.slide-right .modal-sm {
     width: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal.slide-right .modal-dialog {
+    width: 100%;
+
+    .close {
+      right: 20px;
+      top: 20px;
+      left: auto;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      border-radius: 50%;
+      transform: none;
+    }
+
+    .project-details-header .avatar {
+      display: none;
+    }
   }
 }

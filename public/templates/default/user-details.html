@@ -5,12 +5,12 @@
       <div class="info">
         <h1 class="title"><span ng-if="user.nickname">{{user.nickname}}</span><a ui-sref="default.user.votes({name: user.name})">@{{user.name}}</a></h1>
         <h2 class="subtitle">{{user.description || '一句话介绍一下自己吧，让别人更了解你'}}</h2>
-        <div class="links">
+        <div class="links hidden-xs">
           <a target="_blank" ng-href="{{'mailto:' + user.email}}" ng-if="user.email">{{user.email}}</a>
         </div>
       </div>
       <div class="options">
-        <p class="t" ng-if="user.is_me">这是您自己</p>
+        <p class="t hidden-xs" ng-if="user.is_me">这是您自己</p>
         <a class="btn btn-default" href="" ng-click="toEdit()"  ng-if="user.is_me">编辑个人信息</a>
         <user-follow class="btn btn-default" user="user" ng-if="!user.is_me"></user-follow>
       </div>

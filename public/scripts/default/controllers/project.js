@@ -29,6 +29,8 @@ angular.module('defaultApp.controller').controller('ProjectListCtrl', function (
     $scope.status = {more: true, loading: false};
     $scope.more();
   });
+
+  $scope.more();
 });
 
 angular.module('defaultApp.controller').controller('ProjectDetailsCtrl', function ($scope, $rootScope, $stateParams, Project) {

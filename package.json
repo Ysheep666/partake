@@ -21,7 +21,6 @@
     "public/components/bootstrap/js/button.js",
     "public/components/bootstrap/js/tooltip.js",
     "public/components/bootstrap/js/popover.js",
-    "public/components/nanoscroller/bin/javascripts/jquery.nanoscroller.js",
     "public/components/angular/angular.js",
     "public/components/angular-sanitize/angular-sanitize.js",
     "public/components/angular-animate/angular-animate.js",
@@ -38,7 +37,6 @@
     "public/components/angular-ui-select2/src/select2.js",
     "public/components/angular-loading-bar/src/loading-bar.js",
     "public/components/angular-moment/angular-moment.js",
-    "public/components/angular-nanoscroller/scrollable.js",
     "public/components/ng-file-upload/angular-file-upload-all.js",
     "public/components/ngInfiniteScroll/build/ng-infinite-scroll.js"
   ],

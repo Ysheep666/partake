@@ -41,7 +41,6 @@ angular.module('defaultApp', [
   'ui.router',
   'ct.ui.router.extras',
   'angularMoment',
-  'sun.scrollable',
   'angular-loading-bar',
   'angularFileUpload',
   'infinite-scroll',
@@ -55,8 +54,19 @@ angular.module('defaultApp', [
   cfpLoadingBarProvider.includeSpinner = false;
 
   var slideModalOpenOptions = {
-    template: '<scrollable class="modal-view"><div class="slide-right-content" ui-view="modal"></div></scrollable><button type="button" class="close" data-dismiss="alert" ng-click="$close()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>',
-    windowClass: 'slide-right'
+    template: '<div class="modal-view slide-right-content" ui-view="modal"></div>',
+    windowClass: 'slide-right',
+    controller: function ($scope, $timeout) {
+      $timeout(function () {
+        var el = $('<button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
+        angular.element('.modal-dialog').append(el);
+        el.on('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $scope.$close();
+        });
+      }, 150);
+    }
   };
 
   var slideModalOpen = function (modal, previousState, state, timeout, options) {
@@ -241,4 +251,5 @@ angular.module('defaultApp', [
 
 $(document).ready(function () {
   angular.bootstrap(document, ['defaultApp']);
+  document.body.addEventListener('touchstart', function () {}, false);
 });
