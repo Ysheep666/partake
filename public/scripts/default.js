@@ -141,7 +141,7 @@ angular.module('defaultApp', [
 
   // 查找
   $stateProvider.state('default.search', {
-    url: '/search',
+    url: '/search?q',
     views: {
       'wrapper@': {
         template: fs.readFileSync(__dirname + '/../templates/default/search.html', 'utf8'),
