@@ -666,7 +666,7 @@ router.route('/:id').put(auth.checkUser).put(auth.checkAdministrate).put(functio
   var Project = mongoose.model('Project');
 
   async.waterfall([function (fn) {
-    Project.findOne({_id: req.params.id, is_delete: false}, 'name', function (err, project) {
+    Project.findOne({_id: req.params.id, is_delete: false}, function (err, project) {
       if (project) {
         fn(null, project);
       } else {
