@@ -1,0 +1,29 @@
+<div class="search-content">
+  <div class="search-input">
+    <input type="text" ng-model="query" placeholder="搜索项目..." autocomplete="off">
+  </div>
+  <div class="search-results">
+    <div class="box people-box" ng-if="users.length">
+      <div class="box-title"><h3>用户</h3></div>
+      <ul class="people-list">
+        <li ng-repeat="user in users">
+          <a class="people-item" ng-class="{isnt: user.isnt_follower}" ui-sref="default.user.votes({name: user.name})">
+            <user-avatar class="people" user="user" v="avatar.small"></user-avatar>
+            <div class="info">
+              <h2 class="name">{{user.name}}<span>{{user.nickname}}</span></h2>
+              <h3 class="description">{{user.description}}</h3>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="box project-box" ng-if="projects.length">
+      <div class="box-title"><h3>项目</h3></div>
+      <ul class="project-list">
+        <li ng-repeat="project in projects">
+          <project-item project="project"></project-item>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

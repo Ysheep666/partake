@@ -17,6 +17,7 @@ angular.module('defaultApp.directive', ['ui.image-src', 'ui.user-avatar']);
 angular.module('defaultApp.filter', ['filter.default', 'filter.day-time', 'filter.escape', 'filter.replace-wrap']);
 angular.module('defaultApp.service', ['ui.bootstrap', 'ui.notification', 'ui.error-tip']);
 
+require('./default/controllers/default');
 require('./default/controllers/project');
 require('./default/controllers/user');
 require('./default/directives/comment-delete');
@@ -48,7 +49,17 @@ angular.module('defaultApp', [
   'defaultApp.directive',
   'defaultApp.filter',
   'defaultApp.service'
-]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
+]).controller('modalIn', function ($scope, $timeout) {
+  $timeout(function () {
+    var el = $('<button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
+    angular.element('.modal-dialog').append(el);
+    el.on('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $scope.$close();
+    });
+  }, 150);
+}).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   $locationProvider.html5Mode(true);
   cfpLoadingBarProvider.includeSpinner = false;
@@ -56,17 +67,7 @@ angular.module('defaultApp', [
   var slideModalOpenOptions = {
     template: '<div class="modal-view slide-right-content" ui-view="modal"></div>',
     windowClass: 'slide-right',
-    controller: function ($scope, $timeout) {
-      $timeout(function () {
-        var el = $('<button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
-        angular.element('.modal-dialog').append(el);
-        el.on('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          $scope.$close();
-        });
-      }, 150);
-    }
+    controller: 'modalIn'
   };
 
   var slideModalOpen = function (modal, previousState, state, timeout, options) {
@@ -143,7 +144,8 @@ angular.module('defaultApp', [
     url: '/search',
     views: {
       'wrapper@': {
-        template: '1234'
+        template: fs.readFileSync(__dirname + '/../templates/default/search.html', 'utf8'),
+        controller: 'SearchCtrl'
       }
     }
   });
@@ -251,5 +253,4 @@ angular.module('defaultApp', [
 
 $(document).ready(function () {
   angular.bootstrap(document, ['defaultApp']);
-  document.body.addEventListener('touchstart', function () {}, false);
 });

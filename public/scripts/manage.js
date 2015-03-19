@@ -107,5 +107,4 @@ angular.module('manageApp', [
 
 $(document).ready(function () {
   angular.bootstrap(document, ['manageApp']);
-  document.body.addEventListener('touchstart', function () {}, false);
 });

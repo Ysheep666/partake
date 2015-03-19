@@ -89,7 +89,7 @@ router.route('/').get(function (req, res, done) {
 
       ProjectVote.find({project: {$in: ids}, user: req.user.id, is_delete: false}).exec(function (err, votes) {
         if (err) {
-          fn(err);
+          return fn(err);
         }
 
         for (var i = 0; i < projects.length; i++) {
@@ -124,7 +124,7 @@ router.route('/').get(function (req, res, done) {
 
       Follow.find({fans: req.user.id, follower: {$in: ids}, is_delete: false}).exec(function (err, follows) {
         if (err) {
-          fn(err);
+          return fn(err);
         }
 
         for (var i = 0; i < projects.length; i++) {

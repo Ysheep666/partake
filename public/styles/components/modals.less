@@ -82,15 +82,12 @@
     transition: all .25s cubic-bezier(.7,0,.3,1);
 
     .modal-content {
+      position: static;
       height: 100%;
       border: none;
       border-radius: 0;
       box-shadow: -1px 0 2px 0 rgba(0,0,0,.25);
       overflow-y: auto;
-    }
-
-    .slide-right-content {
-      position: relative;
     }
   }
 }
@@ -120,8 +117,14 @@
       transform: none;
     }
 
-    .project-details-header .avatar {
-      display: none;
+    .project-details-header {
+      .info {
+        margin-right: 10px;
+      }
+
+      .avatar {
+        display: none;
+      }
     }
 
     .project-details-submitted {
