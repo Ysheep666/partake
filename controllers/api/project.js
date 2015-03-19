@@ -795,7 +795,7 @@ router.route('/:id/votes').post(auth.checkUser).post(function (req, res, done) {
       fn(err, inc, vote, project);
     });
   }, function (inc, vote, project, fn) {
-    User.findByIdAndUpdate(project.user, {$inc: {'vote_count': inc}}, function (err) {
+    User.findByIdAndUpdate(vote.user, {$inc: {'vote_count': inc}}, function (err) {
       fn(err, vote, project);
     });
   }], function (err, vote, project) {
