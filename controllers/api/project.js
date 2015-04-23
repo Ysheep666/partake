@@ -79,8 +79,8 @@ router.route('/').get(function (req, res, done) {
   }, function (project, fn) {
     var day = parseInt(moment.duration({to: moment(project.created_at), from: moment()}).asDays(), 10);
 
-    startTimestamp = moment().add(day - index - count, 'days').format('YYYY/MM/DD');
-    endTimestamp = moment().add(day - index, 'days').format('YYYY/MM/DD');
+    startTimestamp = moment().add(1 + day - index - count, 'days').format('YYYY/MM/DD');
+    endTimestamp = moment().add(1 + day - index, 'days').format('YYYY/MM/DD');
 
     Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}, is_delete: false})
       .select('name description languages vote_count comment_count user')
