@@ -73,14 +73,23 @@ router.route('/').get(function (req, res, done) {
   var Follow = mongoose.model('Follow');
 
   async.waterfall([function (fn) {
+    Project.find({is_delete: false}).sort('-_id').skip(0).limit(1).exec(function (err, projects) {
+      fn(err, projects[0]);
+    });
+  }, function (project, fn) {
+    var day = parseInt(moment.duration({to: moment(project.created_at), from: moment()}).asDays(), 10);
+
+    startTimestamp = moment().add(day - index - count, 'days').format('YYYY/MM/DD');
+    endTimestamp = moment().add(day - index, 'days').format('YYYY/MM/DD');
+
     Project.find({_id: {$gt: _objectIdWithTimestamp(startTimestamp), $lt: _objectIdWithTimestamp(endTimestamp)}, is_delete: false})
       .select('name description languages vote_count comment_count user')
       .sort('-vote_count')
       .populate({path: 'user', select: 'name nickname description avatar'})
       .exec(function (err, projects) {
-        fn(err, projects);
+        fn(err, projects, day);
       });
-  }, function (projects, fn) {
+  }, function (projects, day, fn) {
     var results = [];
     if (req.user) {
       var ids = _.map(projects, function (project) {
@@ -104,7 +113,7 @@ router.route('/').get(function (req, res, done) {
           results.push(project);
         }
 
-        fn(null, results);
+        fn(null, results, day);
       });
     } else {
       for (var i = 0; i < projects.length; i++) {
@@ -113,9 +122,9 @@ router.route('/').get(function (req, res, done) {
         results.push(project);
       }
 
-      fn(null, results);
+      fn(null, results, day);
     }
-  }, function (projects, fn) {
+  }, function (projects, day, fn) {
     var results = [];
     if (req.user) {
       var ids = _.map(projects, function (project) {
@@ -143,7 +152,7 @@ router.route('/').get(function (req, res, done) {
           results.push(project);
         }
 
-        fn(null, results);
+        fn(null, results, day);
       });
     } else {
       for (var i = 0; i < projects.length; i++) {
@@ -152,9 +161,9 @@ router.route('/').get(function (req, res, done) {
         results.push(project);
       }
 
-      fn(null, results);
+      fn(null, results, day);
     }
-  }], function (err, projects) {
+  }], function (err, projects, day) {
     if (err) {
       return done(err);
     }
@@ -163,7 +172,7 @@ router.route('/').get(function (req, res, done) {
     if (projects.length) {
       for (var i = count; i > 0; i--) {
         results.push({
-          date: new Date(moment().add(i - index - count, 'days').format('YYYY/MM/DD')),
+          date: new Date(moment().add(i + day - index - count, 'days').format('YYYY/MM/DD')),
           projects: []
         });
       }
